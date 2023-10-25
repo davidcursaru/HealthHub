@@ -1,4 +1,6 @@
-﻿namespace NutritionManager.Entities
+﻿using NutritionManager.Extensions;
+
+namespace NutritionManager.Entities
 {
     public class User
     {
@@ -19,5 +21,10 @@
         public ICollection<HydrationLogs> HydrationLogs { get; set; }
         public ICollection<NutritionLogs> NutritionLogs { get; set; }
         public ICollection<Reminders> Reminders { get; set; }
+
+        public int GetAge()
+        {
+            return DateOfBirth.CalculateAge();
+        }
     }
 }

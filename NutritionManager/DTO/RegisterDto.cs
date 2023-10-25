@@ -7,6 +7,7 @@ namespace NutritionManager.DTO
         [Required]
         public string Username { get; set; }
         [Required]
+        //[StringLength(6, MinimumLength = 4)]
         public string Password { get; set; }
         [Required]
         public string Firstname { get; set; }

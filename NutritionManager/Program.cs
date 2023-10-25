@@ -1,11 +1,5 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using NutritionManager.Data;
 using NutritionManager.Extensions;
-using NutritionManager.Interfaces;
-using NutritionManager.Services;
-using System.Text;
+using NutritionManager.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +12,13 @@ builder.Services.AddIdentityServices(builder.Configuration);
 //builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+//if (builder.Environment.IsDevelopment())
+//{
+//    app.UseDeveloperExceptionPage();
+//}
 
 //Add CORS
 
