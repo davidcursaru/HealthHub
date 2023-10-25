@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
+using NutritionManager.DTO;
 using NutritionManager.Entities;
+using NutritionManager.Interfaces;
 
 namespace NutritionManager.Controllers
 {
@@ -11,23 +14,30 @@ namespace NutritionManager.Controllers
     [Authorize]
     public class UsersController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(DataContext context)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _userRepository.GetAllUsersAsync();
+            var usersToReturn = _mapper.Map<IEnumerable<UserDTO>>(users);
+
+            return Ok(usersToReturn);
         }
 
-        [HttpGet("id/{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        [HttpGet("username/{username}")]
+        public async Task<ActionResult<UserDTO>> GetUserByUsername(string username)
         {
-            return await _context.Users.FindAsync(id);
+            var user = await _userRepository.GetUserByUsernameAsyc(username);
+            
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }

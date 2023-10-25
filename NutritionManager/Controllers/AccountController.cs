@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.DTO;
+using NutritionManager.Entities;
 using NutritionManager.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NutritionManager.Entities
+namespace NutritionManager.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -22,7 +23,7 @@ namespace NutritionManager.Entities
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDTO>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<LoggedUserDTO>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.Username))
                 return BadRequest("Username is taken");
@@ -32,13 +33,20 @@ namespace NutritionManager.Entities
             {
                 Username = registerDto.Username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                PasswordSalt = hmac.Key,
+                Firstname = registerDto.Firstname,
+                Lastname = registerDto.Lastname,
+                Email = registerDto.Email,
+                Weight = registerDto.Weight,
+                Height = registerDto.Height,
+                Gender = registerDto.Gender,
+                DateOfBirth = registerDto.DateOfBirth
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return new UserDTO
+            return new LoggedUserDTO
             {
                 Username = user.Username,
                 Token = _tokenService.CreateToken(user)
@@ -46,7 +54,7 @@ namespace NutritionManager.Entities
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDTO>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<LoggedUserDTO>> Login(LoginDTO loginDTO)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == loginDTO.Username);
 
@@ -64,7 +72,7 @@ namespace NutritionManager.Entities
                     return Unauthorized("invalid password");
             }
 
-            return new UserDTO
+            return new LoggedUserDTO
             {
                 Username = user.Username,
                 Token = _tokenService.CreateToken(user)

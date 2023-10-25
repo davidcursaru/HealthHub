@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Interfaces;
+using NutritionManager.Repositories;
 using NutritionManager.Services;
 
 namespace NutritionManager.Extensions
@@ -15,7 +16,8 @@ namespace NutritionManager.Extensions
             });
 
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             return services;
         }
     }
