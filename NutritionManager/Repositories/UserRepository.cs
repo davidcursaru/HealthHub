@@ -19,6 +19,13 @@ namespace NutritionManager.Repositories
             _mapper = mapper;
         }
 
+        public async Task DeleteUserAsync(int id)
+        {
+            var userToDelete = GetUserByIdAync(id).Result;
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();

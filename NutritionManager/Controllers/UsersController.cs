@@ -34,7 +34,13 @@ namespace NutritionManager.Controllers
         public async Task<ActionResult<UserDTO>> GetUserByUsername(string username)
         {
             return await _userRepository.GetUserDtoAsync(username);
-
         }
+
+        [HttpDelete("delete/{id}")]
+        public async Task DeleteUser(int id)
+        {
+            await _userRepository.DeleteUserAsync(id);
+        }
+
     }
 }

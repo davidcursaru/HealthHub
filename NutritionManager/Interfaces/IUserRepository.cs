@@ -12,5 +12,6 @@ namespace NutritionManager.Interfaces
         Task<User> GetUserByUsernameAsyc(string username);
         Task<IEnumerable<UserDTO>> GetUsersDtoAsync();
         Task<UserDTO> GetUserDtoAsync(string username);
+        Task DeleteUserAsync(int id);
     }
 }
