@@ -22,9 +22,9 @@ namespace NutritionManager.Entities
         public ICollection<NutritionLogs> NutritionLogs { get; set; }
         public ICollection<Reminders> Reminders { get; set; }
 
-        public int GetAge()
-        {
-            return DateOfBirth.CalculateAge();
-        }
+        //public int GetAge()
+        //{
+        //    return DateOfBirth.CalculateAge();
+        //}
     }
 }

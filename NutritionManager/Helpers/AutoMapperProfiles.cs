@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NutritionManager.DTO;
 using NutritionManager.Entities;
+using NutritionManager.Extensions;
 
 namespace NutritionManager.Helpers
 {
@@ -8,7 +9,8 @@ namespace NutritionManager.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<User, UserDTO>();
+            CreateMap<User, UserDTO>()
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
             CreateMap<Goals, GoalsDTO>();
             CreateMap<ExerciseLogs, ExerciseLogsDTO>();
             CreateMap<HydrationLogs, HydrationLogsDTO>();

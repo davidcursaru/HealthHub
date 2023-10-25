@@ -26,18 +26,15 @@ namespace NutritionManager.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
-            var users = await _userRepository.GetAllUsersAsync();
-            var usersToReturn = _mapper.Map<IEnumerable<UserDTO>>(users);
-
-            return Ok(usersToReturn);
+            var users = await _userRepository.GetUsersDtoAsync();
+            return Ok(users);
         }
 
         [HttpGet("username/{username}")]
         public async Task<ActionResult<UserDTO>> GetUserByUsername(string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsyc(username);
-            
-            return _mapper.Map<UserDTO>(user);
+            return await _userRepository.GetUserDtoAsync(username);
+
         }
     }
 }
