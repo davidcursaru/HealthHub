@@ -42,5 +42,10 @@ namespace NutritionManager.Controllers
             await _userRepository.DeleteUserAsync(id);
         }
 
+        [HttpPut("change-password")]
+        public async Task ChangePassword(UpdatedUserDTO updatedUser)
+        {
+            await _userRepository.ChangePassword(updatedUser);
+        }
     }
 }

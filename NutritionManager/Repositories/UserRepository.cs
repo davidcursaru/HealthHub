@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.DTO;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace NutritionManager.Repositories
 {
@@ -17,6 +20,22 @@ namespace NutritionManager.Repositories
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task ChangePassword(UpdatedUserDTO user)
+        {
+            var userToUpdate = GetUserByIdAync(user.Id).Result;
+
+            if (!string.IsNullOrEmpty(user.NewPassword))
+            {
+                // Generate a new salt
+                using var hmac = new HMACSHA512();
+
+                userToUpdate.PasswordSalt = hmac.Key;
+                userToUpdate.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(user.NewPassword));
+            }
+            _context.Users.Update(userToUpdate);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteUserAsync(int id)
