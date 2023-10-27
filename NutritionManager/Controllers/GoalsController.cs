@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
+using NutritionManager.DTO;
 using NutritionManager.Entities;
+using NutritionManager.Interfaces;
 
 namespace NutritionManager.Controllers
 {
@@ -9,17 +11,29 @@ namespace NutritionManager.Controllers
     [ApiController]
     public class GoalsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IGoalsRepository _goalsRepository;
 
-        public GoalsController(DataContext context)
+        public GoalsController(IGoalsRepository goalsRepository)
         {
-            _context = context;
+            _goalsRepository = goalsRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Goals>> GetAllGoalsAsync()
         {
-            return await _context.Goals.ToListAsync();
+            return await _goalsRepository.GetAllGoalsAsync();
+        }
+
+        [HttpPost]
+        public async Task<Goals> CreateGoalAsync(Goals goal)
+        {
+            return await _goalsRepository.CreateGoal(goal);
+        }
+
+        [HttpPut]
+        public async Task UpdateGoalAsync(Goals goals)
+        {
+            await _goalsRepository.UpdateGoalAsync(goals);
         }
     }
 }

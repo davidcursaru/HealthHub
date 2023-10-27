@@ -15,9 +15,18 @@ namespace NutritionManager.Repositories
             _context = context;
         }
 
-        public Task DeleteGoalAsync(int id)
+        public async Task<Goals> CreateGoal(Goals goal)
         {
-            throw new NotImplementedException();
+            _context.Goals.Add(goal);
+            await _context.SaveChangesAsync();
+            return goal;
+        }
+
+        public async Task DeleteGoalAsync(int id)
+        {
+            var goalToDelete = GetGoalByIdAsync(id).Result;
+            _context.Remove(goalToDelete);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Goals>> GetAllGoalsAsync()
@@ -30,9 +39,10 @@ namespace NutritionManager.Repositories
             return await _context.Goals.FindAsync(id);
         }
 
-        public Task UpdateGoalAsync(GoalsDTO goalsDTO)
+        public async Task UpdateGoalAsync(Goals goals)
         {
-            throw new NotImplementedException();
+            _context.Update(goals);
+            await _context.SaveChangesAsync();
         }
     }
 }
