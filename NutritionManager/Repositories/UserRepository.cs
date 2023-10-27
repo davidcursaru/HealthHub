@@ -13,7 +13,7 @@ namespace NutritionManager.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext _context;  
         private readonly IMapper _mapper;
 
         public UserRepository(DataContext context, IMapper mapper)
@@ -22,7 +22,7 @@ namespace NutritionManager.Repositories
             _mapper = mapper;
         }
 
-        public async Task ChangePassword(UpdatedUserDTO user)
+        public async Task ChangePassword(UpdatedUserPwdDTO user)
         {
             var userToUpdate = GetUserByIdAync(user.Id).Result;
 
@@ -86,9 +86,19 @@ namespace NutritionManager.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public void Update(User user)
+        //public Task<ActionResult> UpdateUser(UpdatedUser updatedUser)
+        //{
+        //    var username = User.FindFirst();
+        //}
+
+        public async Task UpdateUserAsync(UpdatedUserBirthDateDTO updatedUser)
         {
-            _context.Entry(user).State = EntityState.Modified;
+            var userToUpdate = await GetUserByUsernameAsyc(updatedUser.Username);
+            //_mapper.Map(updatedUser, userToUpdate);
+            userToUpdate.DateOfBirth = updatedUser.BirthDate;
+            _context.Users.Update(userToUpdate);
+            await _context.SaveChangesAsync();
+            //_context.Entry(user).State = EntityState.Modified;
         }
     }
 }

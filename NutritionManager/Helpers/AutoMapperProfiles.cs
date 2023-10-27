@@ -11,6 +11,8 @@ namespace NutritionManager.Helpers
         {
             CreateMap<User, UserDTO>()
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));
+            CreateMap<UserDTO, User>();
+            CreateMap<UpdatedUserDTO, User>();
             CreateMap<Goals, GoalsDTO>();
             CreateMap<ExerciseLogs, ExerciseLogsDTO>();
             CreateMap<HydrationLogs, HydrationLogsDTO>();
