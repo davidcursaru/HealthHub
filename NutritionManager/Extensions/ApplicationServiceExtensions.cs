@@ -18,6 +18,7 @@ namespace NutritionManager.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGoalsRepository, GoalsRepository>();
+            services.AddScoped<IExerciseLogsRepository, ExerciseLogsRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             return services;
         }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
+using NutritionManager.Interfaces;
 
 namespace NutritionManager.Controllers
 {
@@ -9,18 +10,41 @@ namespace NutritionManager.Controllers
     [ApiController]
     public class ExercisesLogsController
     {
-        private readonly DataContext _context;
+        private readonly IExerciseLogsRepository _exerciseLogsRepository;
 
-        public ExercisesLogsController(DataContext context)
+        public ExercisesLogsController(IExerciseLogsRepository exerciseLogsRepository)
         {
-            _context = context;
+            _exerciseLogsRepository = exerciseLogsRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<ExerciseLogs>> GetAllExercisesLogsAsync()
         {
-            return await _context.ExerciseLogs.ToListAsync();
+            return await _exerciseLogsRepository.GetAllExercisesLogsAsync();
         }
 
+        [HttpGet("id")]
+        public async Task<ExerciseLogs> GetExerciseLogsByIdAsync(int id)
+        {
+            return await _exerciseLogsRepository.GetExerciseLogsByIdAsync(id);
+        }
+
+        [HttpPost]
+        public async Task<ExerciseLogs> CreateExerciseLogsAsync(ExerciseLogs exerciseLogs)
+        {
+            return await _exerciseLogsRepository.CreateExercise(exerciseLogs);
+        }
+
+        [HttpPut]
+        public async Task UpdateExerciseLogsAsync(ExerciseLogs exerciseLogs)
+        {
+            await _exerciseLogsRepository.UpdateExerciseAsync(exerciseLogs);
+        }
+
+        [HttpDelete]
+        public async Task DeleteExerciseLogsAsync(int id)
+        {
+            await _exerciseLogsRepository.DeleteExerciseAsync(id);
+        }
     }
 }
