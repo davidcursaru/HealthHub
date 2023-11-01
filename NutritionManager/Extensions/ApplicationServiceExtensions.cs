@@ -21,6 +21,7 @@ namespace NutritionManager.Extensions
             services.AddScoped<IExerciseLogsRepository, ExerciseLogsRepository>();
             services.AddScoped<IHydrationLogsRepository, HydrationLogsRepository>();
             services.AddScoped<INutritionLogsRepository, NutritionLogsRepository>();
+            services.AddScoped<IRemindersRepository, RemindersRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             return services;
         }
