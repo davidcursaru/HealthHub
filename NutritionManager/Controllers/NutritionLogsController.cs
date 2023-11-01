@@ -2,24 +2,49 @@
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
+using NutritionManager.Interfaces;
 
 namespace NutritionManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NutritionLogsController
+    public class NutritionLogsController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly INutritionLogsRepository _nutritionLogsRepository;
 
-        public NutritionLogsController(DataContext context)
+        public NutritionLogsController(INutritionLogsRepository nutritionLogsRepository)
         {
-            _context = context;
+            _nutritionLogsRepository = nutritionLogsRepository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<NutritionLogs>> GetAllNutritionLogsAync()
         {
-            return await _context.NutritionLogs.ToListAsync();
+            return await _nutritionLogsRepository.GetAllNutritionLogs();
+        }
+
+        [HttpGet("id/{id}")]
+        public async Task<NutritionLogs> GetNutritionLogsById(int id)
+        {
+            return await _nutritionLogsRepository.GetNutritionLogsById(id);
+        }
+
+        [HttpPost]
+        public async Task<NutritionLogs> CreateNutritionLogsAsync(NutritionLogs nutritionLogs)
+        {
+            return await _nutritionLogsRepository.CreateNutritionLogs(nutritionLogs);
+        }
+
+        [HttpPut]
+        public async Task UpdateNutritionLogsAsync(NutritionLogs nutritionLogs)
+        {
+            await _nutritionLogsRepository.UpdateNutritionLogs(nutritionLogs);
+        }
+
+        [HttpDelete("id/{id}")]
+        public async Task DeleteNutritionLogsAsync(int id)
+        {
+            await _nutritionLogsRepository.DeleteNutritionLogs(id);
         }
     }
 }

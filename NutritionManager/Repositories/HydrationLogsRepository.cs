@@ -23,8 +23,8 @@ namespace NutritionManager.Repositories
 
         public async Task DeleteHydrationLogs(int id)
         {
-            var hydrationLogsToDelete = GetHydrationLogsById(id);
-            _context.Remove(hydrationLogsToDelete);
+            var hydrationLogsToDelete = GetHydrationLogsById(id).Result;
+            _context.HydrationLogs.Remove(hydrationLogsToDelete);
             await _context.SaveChangesAsync();
         }
 
