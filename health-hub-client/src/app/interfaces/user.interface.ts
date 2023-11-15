@@ -1,0 +1,24 @@
+import { ExerciseLogs } from "./exerciseLogs.interface";
+import { Goals } from "./goals.interface";
+import { HydrationLogs } from "./hydrationLogs.interface";
+import { NutritionLogs } from "./nutritionLogs.interface";
+import { Reminders } from "./reminders.interface";
+
+export interface User{
+    id: number;
+    userName: string;
+    firstName: string;
+    lastname: string;
+    email: string;
+    dateOfBirth: Date;
+    weight: string;
+    height: string;
+    gender: string;
+    token: string;
+
+    goals: Goals[];
+    exerciseLogs: ExerciseLogs[];
+    hydrationLogs: HydrationLogs[];
+    nutritionLogs: NutritionLogs[];
+    reminders: Reminders[];
+}

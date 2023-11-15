@@ -1,0 +1,42 @@
+<div class="auth-wrapper">
+    
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="form-wrapper">
+        <div>
+            <img class="login" src="https://cdn2.iconfinder.com/data/icons/user-23/512/User_Administrator_3.png" alt="">
+        </div>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>First Name</mat-label>
+            <input matInput placeholder="Enter your firstname" type="name" name="firstname" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Enter your lastName" type="name" name="lastName" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Enter your userName" type="userName" name="userName" ngModel [required]="true"
+                userName>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter your email" type="email" name="email" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput placeholder="Enter your password" type="password" name="password" ngModel [required]="true">
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!authForm.valid">{{ isLoginMode ?
+                'Login':'Sign Up'}}</button>
+        </div>
+        <div>
+            <span>
+                {{
+                isLoginMode ? 'Don\'t have an account? ' : 'Already have an account?'
+                }}
+            </span>
+            <button mat-flat-button type="button" (click)="onSwitchMode()">{{ isLoginMode ? 'Sign Up' : 'Login'
+                }}</button>
+        </div>
+    </form>
+</div>
