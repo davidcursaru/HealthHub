@@ -21,6 +21,22 @@
             <mat-label>Email</mat-label>
             <input matInput placeholder="Enter your email" type="email" name="email" ngModel [required]="true">
         </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Gender</mat-label>
+            <input matInput placeholder="Enter your gender" type="text" name="gender" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Weight</mat-label>
+            <input matInput placeholder="Enter your weight" type="text" name="weight" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Height</mat-label>
+            <input matInput placeholder="Enter your height" type="text" name="height" ngModel [required]="true">
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Birth date</mat-label>
+            <input matInput placeholder="Enter your birth date" type="date" name="dateOfBirth" ngModel [required]="true">
+        </mat-form-field>
         <mat-form-field appearance="fill" class="example-full-width">
             <mat-label>Password</mat-label>
             <input matInput placeholder="Enter your password" type="password" name="password" ngModel [required]="true">

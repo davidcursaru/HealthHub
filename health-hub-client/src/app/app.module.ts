@@ -10,12 +10,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MaterialModule } from './material/material.module';
+import { AuthService } from './services/auth.service';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthComponent
+    AuthComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import { MaterialModule } from './material/material.module';
     MaterialModule,
     BrowserAnimationsModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -4,12 +4,22 @@ using NutritionManager.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 
 //builder.Services.AddEndpointsApiExplorer();
+
 
 var app = builder.Build();
 
@@ -21,11 +31,12 @@ app.UseMiddleware<ExceptionMiddleware>();
 //}
 
 //Add CORS
+app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseHttpsRedirection();
 
 app.MapControllers();
 

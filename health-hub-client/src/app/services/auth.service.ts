@@ -13,16 +13,16 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: User) {
-    return this.http.post('localhost:5000/api/account/login', user);
+    return this.http.post('https://localhost:5000/api/account/login', user);
   }
 
   register(user: User) {
-    return this.http.post('localhost:5000/api/account/register', user);
+    return this.http.post('https://localhost:5000/api/account/register', user);
   }
 
   storeToken(tokenVal: string, userId: number) {
     localStorage.setItem('token', tokenVal);
-    localStorage.setItem('userId', userId.toString());
+    // localStorage.setItem('userId', userId.toString());
   }
 
   storeUser(user: User) {

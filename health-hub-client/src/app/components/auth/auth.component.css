@@ -5,10 +5,11 @@
     background: rgb(255, 255, 255);
     background: linear-gradient(
       90deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(127, 168, 181, 1) 80%
+      rgb(185, 226, 232) 0%,
+      rgb(46, 113, 44) 80%
     );
     height: 100vh;
+    margin: -8px -8px -8px -8px;
   }
   
   .form-wrapper {
