@@ -12,7 +12,7 @@
             <mat-label>Last Name</mat-label>
             <input matInput placeholder="Enter your lastName" type="name" name="lastName" ngModel [required]="true">
         </mat-form-field>
-        <mat-form-field appearance="fill" class="example-full-width">
+        <mat-form-field appearance="fill" [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
             <mat-label>Username</mat-label>
             <input matInput placeholder="Enter your userName" type="userName" name="userName" ngModel [required]="true"
                 userName>
@@ -37,7 +37,7 @@
             <mat-label>Birth date</mat-label>
             <input matInput placeholder="Enter your birth date" type="date" name="dateOfBirth" ngModel [required]="true">
         </mat-form-field>
-        <mat-form-field appearance="fill" class="example-full-width">
+        <mat-form-field appearance="fill" [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
             <mat-label>Password</mat-label>
             <input matInput placeholder="Enter your password" type="password" name="password" ngModel [required]="true">
         </mat-form-field>
