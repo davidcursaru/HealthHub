@@ -15,13 +15,20 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
+
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthComponent,
-    HomePageComponent
+    HomePageComponent,
+    CostumSidenavComponent,
+   
+    
   ],
   imports: [
     BrowserModule,
@@ -35,7 +42,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSidenavModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]
