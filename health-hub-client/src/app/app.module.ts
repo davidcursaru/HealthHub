@@ -17,6 +17,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
+import {MatListModule} from '@angular/material/list';
+//import { DashboardComponent } from './components/home-page/home-page.component';
+import { GoalsComponent } from './components/goals/goals.component';
+import { CaloriesComponent } from './components/calories/calories.component';
+import { HydrationComponent } from './components/hydration/hydration.component';
+import { ExerciseComponent } from './components/exercise/exercise.component';
+import { SchedulingComponent } from './components/scheduling/scheduling.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { RouterModule } from '@angular/router';
+import { LayoutComponent } from './components/layout/layout.component';
+
+
+
+
 
 
 
@@ -27,6 +42,16 @@ import { CostumSidenavComponent } from './components/costum-sidenav/costum-siden
     AuthComponent,
     HomePageComponent,
     CostumSidenavComponent,
+    //DashboardComponent,
+    GoalsComponent,
+    CaloriesComponent,
+    HydrationComponent,
+    ExerciseComponent,
+    SchedulingComponent,
+    ReportsComponent,
+    SettingsComponent,
+    LayoutComponent,
+  
    
     
   ],
@@ -43,7 +68,11 @@ import { CostumSidenavComponent } from './components/costum-sidenav/costum-siden
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatListModule,
+    RouterModule
+    
+    
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]

@@ -2,11 +2,33 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+//import { DashboardComponent } from './components/home-page/home-page.component';
+import { GoalsComponent } from './components/goals/goals.component';
+import { CaloriesComponent } from './components/calories/calories.component';
+import { ExerciseComponent } from './components/exercise/exercise.component';
+import { HydrationComponent } from './components/hydration/hydration.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { SchedulingComponent } from './components/scheduling/scheduling.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
+import { LayoutComponent } from './components/layout/layout.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'auth', component: AuthComponent },
-  { path: 'home-page', component: HomePageComponent }
+  { path: 'layout', component: LayoutComponent, children: [
+  { path: '', redirectTo: 'home-page', pathMatch: 'full' },
+  { path: 'home-page', component: HomePageComponent },
+  { path: 'goals', component: GoalsComponent },
+  { path: 'calories', component: CaloriesComponent},
+  { path: 'exercise', component: ExerciseComponent},
+  { path: 'hydration', component: HydrationComponent },
+  { path: 'reports', component: ReportsComponent },
+  { path: 'scheduling', component: SchedulingComponent },
+  { path: 'settings', component: SettingsComponent } ] }
+
+ 
 ];
 
 @NgModule({

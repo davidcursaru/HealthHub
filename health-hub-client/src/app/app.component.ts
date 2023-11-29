@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, signal } from '@angular/core';
+
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
   title = 'health-hub-client';
   users: any;
+
+  collapsed = signal(false);
+  sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
 
   constructor(private http: HttpClient) { }
 
