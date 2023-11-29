@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 
 @Component({
   selector: 'app-layout',
@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
+
+  collapsed = signal(false);
+  sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
 
 }
