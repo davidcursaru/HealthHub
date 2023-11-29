@@ -35,42 +35,42 @@ export class CostumSidenavComponent {
     {
       icon: 'dashboard',
       label: 'Dashboard',
-      route: '/home-page',
+      route: '/layout/home-page',
     },
     {
       icon: 'flag',
       label: 'Goals',
-      route: '/goals',
+      route: '/layout/goals',
     },
     {
       icon: 'fastfood',
       label: 'Calories tracker',
-      route: '/calories',
+      route: '/layout/calories',
     },
     {
       icon: 'water_drop',
       label: 'Hydration tracker',
-      route: '/hydration',
+      route: '/layout/hydration',
     },
     {
       icon: 'fitness_center',
       label: 'Exercise tracker',
-      route: '/exercise',
+      route: '/layout/exercise',
     },
     {
       icon: 'event',
       label: 'Scheduling and Reminders',
-      route: '/scheduling',
+      route: '/layout/scheduling',
     },
     {
       icon: 'bar_chart',
       label: 'Reports',
-      route: '/reports',
+      route: '/layout/reports',
     },
     {
       icon: 'settings',
       label: 'Settings',
-      route: '/settings',
+      route: '/layout/settings',
     }
 
 
