@@ -17,18 +17,20 @@ import { LayoutComponent } from './components/layout/layout.component';
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'auth', component: AuthComponent },
-  { path: 'layout', component: LayoutComponent, children: [
-  { path: '', redirectTo: 'home-page', pathMatch: 'full' },
-  { path: 'home-page', component: HomePageComponent },
-  { path: 'goals', component: GoalsComponent },
-  { path: 'calories', component: CaloriesComponent},
-  { path: 'exercise', component: ExerciseComponent},
-  { path: 'hydration', component: HydrationComponent },
-  { path: 'reports', component: ReportsComponent },
-  { path: 'scheduling', component: SchedulingComponent },
-  { path: 'settings', component: SettingsComponent } ] }
+  {
+    path: 'layout', component: LayoutComponent, children: [
+      { path: '', redirectTo: 'home-page', pathMatch: 'full' },
+      { path: 'home-page', component: HomePageComponent },
+      { path: 'goals', component: GoalsComponent },
+      { path: 'calories', component: CaloriesComponent },
+      { path: 'exercise', component: ExerciseComponent },
+      { path: 'hydration', component: HydrationComponent },
+      { path: 'reports', component: ReportsComponent },
+      { path: 'scheduling', component: SchedulingComponent },
+      { path: 'settings', component: SettingsComponent }]
+  }
 
- 
+
 ];
 
 @NgModule({

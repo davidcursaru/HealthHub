@@ -32,7 +32,7 @@ export class AuthComponent {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.router.navigate(['home-page']);
+            this.router.navigate(['layout']);
           },
           error: (err: any) => {
             this._snackBar.open('Login Failed', 'Dismiss', {
@@ -55,7 +55,7 @@ export class AuthComponent {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.router.navigate(['home-page']);
+            this.router.navigate(['layout']);
           },
           error: (err: any) => {
             this._snackBar.open('Registration Failed', 'Dismiss', {
