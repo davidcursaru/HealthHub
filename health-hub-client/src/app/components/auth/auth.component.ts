@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -16,6 +17,8 @@ export class AuthComponent {
     private userService: UserService,
     private router: Router,
     private _snackBar: MatSnackBar) { }
+
+
 
   isLoginMode: boolean = true;
   onSubmit(form: NgForm) {

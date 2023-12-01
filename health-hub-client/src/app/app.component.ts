@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   title = 'health-hub-client';
   users: any;
 
- 
+
 
   constructor(private http: HttpClient) { }
 

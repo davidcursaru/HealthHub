@@ -1,39 +1,71 @@
 .mat-elevation-z3 {
     position: relative;
-    z-index: 5; 
-  }
+    z-index: 5;
+    display: flex;
+    /* grid-template-columns: 1fr auto; */
+    justify-content: space-between;
+    box-shadow: 5px 5px 5px #939393;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(90deg,
+            rgb(186, 219, 224) 0%,
+            rgb(5, 87, 112)) 80%;
+}
+
+
+.user {
+    display: flex;
+    align-items: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    color: #cccccc;
+
+    .user-image {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background-color: aqua;
+        margin-left: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+
+    }
+}
 
 
 .content {
     padding: 24px;
-    
-    
+
+
 }
 
-.mat-sidenav-container{
-   height: calc(100vh - 64px); 
+mat-sidenav-container {
+    height: calc(100vh - 64px);
 }
 
 .sidenav-header {
     padding-top: 24px;
     text-align: center;
 
-    > img {
+    >img {
         border-radius: 100%;
         object-fit: cover;
-      
+
         margin-bottom: 10px;
     }
 
-    .header-text{
-        > h2 {
+    .header-text {
+        >h2 {
             margin: 0;
             font-size: 1rem;
             line-height: 1.5rem;
         }
 
-        > p {
-            margin:0;
+        >p {
+            margin: 0;
             font-size: 0.8rem;
         }
 
@@ -44,4 +76,32 @@
         opacity: 0;
         height: 0px;
     }
+
+
+}
+
+mat-sidenav,
+mat-sidenav-content {
+    transition: width 500ms ease-in-out;
+}
+
+.profile-pic {
+
+    font-weight: bold;
+    font-size: 20px;
+    width: 24px;
+    height: 24x;
+    border-radius: 100%;
+    object-fit: cover;
+
+
+    margin-bottom: 20px;
+
+}
+
+.check-mark {
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+    /* Adjust margin as needed */
 }

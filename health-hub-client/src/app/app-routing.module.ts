@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthComponent } from './components/auth/auth.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
 //import { DashboardComponent } from './components/home-page/home-page.component';
 import { GoalsComponent } from './components/goals/goals.component';
 import { CaloriesComponent } from './components/calories/calories.component';
@@ -12,6 +11,7 @@ import { SchedulingComponent } from './components/scheduling/scheduling.componen
 import { SettingsComponent } from './components/settings/settings.component';
 import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -19,8 +19,8 @@ const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   {
     path: 'layout', component: LayoutComponent, children: [
-      { path: '', redirectTo: 'home-page', pathMatch: 'full' },
-      { path: 'home-page', component: HomePageComponent },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: DashboardComponent },
       { path: 'goals', component: GoalsComponent },
       { path: 'calories', component: CaloriesComponent },
       { path: 'exercise', component: ExerciseComponent },
@@ -29,8 +29,6 @@ const routes: Routes = [
       { path: 'scheduling', component: SchedulingComponent },
       { path: 'settings', component: SettingsComponent }]
   }
-
-
 ];
 
 @NgModule({

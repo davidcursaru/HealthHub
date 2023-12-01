@@ -9,5 +9,10 @@ export class LayoutComponent {
 
   collapsed = signal(false);
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+  showCheckMark: boolean = false;
+
+  toggleNotification(): void {
+    this.showCheckMark = !this.showCheckMark;
+  }
 
 }

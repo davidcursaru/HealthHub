@@ -1,8 +1,10 @@
 <div class="auth-wrapper">
-    
+
     <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" class="form-wrapper">
         <div>
-            <img class="login" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb5NPYsiF2mB7Xn_5ZHa-Pm7O8kVHenuOfqw&usqp=CAU" alt="">
+            <img class="login"
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb5NPYsiF2mB7Xn_5ZHa-Pm7O8kVHenuOfqw&usqp=CAU"
+                alt="">
         </div>
         <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
             <mat-label>First Name</mat-label>
@@ -12,7 +14,8 @@
             <mat-label>Last Name</mat-label>
             <input matInput placeholder="Enter your lastName" type="name" name="lastName" ngModel [required]="true">
         </mat-form-field>
-        <mat-form-field appearance="fill" [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
+        <mat-form-field appearance="fill"
+            [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
             <mat-label>Username</mat-label>
             <input matInput placeholder="Enter your userName" type="userName" name="userName" ngModel [required]="true"
                 userName>
@@ -33,11 +36,21 @@
             <mat-label>Height</mat-label>
             <input matInput placeholder="Enter your height" type="text" name="height" ngModel [required]="true">
         </mat-form-field>
+
         <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
             <mat-label>Birth date</mat-label>
-            <input matInput placeholder="Enter your birth date" type="date" name="dateOfBirth" ngModel [required]="true">
+            <input matInput placeholder="Enter your birth date" type="date" name="dateOfBirth" ngModel
+                [required]="true">
         </mat-form-field>
-        <mat-form-field appearance="fill" [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
+        <!-- <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
+            <mat-label>Birth date</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Enter your birth date" name="dateOfBirth" ngModel [required]="true"> 
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field> -->
+
+        <mat-form-field appearance="fill"
+            [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">
             <mat-label>Password</mat-label>
             <input matInput placeholder="Enter your password" type="password" name="password" ngModel [required]="true">
         </mat-form-field>

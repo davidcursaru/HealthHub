@@ -4,8 +4,10 @@
   align-items: center;
   background: rgb(255, 255, 255);
   background: linear-gradient(90deg,
-      rgb(185, 226, 232) 0%,
-      rgb(46, 113, 44) 80%);
+      /* rgb(185, 226, 232) 0%,
+      rgb(46, 113, 44) 80%); */
+      rgb(186, 219, 224) 0%,
+      rgb(5, 87, 112)) 80%;
   height: 100vh;
   /* margin: -8px -8px -8px -8px; */
 }

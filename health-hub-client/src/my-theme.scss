@@ -1,0 +1,49 @@
+@use "@angular/material" as mat;
+@include mat.core();
+
+::-webkit-scrollbar {
+    width: 6px;
+    overflow-y: scroll;
+    background: rgb(255, 255, 255);
+    box-shadow: inset 0 0 4px #707070;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(20, 20, 20);
+    border-radius: 10px;
+}
+
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    --primary-color: rgb(0, 0, 0);
+}
+
+$mat-primary: (
+    main: rgb(4, 5, 5),
+    lighter: rgb(168, 230, 168),
+    darker: rgb(76, 121, 76),
+
+    contrast: (main: #ffffff,
+        lighter: #000000,
+        darker: #ffffff,
+    ),
+);
+
+$theme-primary: mat.define-palette($mat-primary, main, lighter, darker);
+$theme-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((color: (primary: $theme-primary,
+                accent: $theme-accent,
+            ),
+            typography: mat.define-typography-config(),
+            density: 0,
+        ));
+
+@include mat.all-component-themes($my-theme);

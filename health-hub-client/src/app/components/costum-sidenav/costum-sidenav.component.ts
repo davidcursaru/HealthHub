@@ -17,25 +17,25 @@ export type MenuItem = {
   selector: 'app-costum-sidenav',
   templateUrl: './costum-sidenav.component.html',
   styleUrls: ['./costum-sidenav.component.css']
-  
+
 })
 export class CostumSidenavComponent {
 
-  
-  
- 
+
+
+
   sideNavCollapsed = signal(false);
   routes = RouterModule;
 
   @Input() set collapsed(val: boolean) {
-     this.sideNavCollapsed.set(val)
+    this.sideNavCollapsed.set(val)
   }
 
   menuItems = signal<MenuItem[]>([
     {
       icon: 'dashboard',
       label: 'Dashboard',
-      route: '/layout/home-page',
+      route: '/layout/dashboard',
     },
     {
       icon: 'flag',
@@ -69,9 +69,10 @@ export class CostumSidenavComponent {
     },
     {
       icon: 'settings',
-      label: 'Settings',
+      label: 'Profile Settings',
       route: '/layout/settings',
     }
+
 
 
   ]);

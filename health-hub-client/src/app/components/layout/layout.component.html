@@ -2,13 +2,52 @@
     <button mat-icon-button (click)="collapsed.set(!collapsed())">
         <mat-icon>menu</mat-icon>
     </button>
+
+    <div class="user">
+        <div class="user-name">Username</div>
+        <button mat-icon-button class="mat-icon" [matMenuTriggerFor]="menu">
+            <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
+
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <!-- Settings option -->
+            <button mat-menu-item routerLink="/layout/settings">
+                <mat-icon>settings</mat-icon>
+                <span>Profile Settings</span>
+            </button>
+
+            <button mat-menu-item (click)="toggleNotification()">
+                <mat-icon>notifications</mat-icon>
+                <span>Notifications</span>
+                <span class="check-mark" *ngIf="showCheckMark">
+                    <mat-icon>check_circle</mat-icon>
+                </span>
+            </button>
+
+            <!-- Logout option -->
+            <button mat-menu-item routerLink="/auth">
+                <mat-icon>exit_to_app</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+    </div>
 </mat-toolbar>
-<mat-sidenav-container class="mat-sidenav-container" >
+
+<mat-sidenav-container class="mat-sidenav-container">
     <mat-sidenav opened mode="side" [style.width]="sideNavWidth()">
         <app-costum-sidenav [collapsed]="collapsed()" />
     </mat-sidenav>
-    <mat-sidenav-content class="content" [style.margin-left] =  "sideNavWidth()" >
+    <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
-</mat-sidenav-container>
 
+    <mat-sidenav mode="side" opened="true" position="end" [style.width]="'300px'">
+        <!-- Sidebar content -->
+        <div class="sidebar-content">
+            <!-- Sidebar items or content -->
+            <p>The second sidebar</p>
+        </div>
+    </mat-sidenav>
+
+</mat-sidenav-container>
