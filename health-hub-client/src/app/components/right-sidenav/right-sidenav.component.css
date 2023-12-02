@@ -1,0 +1,76 @@
+.grid-container {
+    margin: 5px;
+
+}
+
+.mat-grid-header {
+    text-align: center;
+}
+
+.right-sidenav-card {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 20px;
+}
+
+
+.right-sidenav-card-content {
+    text-align: center;
+    font-weight: bold;
+    
+    
+    
+}
+
+.card {
+    box-shadow: 5px 5px 5px #939393;
+    background: rgba(22, 148, 64, 0.5);
+   
+}
+
+.profile-div{
+    justify-content: center;
+}
+
+.profile-pic {
+
+     width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    object-fit: cover;
+    margin-bottom: 1px;
+
+}
+
+.mat-grid-list{
+    margin-top: 20px;
+}
+
+.mat-grid{
+   
+    height: 20px;
+    border-right: 2px solid #0e0d0d;
+    .gender-div1{
+        font-size: small;
+        
+        color: black;
+        opacity: .6;
+    }
+    .gender-div2{
+        margin-top: 10px;
+
+    }
+}
+
+.mat-grid:last-child{
+    border-right: none; 
+}
+
+.gender-contaienr{
+    display: block;
+    
+
+}

@@ -1,0 +1,67 @@
+.grid-container {
+  margin: 30px;
+  
+}
+
+.dashboard-card {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 20px;
+}
+
+.more-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+.dashboard-card-content {
+  text-align: center;
+}
+
+.first-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: rgb(255, 255, 255);
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+}
+.second-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+ 
+  
+}
+.third-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+
+}
+.forth-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+
+}
+.fifth-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+
+}
+.sixth-card {
+  box-shadow: 5px 5px 5px #939393;
+  background: linear-gradient(90deg,
+  rgba(75, 150, 121, 0.2) 0%,
+  rgba(13, 136, 33, 0.692)) 80%;
+ 
+}

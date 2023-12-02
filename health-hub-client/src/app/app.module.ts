@@ -27,9 +27,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { RightSidenavComponent } from './components/right-sidenav/right-sidenav.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { MatCardModule } from '@angular/material/card';
     SettingsComponent,
     LayoutComponent,
     DashboardComponent,
+    RightSidenavComponent,
 
 
 

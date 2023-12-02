@@ -1,8 +1,8 @@
 <div class="grid-container">
-  <h1 class="mat-h1">Dashboard</h1>
-  <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
+  <h1 class="mat-h1">Dashboard Overview</h1>
+  <mat-grid-list cols="3" rowHeight="100px" >
+    <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows" >
+      <mat-card class="dashboard-card" [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3,'fifth-card': i === 4,'sixth-card': i === 5  }">
         <mat-card-header>
           <mat-card-title>
             {{card.title}}

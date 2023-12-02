@@ -1,5 +1,6 @@
 :host * {
-    transition: all 500ms ease-in-out;
+    transition: all 350ms ease;
+    
 }
 
 
@@ -45,3 +46,4 @@
     border-left-color: var(--primary-color);
     background: rgba(0, 0, 0, 0.05);
 }
+

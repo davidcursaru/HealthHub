@@ -11,7 +11,7 @@ import { SchedulingComponent } from './components/scheduling/scheduling.componen
 import { SettingsComponent } from './components/settings/settings.component';
 import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 const routes: Routes = [

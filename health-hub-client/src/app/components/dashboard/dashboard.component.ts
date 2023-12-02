@@ -18,15 +18,19 @@ export class DashboardComponent {
           { title: 'Card 1', cols: 1, rows: 1 },
           { title: 'Card 2', cols: 1, rows: 1 },
           { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
+          { title: 'Card 4', cols: 1, rows: 1 },
+          { title: 'Card 5', cols: 1, rows: 1 },
+          { title: 'Card 6', cols: 1, rows: 1 }
         ];
       }
 
       return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
+        { title: 'Main card with the Hello message and a time monitoring ex: 12:00:00', cols: 3, rows: 2 },
+        { title: 'Calories tracker', cols: 1, rows: 2 },
+        { title: 'Hydration tracker', cols: 1, rows: 2 },
+        { title: 'Exercise tracker', cols: 1, rows: 2 },
+        { title: 'Report overview month/week/day', cols: 2, rows: 3 },
+        { title: 'Upcoming activity/ reminder', cols: 1, rows: 3 }
       ];
     })
   );

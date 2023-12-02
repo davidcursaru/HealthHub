@@ -4,7 +4,14 @@
     </button>
 
     <div class="user">
-        <div class="user-name">Username</div>
+        <div class="user-name">Cursaru David</div>
+            <div class="notifications">
+                <button mat-icon-button>
+                    <mat-icon>notifications</mat-icon>
+        
+                </button>
+             </div>
+
         <button mat-icon-button class="mat-icon" [matMenuTriggerFor]="menu">
             <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
 
@@ -35,19 +42,15 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="mat-sidenav-container">
-    <mat-sidenav opened mode="side" [style.width]="sideNavWidth()">
+    <mat-sidenav class="left-sidenav" opened mode="side" [style.width]="sideNavWidth()">
         <app-costum-sidenav [collapsed]="collapsed()" />
     </mat-sidenav>
     <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 
-    <mat-sidenav mode="side" opened="true" position="end" [style.width]="'300px'">
-        <!-- Sidebar content -->
-        <div class="sidebar-content">
-            <!-- Sidebar items or content -->
-            <p>The second sidebar</p>
-        </div>
+    <mat-sidenav class="right-sidenav" mode="side" opened="true" position="end" [style.width]="'300px'">
+        <app-right-sidenav></app-right-sidenav>
     </mat-sidenav>
 
 </mat-sidenav-container>
