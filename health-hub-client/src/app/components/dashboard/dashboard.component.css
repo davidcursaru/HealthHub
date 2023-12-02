@@ -1,5 +1,6 @@
 .grid-container {
-  margin: 30px;
+  margin-bottom: 30px;
+  margin-left: auto;
   
 }
 
@@ -10,6 +11,8 @@
   right: 15px;
   bottom: 15px;
   border-radius: 20px;
+  transition: transform 0.3s ease;
+  
 }
 
 .more-button {
@@ -20,6 +23,11 @@
 
 .dashboard-card-content {
   text-align: center;
+}
+
+.dashboard-card:hover {
+  opacity: 0.8; /* Change opacity on hover for an element with class 'my-element' */
+  transform: scale(1.05);
 }
 
 .first-card {
