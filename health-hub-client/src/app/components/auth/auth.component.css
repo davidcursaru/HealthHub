@@ -6,8 +6,8 @@
   background: linear-gradient(90deg,
       /* rgb(185, 226, 232) 0%,
       rgb(46, 113, 44) 80%); */
-      rgb(186, 219, 224) 0%,
-      rgb(5, 87, 112)) 80%;
+    #0992B8 0%,
+    #005173) 80%;
   height: 100vh;
   /* margin: -8px -8px -8px -8px; */
 }
