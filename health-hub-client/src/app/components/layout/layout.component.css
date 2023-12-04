@@ -7,8 +7,8 @@
     box-shadow: 5px 5px 5px #939393;
     background: rgb(255, 255, 255);
     background: linear-gradient(90deg,
-            rgb(186, 224, 205) 0%,
-            rgb(5, 112, 71)) 80%;
+    #0992B8 0%,
+    #005173) 80%;
     border-radius: 10px;
 }
 
@@ -19,10 +19,10 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
     font-size: medium;
-    color: #ffff;
+    
 
     .notifications {
-        color: rgb(255, 255, 255)
+        color: white;
     }
 
     .user-image {
@@ -43,13 +43,14 @@
 
 .content {
     padding: 24px;
-    background: rgba(180, 173, 173, 0.3);
+    background:rgba(221, 216, 216, 0.356);
 
 
 }
 
 mat-sidenav-container {
     height: calc(100vh - 64px);
+    
 
 }
 
@@ -119,5 +120,5 @@ mat-sidenav-content {
 }
 
 .right-sidenav {
-    background: rgba(180, 173, 173, 0.3);
+    background:rgba(221, 216, 216, 0.356);
 }

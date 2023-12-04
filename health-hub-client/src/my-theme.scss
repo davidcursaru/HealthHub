@@ -22,13 +22,13 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    --primary-color: rgb(0, 0, 0);
+    --primary-color: #000303;
 }
 
 $mat-primary: (
-    main: rgb(4, 5, 5),
-    lighter: rgb(168, 230, 168),
-    darker: rgb(76, 121, 76),
+    main: #011014,
+    lighter: rgb(202, 235, 202),
+    darker: #005173,
 
     contrast: (main: #ffffff,
         lighter: #000000,
