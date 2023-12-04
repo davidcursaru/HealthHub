@@ -20,56 +20,62 @@
 .right-sidenav-card-content {
     text-align: center;
     font-weight: bold;
-    
-    
-    
+    font-size: small;
+    color: black;
+
+
+
 }
 
 .card {
     background: white;
-   
+
 }
 
-.profile-div{
+.profile-div {
     justify-content: center;
+
 }
 
 .profile-pic {
 
-     width: 60px;
+    width: 60px;
     height: 60px;
     border-radius: 100%;
     object-fit: cover;
     margin-bottom: 1px;
 
+
 }
 
-.mat-grid-list{
+.mat-grid-list {
     margin-top: 20px;
 }
 
-.mat-grid{
-   
+.mat-grid {
+
     height: 20px;
     border-right: 2px solid #0e0d0d;
-    .gender-div1{
+
+    .gender-div1 {
         font-size: small;
-        
+
         color: black;
         opacity: .6;
     }
-    .gender-div2{
+
+    .gender-div2 {
         margin-top: 10px;
 
     }
 }
 
-.mat-grid:last-child{
-    border-right: none; 
+.mat-grid:last-child {
+    border-right: none;
 }
 
-.gender-contaienr{
+.gender-contaienr {
     display: block;
-    
+
 
 }

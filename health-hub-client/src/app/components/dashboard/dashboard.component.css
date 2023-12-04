@@ -4,6 +4,10 @@
   
 }
 
+.normal-text{
+  font-weight: normal;
+}
+
 .mat-h1{
   font-size: x-large;
 }
@@ -25,6 +29,17 @@
   right: 10px;
 }
 
+.dashboard-first-card-content{
+  display: flex;
+  .left-content {
+    flex: 1;
+  }
+  .right-content {
+    margin-right: 10px; /* Adjust the margin as needed */
+  }
+
+}
+
 .dashboard-card-content {
   text-align: center;
 }
@@ -37,7 +52,9 @@
 }
 
 .first-card {
-  background: white;
+  background: linear-gradient(90deg,
+    #0f6a91 0%,
+    rgb(108, 159, 163)) 80%;
  
 }
 .second-card {
