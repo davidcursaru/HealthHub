@@ -19,10 +19,10 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
     font-size: medium;
-    color: white;
+    
 
     .notifications {
-        color: rgb(255, 255, 255)
+        color: rgb(15, 14, 14)
     }
 
     .user-image {
@@ -99,7 +99,7 @@ mat-sidenav-content {
     font-weight: bold;
     font-size: 20px;
     width: 24px;
-    height: 24x;
+    height: 24px;
     border-radius: 100%;
     object-fit: cover;
 
