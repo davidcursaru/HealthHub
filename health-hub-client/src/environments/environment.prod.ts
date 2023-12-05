@@ -1,3 +1,6 @@
 export const environment = {
-    production: true
+    production: false,
+    userManagement: {
+        baseUrl: 'https://localhost:5000/api/'
+    }
 };

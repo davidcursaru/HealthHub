@@ -1,7 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 
 
@@ -11,7 +13,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css'],
 
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
+  user: User = {};
   private breakpointObserver = inject(BreakpointObserver);
 
   /** Based on the screen size, switch from standard to one column per row */
@@ -39,10 +42,18 @@ export class DashboardComponent {
     })
   );
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
+  }
+
+  ngOnInit(): void {
+    const loggedName: any = this.userService.getLoggedUsername().username;
+
+    this.userService.getUser(loggedName).subscribe(res => {
+      this.user = res;
+    });
   }
 
 }

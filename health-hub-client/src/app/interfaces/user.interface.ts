@@ -5,20 +5,20 @@ import { NutritionLogs } from "./nutritionLogs.interface";
 import { Reminders } from "./reminders.interface";
 
 export interface User{
-    id: number;
-    userName: string;
-    firstName: string;
-    lastname: string;
-    email: string;
-    dateOfBirth: Date;
-    weight: string;
-    height: string;
-    gender: string;
-    token: string;
+    id?: number;
+    username?: string;
+    firstname?: string;
+    lastname?: string;
+    email?: string;
+    age?: Date;
+    weight?: string;
+    height?: string;
+    gender?: string;
+    token?: string;
 
-    goals: Goals[];
-    exerciseLogs: ExerciseLogs[];
-    hydrationLogs: HydrationLogs[];
-    nutritionLogs: NutritionLogs[];
-    reminders: Reminders[];
+    // goals: Goals[];
+    // exerciseLogs: ExerciseLogs[];
+    // hydrationLogs: HydrationLogs[];
+    // nutritionLogs: NutritionLogs[];
+    // reminders: Reminders[];
 }

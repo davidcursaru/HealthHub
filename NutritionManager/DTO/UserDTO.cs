@@ -1,4 +1,6 @@
-﻿namespace NutritionManager.DTO
+﻿using NutritionManager.Extensions;
+
+namespace NutritionManager.DTO
 {
     public class UserDTO
     {

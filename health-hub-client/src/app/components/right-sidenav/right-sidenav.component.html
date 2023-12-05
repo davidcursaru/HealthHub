@@ -6,28 +6,27 @@
                 <mat-card-content class="right-sidenav-card-content">
                     <div class="profile-div">
                         <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
-
                     </div>
-                    <div>Cursaru David | 25 years old</div>
+                    <div>{{user.firstname}} {{user.lastname}} | {{user.age}} years old</div>
 
                     <mat-grid-list class="mat-grid-list" cols="3" rowHeight="2:1">
                         <mat-grid-tile class="mat-grid">
                             <div class="gender-container">
                                 <div class="gender-div1">Gender</div>
-                                <div class="gender-div2">Male</div>
+                                <div class="gender-div2">{{user.gender}}</div>
                             </div>
                         </mat-grid-tile>
 
                         <mat-grid-tile class="mat-grid">
                             <div class="gender-container">
                                 <div class="gender-div1">Height</div>
-                                <div class="gender-div2">178 cm</div>
+                                <div class="gender-div2">{{user.height}} cm</div>
                             </div>
                         </mat-grid-tile>
                         <mat-grid-tile class="mat-grid">
                             <div class="gender-container">
                                 <div class="gender-div1">Weight</div>
-                                <div class="gender-div2">60 kg</div>
+                                <div class="gender-div2">{{user.weight}} kg</div>
                             </div>
                         </mat-grid-tile>
                     </mat-grid-list>

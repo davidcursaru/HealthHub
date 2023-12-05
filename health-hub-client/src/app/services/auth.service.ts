@@ -2,9 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interface';
 
-
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,9 +17,8 @@ export class AuthService {
     return this.http.post('https://localhost:5000/api/account/register', user);
   }
 
-  storeToken(tokenVal: string, userId: number) {
+  storeToken(tokenVal: string) {
     localStorage.setItem('token', tokenVal);
-    // localStorage.setItem('userId', userId.toString());
   }
 
   storeUser(user: User) {
@@ -43,18 +39,9 @@ export class AuthService {
   }
 
   logout() {
-    // localStorage.removeItem('projectId');
-    // localStorage.removeItem('usernameLocalStorage');
-    // localStorage.removeItem('userId');
-    // localStorage.removeItem('stageId');
-    // localStorage.removeItem('projectName');
-    // localStorage.removeItem('searchedProject');
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('username');
-    // localStorage.removeItem('projects');
-    // localStorage.removeItem('user');
-    // localStorage.removeItem('userName');
-    // localStorage.removeItem('token');
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('user');
+    //localStorage.removeItem('userInfo');
   }
-
 }

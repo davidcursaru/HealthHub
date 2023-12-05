@@ -28,6 +28,7 @@ namespace NutritionManager.Controllers
         public async Task<ActionResult<IEnumerable<UserDTO>>> GetUsers()
         {
             var users = await _userRepository.GetUsersDtoAsync();
+
             return Ok(users);
         }
 

@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-auth',
@@ -14,11 +13,8 @@ import { FormControl } from '@angular/forms';
 export class AuthComponent {
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private router: Router,
     private _snackBar: MatSnackBar) { }
-
-
 
   isLoginMode: boolean = true;
   onSubmit(form: NgForm) {
@@ -27,9 +23,9 @@ export class AuthComponent {
         this.authService.login(form.value).subscribe({
           next: async (res: any) => {
             form.reset();
-            //this.userService.updateUserName(res.userName);
-            this.authService.storeToken(res.token, res.id);
+            this.authService.storeToken(res.token);
             this.authService.storeUser(res);
+            localStorage.setItem('username', res.username);
             this._snackBar.open('Login Successful', 'Dismiss', {
               duration: 3000,
               horizontalPosition: 'center',
@@ -50,8 +46,7 @@ export class AuthComponent {
         this.authService.register(form.value).subscribe({
           next: async (res: any) => {
             form.reset();
-            // this.authService.storeToken(res.token, res.id);
-            this.authService.storeToken(res.token, res.id);
+            this.authService.storeToken(res.token);
             this.authService.storeUser(res);
             this._snackBar.open('Registration Successful', 'Dismiss', {
               duration: 3000,
