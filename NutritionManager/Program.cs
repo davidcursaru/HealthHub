@@ -17,6 +17,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddHttpClient();
 
 //builder.Services.AddEndpointsApiExplorer();
 

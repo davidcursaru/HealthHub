@@ -23,4 +23,9 @@ export class UserService {
     }
     return this.user;
   }
+
+  getFoodCalories(foodInput: string) {
+    const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
+    return this.http.get(endpoint);
+  }
 }

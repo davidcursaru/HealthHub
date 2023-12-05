@@ -19,5 +19,9 @@ export class RightSidenavComponent implements OnInit {
       this.user = res;
       // localStorage.setItem('userInfo', JSON.stringify(this.user));
     });
+
+    this.userService.getFoodCalories('apple').subscribe(res => {
+      console.log(res);
+    });
   }
 }
