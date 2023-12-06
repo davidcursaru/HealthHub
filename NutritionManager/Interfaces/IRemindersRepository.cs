@@ -1,4 +1,5 @@
-﻿using NutritionManager.Entities;
+﻿using NutritionManager.DTO;
+using NutritionManager.Entities;
 
 namespace NutritionManager.Interfaces
 {
@@ -9,5 +10,6 @@ namespace NutritionManager.Interfaces
         Task<Reminders> GetReminderById(int id);
         Task UpdateReminder(Reminders reminder);
         Task DeleteReminder(int id);
+        Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay();
     }
 }

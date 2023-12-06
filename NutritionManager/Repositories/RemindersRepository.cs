@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
+using NutritionManager.DTO;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
 
@@ -42,6 +43,27 @@ namespace NutritionManager.Repositories
         {
             _context.Update(reminder);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay()
+        {
+            // Get current date
+            DateTime currentDate = DateTime.Now.Date;
+
+            // Query reminders for the current day and map to RemindersDTO
+            var remindersForCurrentDay = await _context.Reminders
+                .Where(r => EF.Functions.DateDiffDay(r.StartActivity, currentDate) == 0 &&
+                            EF.Functions.DateDiffDay(r.EndActivity, currentDate) == 0)
+                .Select(r => new RemindersDTO
+                {
+                    Id = r.Id,
+                    ReminderType = r.ReminderType,
+                    StartActivity = r.StartActivity,
+                    EndActivity = r.EndActivity
+                })
+                .ToListAsync();
+
+            return remindersForCurrentDay;
         }
     }
 }

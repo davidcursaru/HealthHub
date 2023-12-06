@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
+using NutritionManager.DTO;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
 
@@ -45,6 +46,12 @@ namespace NutritionManager.Controllers
         public async Task DeleteReminderAsync(int id)
         {
             await _remindersRepository.DeleteReminder(id);
+        }
+
+        [HttpGet("schedulling")]
+        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDayAsync()
+        {
+            return await _remindersRepository.GetRemindersForCurrentDay();
         }
     }
 }
