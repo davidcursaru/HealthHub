@@ -31,6 +31,12 @@ export class CostumSidenavComponent {
     this.sideNavCollapsed.set(val)
   }
 
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('user');
+  }
+
   menuItems = signal<MenuItem[]>([
     {
       icon: 'dashboard',

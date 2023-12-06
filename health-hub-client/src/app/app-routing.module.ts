@@ -12,13 +12,14 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { CostumSidenavComponent } from './components/costum-sidenav/costum-sidenav.component';
 import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { authGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'auth', component: AuthComponent },
   {
-    path: 'layout', component: LayoutComponent, children: [
+    path: 'layout', canActivate: [authGuard], component: LayoutComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'goals', component: GoalsComponent },
@@ -32,7 +33,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { bindToComponentInputs: true })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

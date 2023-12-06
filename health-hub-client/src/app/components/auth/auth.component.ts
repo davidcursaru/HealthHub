@@ -53,7 +53,8 @@ export class AuthComponent {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            this.router.navigate(['layout']);
+            this.isLoginMode = true;
+            // this.router.navigate(['auth']);
           },
           error: (err: any) => {
             this._snackBar.open('Registration Failed', 'Dismiss', {
