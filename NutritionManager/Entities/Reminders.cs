@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int UserId { get; set; }
         public string ReminderType { get; set; }
-        public DateTime ReminderDate { get; set; }
-        public string ReminderMessage { get; set; }
+        public DateTime StartActivity { get; set; }
+        public DateTime EndActivity { get; set; }
     }
 }
