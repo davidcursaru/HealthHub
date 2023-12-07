@@ -1,7 +1,7 @@
 <div class="sidenav-header">
 
     <!-- Aici e lista cu butoane din sidebar puse dinamic din menuItems, unde am definit label, icon si route -->
-    <mat-nav-list>
+    <mat-nav-list class="menu-list">
         <a mat-list-item class="menu-item" *ngFor="let item of menuItems()" [routerLink]="item.route"
             routerLinkActive="selected-menu-item" #rla="routerLinkActive" [activated]="rla.isActive">
             <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"

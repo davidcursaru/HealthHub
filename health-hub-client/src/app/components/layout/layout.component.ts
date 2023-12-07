@@ -11,8 +11,15 @@ export class LayoutComponent {
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
   showCheckMark: boolean = false;
 
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('user');
+  }
+
   toggleNotification(): void {
     this.showCheckMark = !this.showCheckMark;
   }
+
 
 }

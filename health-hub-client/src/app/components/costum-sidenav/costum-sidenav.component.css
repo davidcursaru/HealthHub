@@ -8,7 +8,10 @@
 .sidenav-header {
 
     text-align: center;
-
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    
 
 
     .header-text {
@@ -36,6 +39,12 @@
 
 }
 
+.menu-list{
+    flex: 1; /* Take remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
 .menu-item {
     border-left: 5px solid;
     border-left-color: rgba(0, 0, 0, 0);
@@ -45,5 +54,9 @@
 .selected-menu-item {
     border-left-color: var(--primary-color);
     background: rgba(0, 0, 0, 0.05);
+}
+
+.logout-button{
+    margin-top: auto;
 }
 

@@ -21,7 +21,7 @@
   right: 15px;
   bottom: 15px;
   border-radius: 20px;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease-in-out;
   
 }
 
@@ -47,10 +47,10 @@
 }
 
 .dashboard-card:hover {
-  opacity: 0.9; /* Change opacity on hover for an element with class 'my-element' */
-  transform: scale(1.032);
-  border-width: 2px;
-  border-color: #080808 ;
+  /* opacity: 0.9;  */
+  transform: scale(1.022);
+  border-width: 1px;
+  border-color: #121213 ;
 }
 
 .first-card {

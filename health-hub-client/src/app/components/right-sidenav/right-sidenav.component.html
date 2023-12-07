@@ -7,7 +7,7 @@
                     <div class="profile-div">
                         <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
                     </div>
-                    <div>{{user.firstname}} {{user.lastname}} | {{user.age}} years old</div>
+                    <div> {{user.lastname}} {{user.firstname}} | {{user.age}} years old</div>
 
                     <mat-grid-list class="mat-grid-list" cols="3" rowHeight="2:1">
                         <mat-grid-tile class="mat-grid">
@@ -35,3 +35,16 @@
         </mat-grid-tile>
     </mat-grid-list>
 </div>
+
+<div class="cards-container">
+    <!-- Loop through reminders array and create a mat-card for each reminder -->
+    <mat-card *ngFor="let reminder of reminders" class="reminder-card">
+      <mat-card-header>
+        <mat-card-title>{{ reminder.reminderType }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Start Time: {{ reminder.startActivity | date : 'HH:mm'}}</p>
+        <p>End Time: {{ reminder.endActivity | date : 'HH:mm' }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>

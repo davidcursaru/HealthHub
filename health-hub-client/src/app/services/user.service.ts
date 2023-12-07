@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interface';
+import { Reminders } from '../interfaces/reminders.interface';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   user: User = {};
+  
+
 
   constructor(private http: HttpClient) { }
 
@@ -28,4 +32,10 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
     return this.http.get(endpoint);
   }
+
+  getCurrentDaySchedule(): Observable<Reminders[]>{
+    const endpoint= environment.userManagement.baseUrl + 'reminders/schedulling'
+    return this.http.get<Reminders[]>(endpoint);
+  }
+
 }
