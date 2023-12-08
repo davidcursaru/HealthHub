@@ -23,7 +23,13 @@ namespace NutritionManager.Controllers
         {
             return await _goalsRepository.GetAllGoalsAsync();
         }
-        
+
+        [HttpGet("userId/{userId}")]
+        public async Task<IEnumerable<Goals>> GetAllGoalsByUserIdAsync(int userId)
+        {
+            return await _goalsRepository.GetAllGoalsByUserId(userId);
+        }
+
         [HttpPost]
         public async Task<Goals> CreateGoalAsync(Goals goal)
         {

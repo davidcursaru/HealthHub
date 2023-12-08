@@ -6,6 +6,7 @@ namespace NutritionManager.Interfaces
     {
         Task<HydrationLogs> CreateHydrationLogs(HydrationLogs hydrationLogs);
         Task<IEnumerable<HydrationLogs>> GetAllHydrationLogs();
+        Task<IEnumerable<HydrationLogs>> GetAllHydrationLogsByUserId(int userId);
         Task<HydrationLogs> GetHydrationLogsById(int id);
         Task DeleteHydrationLogs(int id);
         Task UpdateHydrationLogs(HydrationLogs hydrationLogs);

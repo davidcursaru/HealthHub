@@ -23,6 +23,12 @@ namespace NutritionManager.Controllers
             return await _exerciseLogsRepository.GetAllExercisesLogsAsync();
         }
 
+        [HttpGet("userId/{userId}")]
+        public async Task<IEnumerable<ExerciseLogs>> GetAllExercisesByUserIdAsync(int userId)
+        {
+            return await _exerciseLogsRepository.GetAllExercisesByUserId(userId);
+        }
+
         [HttpGet("id")]
         public async Task<ExerciseLogs> GetExerciseLogsByIdAsync(int id)
         {

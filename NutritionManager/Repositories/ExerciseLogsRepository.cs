@@ -38,6 +38,12 @@ namespace NutritionManager.Repositories
             return await _context.ExerciseLogs.FindAsync(id);
         }
 
+        public async Task<IEnumerable<ExerciseLogs>> GetAllExercisesByUserId(int userId)
+        {
+            var exercises = await _context.ExerciseLogs.Where(e => e.UserId == userId).ToListAsync();
+            return exercises;
+        }
+
         public async Task UpdateExerciseAsync(ExerciseLogs exercise)
         {
             _context.Update(exercise);

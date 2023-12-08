@@ -34,6 +34,12 @@ namespace NutritionManager.Repositories
             return await _context.Goals.ToListAsync();
         }
 
+        public async Task<IEnumerable<Goals>> GetAllGoalsByUserId(int userId)
+        {
+            var goals = await _context.Goals.Where(g => g.UserId == userId).ToListAsync();
+            return goals;
+        }
+
         public async Task<Goals> GetGoalByIdAsync(int id)
         {
             return await _context.Goals.FindAsync(id);

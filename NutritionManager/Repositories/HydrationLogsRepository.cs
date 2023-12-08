@@ -33,6 +33,12 @@ namespace NutritionManager.Repositories
             return await _context.HydrationLogs.ToListAsync();
         }
 
+        public async Task<IEnumerable<HydrationLogs>> GetAllHydrationLogsByUserId(int userId)
+        {
+            var hydrationLogs = await _context.HydrationLogs.Where(h => h.UserId == userId).ToListAsync();
+            return hydrationLogs;
+        }
+
         public async Task<HydrationLogs> GetHydrationLogsById(int id)
         {
             return await _context.HydrationLogs.FindAsync(id);
