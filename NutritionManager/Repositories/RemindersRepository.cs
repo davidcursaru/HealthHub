@@ -45,7 +45,7 @@ namespace NutritionManager.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay()
+        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay(int userId)
         {
             // Get current date
             DateTime currentDate = DateTime.Now.Date;
@@ -53,7 +53,7 @@ namespace NutritionManager.Repositories
             // Query reminders for the current day and map to RemindersDTO
             var remindersForCurrentDay = await _context.Reminders
                 .Where(r => EF.Functions.DateDiffDay(r.StartActivity, currentDate) == 0 &&
-                            EF.Functions.DateDiffDay(r.EndActivity, currentDate) == 0)
+                            EF.Functions.DateDiffDay(r.EndActivity, currentDate) == 0 && r.UserId == userId)
                 .Select(r => new RemindersDTO
                 {
                     Id = r.Id,

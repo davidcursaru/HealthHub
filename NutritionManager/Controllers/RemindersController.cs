@@ -48,10 +48,10 @@ namespace NutritionManager.Controllers
             await _remindersRepository.DeleteReminder(id);
         }
 
-        [HttpGet("schedulling")]
-        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDayAsync()
+        [HttpGet("schedulling/{loggedUserId}")]
+        public async Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDayAsync(int loggedUserId)
         {
-            return await _remindersRepository.GetRemindersForCurrentDay();
+            return await _remindersRepository.GetRemindersForCurrentDay(loggedUserId);
         }
     }
 }

@@ -14,9 +14,23 @@ export class RightSidenavComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
+  ngOnInit(): void {
+    const loggedName: any = this.userService.getLoggedUsername().username;
+    this.userService.getUser(loggedName).subscribe(res => {
+      this.user = res;
+      localStorage.setItem('userInfo', JSON.stringify(this.user));
+      localStorage.setItem('userId', JSON.stringify(this.user.id));
+      this.fetchRemindersForCurrentUser();
+    });
+
+    this.userService.getFoodCalories('apple').subscribe(res => {
+      console.log(res);
+    });
+  }
   
   fetchRemindersForCurrentUser(): void {
-    this.userService.getCurrentDaySchedule().subscribe(
+    const loggedUserId = localStorage.getItem('userId');
+    this.userService.getCurrentDaySchedule(loggedUserId).subscribe(
       (data: Reminders[]) => {
         this.reminders = data;
         console.log('Received reminders:', this.reminders);
@@ -27,16 +41,4 @@ export class RightSidenavComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    const loggedName: any = this.userService.getLoggedUsername().username;
-    this.fetchRemindersForCurrentUser();
-    this.userService.getUser(loggedName).subscribe(res => {
-      this.user = res;
-      // localStorage.setItem('userInfo', JSON.stringify(this.user));
-    });
-
-    this.userService.getFoodCalories('apple').subscribe(res => {
-      console.log(res);
-    });
-  }
 }

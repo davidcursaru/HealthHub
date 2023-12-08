@@ -35,6 +35,8 @@ export class CostumSidenavComponent {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userInfo');
   }
 
   menuItems = signal<MenuItem[]>([

@@ -10,6 +10,6 @@ namespace NutritionManager.Interfaces
         Task<Reminders> GetReminderById(int id);
         Task UpdateReminder(Reminders reminder);
         Task DeleteReminder(int id);
-        Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay();
+        Task<IEnumerable<RemindersDTO>> GetRemindersForCurrentDay(int userId);
     }
 }
