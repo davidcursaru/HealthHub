@@ -1,9 +1,9 @@
 <div class="grid-container">
   <h1 class="mat-h1">Dashboard Overview</h1>
-  <mat-grid-list cols="3" rowHeight="100px" >
-    <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows" >
-      <mat-card class="dashboard-card"  (click)="navigateToDestination(card.route)"
-      [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3,'fifth-card': i === 4,'sixth-card': i === 5  }">
+  <mat-grid-list cols="3" rowHeight="100px">
+    <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
+      <mat-card class="dashboard-card" (click)="navigateToDestination(card.route)"
+        [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3,'fifth-card': i === 4,'sixth-card': i === 5  }">
         <mat-card-header>
           <mat-card-title>
             {{card.title}}
@@ -16,21 +16,19 @@
             </mat-menu> -->
           </mat-card-title>
         </mat-card-header>
-        
-          <mat-card-content class="dashboard-first-card-content" *ngIf="i === 0">
-            <div class="left-content">
-              <h1> <span class="normal-text">Hello</span> {{user.lastname}} {{user.firstname}}, </h1>
-              <p>Have a nice day and don't forget to take care of your health!</p>
-            </div>
-            <div class="right-content">
-              <app-live-clock></app-live-clock>
-            </div>
-          </mat-card-content>
-        
+
+        <mat-card-content class="dashboard-first-card-content" *ngIf="i === 0">
+          <div class="left-content">
+            <h1> <span class="normal-text">Hello</span> {{user.lastname}} {{user.firstname}}, </h1>
+            <p>Have a nice day and don't forget to take care of your health!</p>
+          </div>
+          <div class="right-content">
+            <app-live-clock></app-live-clock>
+          </div>
+        </mat-card-content>
+
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
-  
+
 </div>
-
-

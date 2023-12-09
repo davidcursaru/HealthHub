@@ -4,9 +4,14 @@
             <mat-card class="right-sidenav-card" ngClass="card">
 
                 <mat-card-content class="right-sidenav-card-content">
-                    <div class="profile-div">
-                        <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
+
+                    <div class="center-circle">
+                        <div class="profile-div">
+                            <p class="profile-pic">{{userInitials2}}{{userInitials1}}</p>
+                        </div>
                     </div>
+
+
                     <div> {{user.lastname}} {{user.firstname}} | {{user.age}} years old</div>
 
                     <mat-grid-list class="mat-grid-list" cols="3" rowHeight="2:1">
@@ -36,15 +41,29 @@
     </mat-grid-list>
 </div>
 
+
+
+
 <div class="cards-container">
+    <h1 class="mat-h1">My Schedule</h1>
     <!-- Loop through reminders array and create a mat-card for each reminder -->
-    <mat-card *ngFor="let reminder of reminders" class="reminder-card">
-      <mat-card-header>
-        <mat-card-title>{{ reminder.reminderType }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Start Time: {{ reminder.startActivity | date : 'HH:mm'}}</p>
-        <p>End Time: {{ reminder.endActivity | date : 'HH:mm' }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+    <mat-grid-list cols="1" rowHeight="90px">
+        <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
+        <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders">
+            <mat-card class="reminder-card">
+                <mat-card-header>
+                    <mat-icon>alarm</mat-icon>
+                </mat-card-header>
+                <mat-card-content class="reminder-content">
+                    <div class="reminder-flex-containter">
+                        <p class="reminder-content-right">{{ reminder.reminderType }}</p>
+                        <p class="reminder-content-left"> {{ reminder.startActivity | date : 'HH:mm a'}} - {{
+                            reminder.endActivity | date : 'HH:mm a' }}</p>
+                    </div>
+                
+
+                </mat-card-content>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

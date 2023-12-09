@@ -1,16 +1,14 @@
 .grid-container {
   margin-bottom: 30px;
   margin-left: auto;
-  
+
 }
 
-
-
-.normal-text{
+.normal-text {
   font-weight: normal;
 }
 
-.mat-h1{
+.mat-h1 {
   font-size: x-large;
 }
 
@@ -22,7 +20,7 @@
   bottom: 15px;
   border-radius: 20px;
   transition: transform 0.3s ease-in-out;
-  
+
 }
 
 .more-button {
@@ -31,13 +29,16 @@
   right: 10px;
 }
 
-.dashboard-first-card-content{
+.dashboard-first-card-content {
   display: flex;
+
   .left-content {
     flex: 1;
   }
+
   .right-content {
-    margin-right: 10px; /* Adjust the margin as needed */
+    margin-right: 10px;
+    /* Adjust the margin as needed */
   }
 
 }
@@ -50,38 +51,43 @@
   /* opacity: 0.9;  */
   transform: scale(1.022);
   border-width: 1px;
-  border-color: #121213 ;
+  border-color: #121213;
 }
 
 .first-card {
   background: linear-gradient(90deg,
-    #0f6a91 0%,
-    rgb(108, 159, 163)) 80%;
- 
+      #0f6a91 0%,
+      rgb(108, 159, 163)) 80%;
+
 }
+
 .second-card {
   background: white;
-  
- 
-  
+
+
+
 }
+
 .third-card {
-  
+
   background: white;
 
 }
+
 .forth-card {
-  
+
   background: white;
 
 }
+
 .fifth-card {
-  
+
   background: white;
 
 }
+
 .sixth-card {
-  
+
   background: white;
- 
+
 }

@@ -8,10 +8,10 @@
                 matListItemIcon>{{item.icon}}</mat-icon>
             <span matListItemTitle>{{item.label}}</span>
         </a>
-        
+
         <!-- Aici e butonul de Logout, separat de celelalte pentru ca o sa vreau sa il pun jos de tot in sidebar  -->
-        <a mat-list-item class="logout-button" routerLink="/auth" routerLinkActive="selected-menu-item" (click)="logout()"
-            #rla="routerLinkActive" [activated]="rla.isActive">
+        <a mat-list-item class="logout-button" routerLink="/auth" routerLinkActive="selected-menu-item"
+            (click)="logout()" #rla="routerLinkActive" [activated]="rla.isActive">
             <mat-icon [fontSet]="rla.isActive ? 'material-icons' : 'material-icons-outlined'"
                 matListItemIcon>logout</mat-icon>
             <span matListItemTitle>Logout</span>

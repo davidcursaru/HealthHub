@@ -1,17 +1,12 @@
 import { Component, Input, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-
-
-
 export type MenuItem = {
 
   icon: string;
   label: string;
   route: string;
 }
-
-
 
 @Component({
   selector: 'app-costum-sidenav',
@@ -20,9 +15,6 @@ export type MenuItem = {
 
 })
 export class CostumSidenavComponent {
-
-
-
 
   sideNavCollapsed = signal(false);
   routes = RouterModule;
@@ -81,9 +73,6 @@ export class CostumSidenavComponent {
       route: '/layout/settings',
     }
 
-
-
   ]);
 
-  profilePicSize = computed(() => this.sideNavCollapsed() ? '32' : '100');
 }

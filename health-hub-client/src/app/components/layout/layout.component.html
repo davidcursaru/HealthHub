@@ -4,17 +4,22 @@
     </button>
 
     <div class="user">
-        
-            <div class="notifications">
-                <button mat-icon-button>
-                    <mat-icon>notifications</mat-icon>
-        
-                </button>
-            </div>
-             
+
+        <div class="notifications">
+            <button mat-icon-button>
+                <mat-icon>notifications</mat-icon>
+
+            </button>
+        </div>
+
 
         <button mat-icon-button class="mat-icon" [matMenuTriggerFor]="menu">
-            <img src="/assets/Profile-pic.jpg" alt="user-name initials" class="profile-pic">
+            <div class="center-circle">
+                <div class="profile-div">
+                    <p class="profile-pic">{{userInitials2}}{{userInitials1}}</p>
+                </div>
+            </div>
+
 
         </button>
 

@@ -60,7 +60,7 @@ namespace NutritionManager.Repositories
                     ReminderType = r.ReminderType,
                     StartActivity = r.StartActivity,
                     EndActivity = r.EndActivity
-                })
+                }).OrderBy(r => r.StartActivity.TimeOfDay)
                 .ToListAsync();
 
             return remindersForCurrentDay;

@@ -7,8 +7,8 @@
     box-shadow: 5px 5px 5px #939393;
     background: rgb(255, 255, 255);
     background: linear-gradient(90deg,
-    #0992B8 0%,
-    #005173) 80%;
+            #0992B8 0%,
+            #005173) 80%;
     border-radius: 10px;
 }
 
@@ -19,7 +19,7 @@
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: bold;
     font-size: medium;
-    
+
 
     .notifications {
         color: rgb(15, 14, 14)
@@ -43,14 +43,14 @@
 
 .content {
     padding: 24px;
-    background:rgba(221, 216, 216, 0.356);
+    background: rgba(221, 216, 216, 0.356);
 
 
 }
 
 mat-sidenav-container {
     height: calc(100vh - 64px);
-    
+
 
 }
 
@@ -94,17 +94,40 @@ mat-sidenav-content {
     transition: width 350ms ease;
 }
 
+.profile-div {
+    width: 24px;
+    /* Set the width and height of the circle */
+    height: 24px;
+    border-radius: 50%;
+    /* Make it a circle */
+    border: 2px solid #1a1818;
+    /* Set border color and width */
+    background-color: #0992B8;
+    /* Set background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+.center-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Adjust padding, margin, etc., if needed */
+}
+
 .profile-pic {
 
+    margin: 0;
+    /* Remove default margin */
+    font-size: 15px;
+    /* Adjust font size */
     font-weight: bold;
-    font-size: 20px;
-    width: 24px;
-    height: 24px;
-    border-radius: 100%;
-    object-fit: cover;
-
-
-    margin-bottom: 20px;
+    /* Optionally set font weight */
+    color: #151414;
+    /* Set text color */
 
 }
 
@@ -120,5 +143,5 @@ mat-sidenav-content {
 }
 
 .right-sidenav {
-    background:rgba(221, 216, 216, 0.356);
+    background: rgba(221, 216, 216, 0.356);
 }

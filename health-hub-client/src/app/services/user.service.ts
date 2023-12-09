@@ -11,8 +11,6 @@ import { Observable } from 'rxjs';
 export class UserService {
   user: User = {};
 
-
-
   constructor(private http: HttpClient) { }
 
   getUser(userName: string) {
@@ -35,6 +33,7 @@ export class UserService {
 
   getCurrentDaySchedule(loggedUserId: any): Observable<Reminders[]> {
     const endpoint = environment.userManagement.baseUrl + 'reminders/schedulling/' + loggedUserId;
+
     return this.http.get<Reminders[]>(endpoint);
   }
 
