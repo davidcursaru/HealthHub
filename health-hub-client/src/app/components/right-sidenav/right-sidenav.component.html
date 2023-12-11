@@ -47,22 +47,30 @@
     <!-- Loop through reminders array and create a mat-card for each reminder -->
     <mat-grid-list cols="1" rowHeight="90px">
         <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
+        <p *ngIf="reminders.length === 0" class="no-reminders-message">No Schedule or Reminders entries found.</p>
+
         <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders; let i = index">
             <mat-card class="reminder-card">
 
                 <mat-card-content class="reminder-content">
                     <div class="upper-right-content">
-                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]"></mat-checkbox>
+                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]" [color]="'primary'"></mat-checkbox>
                     </div>
-                    <!-- <mat-checkbox class="checkbox-button" (click)="toggleCheckbox()"></mat-checkbox> -->
+                    
                     <div class="reminder-icon-container">
                         <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">notifications</mat-icon>
                     </div>
 
                     <div class="reminder-flex-containter">
-                        <p class="reminder-content-right">{{ reminder.reminderType }}</p>
-                        <p class="reminder-content-left"> {{ reminder.startActivity | date : 'HH:mm a'}} - {{
-                            reminder.endActivity | date : 'HH:mm a' }}</p>
+                        <p class="reminder-content-right" [ngStyle]="{'max-width.px': reminder.reminderType.length > 15 ? 100 : 'auto'}">{{ reminder.reminderType }}</p>
+                        <p class="reminder-content-left" *ngIf="reminder.startActivity === reminder.endActivity">
+                            {{ reminder.startActivity | date : 'HH:mm a' }}
+                        </p>
+                        <p class="reminder-content-left" *ngIf="reminder.startActivity !== reminder.endActivity">
+                            {{ reminder.startActivity | date : 'HH:mm a' }} - {{ reminder.endActivity | date : 'HH:mm a'
+                            }}
+                        </p>
+
                     </div>
 
 
