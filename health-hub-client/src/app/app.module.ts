@@ -32,7 +32,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RightSidenavComponent } from './components/right-sidenav/right-sidenav.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LiveClockComponent } from './components/live-clock/live-clock.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 
 @NgModule({
@@ -75,7 +75,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatMenuModule,
     MatGridListModule,
     MatCardModule,
-    FlexLayoutModule
+  
 
 
 
