@@ -110,6 +110,16 @@
     text-align: center;
 }
 
+.upper-right-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px;
+
+}
+
+
+
 .reminder-card {
 
     position: relative;
@@ -125,7 +135,7 @@
     max-height: 200px;
     overflow-y: scroll;
     max-height: 100px;
-    
+
 
 
 }

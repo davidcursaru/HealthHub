@@ -16,18 +16,12 @@ export class RightSidenavComponent implements OnInit {
   reminders: Reminders[] = [];
   userInitials1?: string;
   userInitials2?: string;
+  checked = false;
+  isChecked: boolean[] = [];
 
 
 
   constructor(private userService: UserService) { }
-
-  // toggleCheckbox(event: MatCheckboxChange): void {
-  //   if (event.checked) {
-  //     // Perform actions when checkbox is checked
-  //   } else {
-  //     // Perform actions when checkbox is unchecked
-  //   }
-  // }
 
   ngOnInit(): void {
     const loggedName: any = this.userService.getLoggedUsername().username;
@@ -54,6 +48,9 @@ export class RightSidenavComponent implements OnInit {
       (data: Reminders[]) => {
         this.reminders = data;
         console.log('Received reminders:', this.reminders);
+        this.reminders.forEach(() => {
+          this.isChecked.push(false); // Initialize all checkboxes as unchecked
+        });
 
       },
       (error) => {

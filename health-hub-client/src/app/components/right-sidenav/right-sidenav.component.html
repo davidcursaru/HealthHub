@@ -42,16 +42,18 @@
 </div>
 
 
-
-
 <div class="cards-container">
     <h1 class="mat-h1">My Schedule</h1>
     <!-- Loop through reminders array and create a mat-card for each reminder -->
     <mat-grid-list cols="1" rowHeight="90px">
         <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
-        <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders">
+        <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders; let i = index">
             <mat-card class="reminder-card">
+
                 <mat-card-content class="reminder-content">
+                    <div class="upper-right-content">
+                        <mat-checkbox class="example-margin" [(ngModel)]="isChecked[i]"></mat-checkbox>
+                    </div>
                     <!-- <mat-checkbox class="checkbox-button" (click)="toggleCheckbox()"></mat-checkbox> -->
                     <div class="reminder-icon-container">
                         <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">notifications</mat-icon>
