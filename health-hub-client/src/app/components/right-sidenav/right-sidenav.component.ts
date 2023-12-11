@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Reminders } from 'src/app/interfaces/reminders.interface';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 
 @Component({
@@ -20,13 +21,21 @@ export class RightSidenavComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
+  // toggleCheckbox(event: MatCheckboxChange): void {
+  //   if (event.checked) {
+  //     // Perform actions when checkbox is checked
+  //   } else {
+  //     // Perform actions when checkbox is unchecked
+  //   }
+  // }
+
   ngOnInit(): void {
     const loggedName: any = this.userService.getLoggedUsername().username;
     this.userService.getUser(loggedName).subscribe(res => {
       this.user = res;
       localStorage.setItem('userInfo', JSON.stringify(this.user));
       localStorage.setItem('userId', JSON.stringify(this.user.id));
-      
+
       this.userInitials1 = this.getInitials(this.user.firstname);
       this.userInitials2 = this.getInitials(this.user.lastname);
 
