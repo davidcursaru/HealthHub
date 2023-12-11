@@ -51,15 +51,12 @@
         <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
         <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders">
             <mat-card class="reminder-card">
-                
-                   
-               
-
                 <mat-card-content class="reminder-content">
                     <!-- <mat-checkbox class="checkbox-button" (click)="toggleCheckbox()"></mat-checkbox> -->
                     <div class="reminder-icon-container">
                         <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">notifications</mat-icon>
                     </div>
+
                     <div class="reminder-flex-containter">
                         <p class="reminder-content-right">{{ reminder.reminderType }}</p>
                         <p class="reminder-content-left"> {{ reminder.startActivity | date : 'HH:mm a'}} - {{

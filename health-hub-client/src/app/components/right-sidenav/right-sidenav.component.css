@@ -122,8 +122,10 @@
     right: 10px;
     bottom: 2px;
     border-radius: 12px;
+    max-height: 200px;
     overflow-y: scroll;
-   max-height: 100px;
+    max-height: 100px;
+    
 
 
 }
@@ -139,6 +141,10 @@
 
 }
 
+.cards-container {
+    margin-bottom: 20px;
+}
+
 .reminder-flex-containter {
     display: flex;
     flex-grow: 1;
@@ -147,7 +153,9 @@
 
 .reminder-content-right {
     font-weight: bold;
-    
+    font-size: small;
+
+
     /* margin-right: auto; */
 }
 
@@ -157,7 +165,14 @@
     margin-right: auto;
     display: flex;
     justify-content: center;
-    margin-left: 50px;
+    margin-left: auto;
+    border: 1px solid;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    background-color: #0992b84f;
+    margin-bottom: 20px;
 
 
 
@@ -166,20 +181,22 @@
 .reminder-icon-container {
     width: 40px;
     height: 20px;
-   
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: -2px;
-  }
+}
 
 .reminder-icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 25px; /* Adjust the width and height according to your requirement */
+    width: 25px;
+    /* Adjust the width and height according to your requirement */
     height: 25px;
-    border: 2px solid #000; /* Border color */
-    border-radius: 10px; /* Adjust the border-radius to control corner roundness */
+    border: 2px solid #000;
+    /* Border color */
+    border-radius: 10px;
+    /* Adjust the border-radius to control corner roundness */
     background-color: #0992B8;
 }
