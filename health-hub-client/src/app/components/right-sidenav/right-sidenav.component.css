@@ -135,6 +135,7 @@
     max-height: 200px;
     overflow-y: scroll;
     max-height: 100px;
+    
 
 
 
@@ -208,6 +209,6 @@
     /* Border color */
     border-radius: 10px;
     /* Adjust the border-radius to control corner roundness */
-    background-color: #0992B8;
+    background-color: #0992b8b4;
 }
 
