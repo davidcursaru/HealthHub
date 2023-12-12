@@ -35,6 +35,20 @@ namespace NutritionManager.Controllers
             return await _hydrationLogsRepository.GetHydrationLogsById(id);
         }
 
+        [HttpGet("count")]
+        public async Task<ActionResult<int>> GetHydrationLogsCountForDateRange(int userId, DateTime startDate, DateTime endDate)
+        {
+            try
+            {
+                int quantity = await _hydrationLogsRepository.GetHydrationLogsCount(userId, startDate, endDate);
+                return Ok(quantity);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<HydrationLogs> CreateHydrationLogsAsync(HydrationLogs hydrationLogs)
         {
