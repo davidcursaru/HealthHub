@@ -4,18 +4,18 @@ namespace NutritionManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FoodApiController : ControllerBase
+    public class ExercisesApiController : ControllerBase
     {
         private readonly HttpClient _httpClient;
 
-        public FoodApiController(IHttpClientFactory httpClientFactory)
+        public ExercisesApiController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("https://api.api-ninjas.com/v1/");
         }
 
-        [HttpGet("nutrition")]
-        public async Task<ActionResult<string>> GetNutritionData(string query)
+        [HttpGet("caloriesburned")]
+        public async Task<ActionResult<string>> GetExerciseData(string activity)
         {
             try
             {
@@ -23,7 +23,7 @@ namespace NutritionManager.Controllers
 
                 _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 
-                HttpResponseMessage response = await _httpClient.GetAsync($"nutrition?query={query}");
+                HttpResponseMessage response = await _httpClient.GetAsync($"caloriesburned?activity={activity}");
 
                 if (response.IsSuccessStatusCode)
                 {
