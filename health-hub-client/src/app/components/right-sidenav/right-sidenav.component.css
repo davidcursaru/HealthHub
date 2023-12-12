@@ -132,7 +132,6 @@
     right: 10px;
     bottom: 2px;
     border-radius: 12px;
-    max-height: 200px;
     overflow-y: scroll;
     max-height: 100px;
     
@@ -160,6 +159,9 @@
     display: flex;
     flex-grow: 1;
     justify-content: space-between;
+   
+
+
 }
 
 .reminder-content-right {
@@ -182,6 +184,7 @@
     justify-content: center;
     align-items: center;
     width: 130px;
+    height: 20px;
     background-color: #0992b84f;
     margin-bottom: 20px;
 
@@ -212,3 +215,7 @@
     background-color: #0992b8b4;
 }
 
+.no-reminders-message{
+    margin-left: 10px;
+    font-weight: bold;
+}

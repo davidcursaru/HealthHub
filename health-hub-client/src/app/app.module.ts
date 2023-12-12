@@ -36,6 +36,7 @@ import { LiveClockComponent } from './components/live-clock/live-clock.component
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -76,7 +77,8 @@ import { LiveClockComponent } from './components/live-clock/live-clock.component
     MatMenuModule,
     MatGridListModule,
     MatCardModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+  
 
 
 
