@@ -19,7 +19,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-                string apiKey = "j3cOrB9Sz8zjUf+ebodnUg==Hnmj5sixm1t7EQgy"; // Replace with your actual API key
+                string apiKey = "fbr6JUc9cxJKGnhXgfHMWw==FDIAvsijhTShl7hI"; // Replace with your actual API key
 
                 _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 

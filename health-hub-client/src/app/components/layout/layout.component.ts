@@ -9,14 +9,12 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
   styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent implements OnInit {
-
   isDashboardPage: boolean = false;
-
   userInitials1?: string;
   userInitials2?: string;
   user: User = {};
 
-  constructor(private userService: UserService,private router: Router, private route: ActivatedRoute) { }
+  constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
 
   collapsed = signal(false);
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
@@ -24,8 +22,9 @@ export class LayoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     const loggedName: any = this.userService.getLoggedUsername().username;
+    const loggedUserId = localStorage.getItem('userId');
+
     this.userService.getUser(loggedName).subscribe(res => {
       this.user = res;
       localStorage.setItem('userInfo', JSON.stringify(this.user));
@@ -34,7 +33,17 @@ export class LayoutComponent implements OnInit {
       this.userInitials1 = this.getInitials(this.user.firstname);
       this.userInitials2 = this.getInitials(this.user.lastname);
 
+      this.userService.getFoodCalories('juice').subscribe((res: any) => {
+        const calories = res[0]['calories'];
+        localStorage.setItem("caloriesFromFood", calories);
+        console.log(calories);
+      });
 
+      this.userService.getCaloriesBurned('running').subscribe((res) => {
+        const caloriesBurned = res[0].calories_per_hour;
+        localStorage.setItem("caloriesBurned", caloriesBurned);
+        console.log("Calories burned: ", caloriesBurned);
+      });
     });
 
     this.router.events.subscribe((event) => {
@@ -43,6 +52,8 @@ export class LayoutComponent implements OnInit {
         localStorage.setItem('isDashboardPage', JSON.stringify(this.isDashboardPage));
       }
     });
+
+    console.log('Water quantity2: ', localStorage.getItem("waterQuantity"));
 
     const storedIsDashboardPage = localStorage.getItem('isDashboardPage');
     if (storedIsDashboardPage) {
@@ -65,6 +76,12 @@ export class LayoutComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('user');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('waterQuantity');
+    localStorage.removeItem('isDashboardPage');
+    localStorage.removeItem('caloriesFromFood');
+    localStorage.removeItem('caloriesBurned');
   }
 
   toggleNotification(): void {

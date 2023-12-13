@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./hydration.component.css']
 })
 export class HydrationComponent {
+  water: any = localStorage.getItem("waterQuantity");
 
 }

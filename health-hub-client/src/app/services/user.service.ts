@@ -26,9 +26,9 @@ export class UserService {
     return this.user;
   }
 
-  getFoodCalories(foodInput: string) {
+  getFoodCalories(foodInput: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
-    return this.http.get(endpoint);
+    return this.http.get<any>(endpoint);
   }
 
   getCurrentDaySchedule(loggedUserId: any): Observable<Reminders[]> {
@@ -40,6 +40,11 @@ export class UserService {
   getWaterQuantity(loggedUserId: any, startDate: string, endDate: string) {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
     return this.http.get(endpoint);
+  }
+
+  getCaloriesBurned(activity: string):Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
+    return this.http.get<any>(endpoint);
   }
 
 }

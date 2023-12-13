@@ -18,17 +18,12 @@ export class RightSidenavComponent implements OnInit {
   userInitials2?: string;
   checked = false;
   isChecked: boolean[] = [];
-  water: any;
-  startDate: Date = new Date("2023-11-01");
+  water: any = 0;
+  startDate: Date = new Date("2023-10-01");
   endDate: Date = new Date("2023-12-12");
 
   isoDateString1 = this.startDate.toISOString();
   isoDateString2 = this.endDate.toISOString();
-
-
-  
-
-
 
   constructor(private userService: UserService) { }
 
@@ -43,16 +38,14 @@ export class RightSidenavComponent implements OnInit {
       this.userInitials2 = this.getInitials(this.user.lastname);
 
       this.fetchRemindersForCurrentUser();
-
     });
 
-    this.userService.getFoodCalories('apple').subscribe(res => {
-      console.log(res);
-    });
+    
   }
 
   fetchRemindersForCurrentUser(): void {
     const loggedUserId = localStorage.getItem('userId');
+
     this.userService.getCurrentDaySchedule(loggedUserId).subscribe(
       (data: Reminders[]) => {
         this.reminders = data;
@@ -60,22 +53,19 @@ export class RightSidenavComponent implements OnInit {
         this.reminders.forEach(() => {
           this.isChecked.push(false); // Initialize all checkboxes as unchecked
         });
-
       },
       (error) => {
         console.error('Error fetching reminders:', error);
       }
     );
 
-      this.userService.getWaterQuantity(loggedUserId, this.isoDateString1,this.isoDateString2).subscribe(
+    this.userService.getWaterQuantity(loggedUserId, this.isoDateString1, this.isoDateString2).subscribe(
       (res) => {
-        this.water= res;
-        console.log('Water quantity: ', this.water);
-        
-      } 
+        this.water = res;
+        localStorage.setItem("waterQuantity", res.toString());
+      }
     );
-    
-    
+    console.log('Water quantity2: ', localStorage.getItem("waterQuantity"));
   }
 
   getInitials(name: string | undefined): string {
@@ -87,8 +77,4 @@ export class RightSidenavComponent implements OnInit {
     const initials = names.map(name => name.charAt(0)).join('');
     return initials.toUpperCase();
   }
-
-
-
-
 }

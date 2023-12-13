@@ -29,6 +29,9 @@ export class CostumSidenavComponent {
     localStorage.removeItem('user');
     localStorage.removeItem('userId');
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('waterQuantity');
+    localStorage.removeItem('isDashboardPage');
+    localStorage.removeItem('caloriesFromFood');
   }
 
   menuItems = signal<MenuItem[]>([
