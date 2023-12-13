@@ -47,4 +47,15 @@ export class UserService {
     return this.http.get<any>(endpoint);
   }
 
+  createHydrationLog(userId: number, hydrationDate: Date, liters: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'hydrationLogs';
+    const body = {
+      userId: userId,
+      hydrationDate: hydrationDate,
+      liters: liters
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
+
 }

@@ -33,13 +33,13 @@ export class LayoutComponent implements OnInit {
       this.userInitials1 = this.getInitials(this.user.firstname);
       this.userInitials2 = this.getInitials(this.user.lastname);
 
-      this.userService.getFoodCalories('juice').subscribe((res: any) => {
-        const calories = res[0]['calories'];
+      this.userService.getFoodCalories('500g steak').subscribe((res: any) => {
+        const calories = res[0].cholesterol_mg;
         localStorage.setItem("caloriesFromFood", calories);
         console.log(calories);
       });
 
-      this.userService.getCaloriesBurned('running').subscribe((res) => {
+      this.userService.getCaloriesBurned('boxing').subscribe((res) => {
         const caloriesBurned = res[0].calories_per_hour;
         localStorage.setItem("caloriesBurned", caloriesBurned);
         console.log("Calories burned: ", caloriesBurned);

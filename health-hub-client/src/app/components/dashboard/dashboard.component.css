@@ -50,8 +50,9 @@
 .dashboard-card:hover {
   /* opacity: 0.9;  */
   transform: scale(1.022);
-  border-width: 1px;
-  border-color: #121213;
+  box-shadow: 5px 5px 5px #939393;
+  
+  
 }
 
 .first-card {

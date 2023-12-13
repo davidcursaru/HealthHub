@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Reminders } from 'src/app/interfaces/reminders.interface';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+
 
 
 @Component({
@@ -19,8 +19,8 @@ export class RightSidenavComponent implements OnInit {
   checked = false;
   isChecked: boolean[] = [];
   water: any = 0;
-  startDate: Date = new Date("2023-10-01");
-  endDate: Date = new Date("2023-12-12");
+  startDate: Date = new Date("2023-12-13");
+  endDate: Date = new Date("2023-12-13");
 
   isoDateString1 = this.startDate.toISOString();
   isoDateString2 = this.endDate.toISOString();

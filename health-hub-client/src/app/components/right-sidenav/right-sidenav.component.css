@@ -41,7 +41,7 @@
     height: 43px;
     border-radius: 50%;
     /* Make it a circle */
-    border: 2px solid #1a1818;
+    
     /* Set border color and width */
     background-color: #0992B8;
     /* Set background color */
@@ -205,10 +205,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 25px;
+    width: 30px;
     /* Adjust the width and height according to your requirement */
-    height: 25px;
-    border: 2px solid #000;
+    height: 30px;
+    
     /* Border color */
     border-radius: 10px;
     /* Adjust the border-radius to control corner roundness */

@@ -9,7 +9,7 @@
     background: linear-gradient(90deg,
             #0992B8 0%,
             #005173) 80%;
-    border-radius: 10px;
+    
 }
 
 
@@ -100,7 +100,7 @@ mat-sidenav-content {
     height: 24px;
     border-radius: 50%;
     /* Make it a circle */
-    border: 2px solid #1a1818;
+    
     /* Set border color and width */
     background-color: #0992B8;
     /* Set background color */

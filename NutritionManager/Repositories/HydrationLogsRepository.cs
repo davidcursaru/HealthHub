@@ -48,8 +48,14 @@ namespace NutritionManager.Repositories
 
         public async Task<int> GetHydrationLogsCount(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
-            
-            
+
+            if
+            (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+               
+            }
+
             var quantity = await _context.HydrationLogs
                 .Where(r => r.HydrationDate >= startDate.Date && r.HydrationDate <= endDate.Date && r.UserId == userId)
                 .Select(r => r.Liters)
