@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.DTO;
 using NutritionManager.Entities;
@@ -45,8 +46,10 @@ namespace NutritionManager.Repositories
             return await _context.HydrationLogs.FindAsync(id);
         }
 
-        public async Task<int> GetHydrationLogsCount(int userId, DateTime startDate, DateTime endDate)
+        public async Task<int> GetHydrationLogsCount(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
+            
+            
             var quantity = await _context.HydrationLogs
                 .Where(r => r.HydrationDate >= startDate.Date && r.HydrationDate <= endDate.Date && r.UserId == userId)
                 .Select(r => r.Liters)

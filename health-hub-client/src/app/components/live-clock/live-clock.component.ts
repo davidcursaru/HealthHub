@@ -8,7 +8,7 @@ import { timer } from 'rxjs/internal/observable/timer';
 })
 export class LiveClockComponent implements OnInit {
 
-  dateTime!: Date
+  dateTime!: Date;
 
   ngOnInit() {
     timer(0, 1000).subscribe(() => {

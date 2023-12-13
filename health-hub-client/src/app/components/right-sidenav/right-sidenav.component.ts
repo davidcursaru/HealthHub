@@ -18,6 +18,15 @@ export class RightSidenavComponent implements OnInit {
   userInitials2?: string;
   checked = false;
   isChecked: boolean[] = [];
+  water: any;
+  startDate: Date = new Date("2023-11-01");
+  endDate: Date = new Date("2023-12-12");
+
+  isoDateString1 = this.startDate.toISOString();
+  isoDateString2 = this.endDate.toISOString();
+
+
+  
 
 
 
@@ -57,6 +66,16 @@ export class RightSidenavComponent implements OnInit {
         console.error('Error fetching reminders:', error);
       }
     );
+
+      this.userService.getWaterQuantity(loggedUserId, this.isoDateString1,this.isoDateString2).subscribe(
+      (res) => {
+        this.water= res;
+        console.log('Water quantity: ', this.water);
+        
+      } 
+    );
+    
+    
   }
 
   getInitials(name: string | undefined): string {

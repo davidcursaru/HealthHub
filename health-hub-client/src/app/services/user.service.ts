@@ -37,4 +37,9 @@ export class UserService {
     return this.http.get<Reminders[]>(endpoint);
   }
 
+  getWaterQuantity(loggedUserId: any, startDate: string, endDate: string) {
+    const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
+    return this.http.get(endpoint);
+  }
+
 }
