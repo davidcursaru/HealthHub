@@ -41,9 +41,9 @@
     height: 43px;
     border-radius: 50%;
     /* Make it a circle */
-    
+
     /* Set border color and width */
-    background-color: #0992B8;
+    background-color: #2cb9a2b4;
     /* Set background color */
     display: flex;
     justify-content: center;
@@ -134,7 +134,7 @@
     border-radius: 12px;
     overflow-y: scroll;
     max-height: 100px;
-    
+
 
 
 
@@ -159,7 +159,7 @@
     display: flex;
     flex-grow: 1;
     justify-content: space-between;
-   
+
 
 
 }
@@ -184,7 +184,7 @@
     align-items: center;
     width: 130px;
     height: 20px;
-    background-color: #0992b84f;
+    background-color: #53a9ff;
     margin-bottom: 20px;
 
 
@@ -207,14 +207,15 @@
     width: 30px;
     /* Adjust the width and height according to your requirement */
     height: 30px;
-    
+
     /* Border color */
     border-radius: 10px;
     /* Adjust the border-radius to control corner roundness */
-    background-color: #0992b8b4;
+    background-color: #53a9ff;
+    color: #173239
 }
 
-.no-reminders-message{
+.no-reminders-message {
     margin-left: 10px;
     font-weight: bold;
 }

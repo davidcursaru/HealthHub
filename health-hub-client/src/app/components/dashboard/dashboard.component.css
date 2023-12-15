@@ -20,14 +20,8 @@
   bottom: 15px;
   border-radius: 20px;
   transition: transform 0.3s ease-in-out;
-
 }
 
-.more-button {
-  position: absolute;
-  top: 5px;
-  right: 10px;
-}
 
 .dashboard-first-card-content {
   display: flex;
@@ -51,14 +45,14 @@
   /* opacity: 0.9;  */
   transform: scale(1.022);
   box-shadow: 5px 5px 5px #939393;
-  
-  
+
+
 }
 
 .first-card {
   background: linear-gradient(90deg,
-      #0f6a91 0%,
-      rgb(108, 159, 163)) 80%;
+      #0992B8 0%,
+      #2cb9a2b4) 80%;
 
 }
 
@@ -69,9 +63,33 @@
 
 }
 
-.third-card {
+.hydration-card-header {
+  display: flex;
+  align-items: center;
+}
 
-  background: white;
+.hydration-card-title {
+  margin-left: 8px;
+  /* Adjust the space between icon and title */
+  font-size: 18px;
+}
+
+.hydration-card-icon {
+  font-size: x-large !important;
+  color: rgb(34, 43, 107);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background-color: #2cb9a2b4;
+}
+
+.third-card {
+  /*hydration card */
+
+  background: rgb(255, 255, 255);
 
 }
 
@@ -91,4 +109,22 @@
 
   background: white;
 
+}
+
+.dashboard-hydration-tracker .hydration-log-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.bold {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.grey-text {
+  color: rgba(0, 0, 0, 0.43);
+  font-size: 14px;
+  font-weight: bold;
 }

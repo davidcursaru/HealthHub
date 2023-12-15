@@ -33,6 +33,7 @@ import { MatCardModule } from '@angular/material/card';
 import { RightSidenavComponent } from './components/right-sidenav/right-sidenav.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LiveClockComponent } from './components/live-clock/live-clock.component';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 
 
@@ -78,6 +79,24 @@ import { LiveClockComponent } from './components/live-clock/live-clock.component
     MatGridListModule,
     MatCardModule,
     MatCheckboxModule,
+    NgCircleProgressModule.forRoot({
+      "radius": 60,
+      "space": -10,
+      "outerStrokeGradient": true,
+      "outerStrokeWidth": 10,
+      "outerStrokeColor": "#4882c2",
+      "outerStrokeGradientStopColor": "#53a9ff",
+      "innerStrokeColor": "#e7e8ea",
+      "innerStrokeWidth": 10,
+      "title": "%",
+      "animateTitle": false,
+      "animationDuration": 1000,
+      "showUnits": false,
+      "showBackground": false,
+      "clockwise": true,
+      "startFromZero": false,
+      "lazy": false})
+  
   
 
 

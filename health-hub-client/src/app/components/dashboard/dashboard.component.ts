@@ -6,16 +6,17 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
 
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
 
+
+
 })
 export class DashboardComponent implements OnInit {
   user: User = {};
+
   private breakpointObserver = inject(BreakpointObserver);
 
   /** Based on the screen size, switch from standard to one column per row */
@@ -50,11 +51,17 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     const loggedName: any = this.userService.getLoggedUsername().username;
 
     this.userService.getUser(loggedName).subscribe(res => {
       this.user = res;
     });
+
+
+
+
   }
+
 
 }

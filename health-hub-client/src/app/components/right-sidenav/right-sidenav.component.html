@@ -46,6 +46,7 @@
     <h1 class="mat-h1">My Schedule</h1>
     <!-- Loop through reminders array and create a mat-card for each reminder -->
     <mat-grid-list cols="1" rowHeight="90px">
+
         <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
         <p *ngIf="reminders.length === 0" class="no-reminders-message">No Schedule or Reminders entries found.</p>
 
@@ -53,16 +54,19 @@
             <mat-card class="reminder-card">
 
                 <mat-card-content class="reminder-content">
+
                     <div class="upper-right-content">
-                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]" [color]="'primary'"></mat-checkbox>
+                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]"></mat-checkbox>
                     </div>
-                    
+
                     <div class="reminder-icon-container">
                         <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">notifications</mat-icon>
                     </div>
 
                     <div class="reminder-flex-containter">
-                        <p class="reminder-content-right" [ngStyle]="{'max-width.px': reminder.reminderType.length > 15 ? 100 : 'auto'}">{{ reminder.reminderType }}</p>
+                        <p class="reminder-content-right"
+                            [ngStyle]="{'max-width.px': reminder.reminderType.length > 15 ? 100 : 'auto'}">{{
+                            reminder.reminderType }}</p>
                         <p class="reminder-content-left" *ngIf="reminder.startActivity === reminder.endActivity">
                             {{ reminder.startActivity | date : 'HH:mm a' }}
                         </p>
