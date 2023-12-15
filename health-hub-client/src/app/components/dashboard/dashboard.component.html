@@ -49,14 +49,14 @@
           <div class="hydration-log-wrapper">
             <!-- Hydration logs information on the left side -->
             <div class="hydration-log-info">
-              <p><span class="bold">1200ml</span><span class="grey-text">/3000ml</span></p>
+              <p><span class="bold">{{water}}ml</span><span class="grey-text">/{{goalsCurrentDayValue}}ml</span></p>
 
               <!-- Add more hydration logs here -->
             </div>
 
             <!-- Circle progress on the right side -->
             <div class="circle-progress-wrapper">
-              <circle-progress [title]="'72%'" [percent]="72" [space]="-10" [radius]="45" [outerStrokeWidth]="10"
+              <circle-progress [title]="percentageTitle" [percent]="percentage" [space]="-10" [radius]="45" [outerStrokeWidth]="10"
                 [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
                 [animationDuration]="1000"></circle-progress>
             </div>

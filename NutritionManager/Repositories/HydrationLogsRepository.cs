@@ -55,6 +55,10 @@ namespace NutritionManager.Repositories
                 endDate = endDate.AddDays(1);
                
             }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
 
             var quantity = await _context.HydrationLogs
                 .Where(r => r.HydrationDate >= startDate.Date && r.HydrationDate <= endDate.Date && r.UserId == userId)

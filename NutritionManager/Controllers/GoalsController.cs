@@ -30,6 +30,12 @@ namespace NutritionManager.Controllers
             return await _goalsRepository.GetAllGoalsByUserId(userId);
         }
 
+        [HttpGet("currentDayValue")]
+        public async Task<int> GetGoalsTotalValueForCurrentDayAsync(string goalType, int userId)
+        {
+            return await _goalsRepository.GetGoalsTotalValueForCurrentDay(goalType, userId);
+        }
+
         [HttpPost]
         public async Task<Goals> CreateGoalAsync(Goals goal)
         {

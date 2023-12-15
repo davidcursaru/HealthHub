@@ -17,14 +17,12 @@ export class HydrationComponent implements OnInit {
     })
   }
 
-
   createLog() {
-    const userId = 1;
+    const userId = 7;
     const hydrationDate = this.currentDate;
     const liters = this.litersInput;
 
     if (this.litersInput) {
-
       this.userService.createHydrationLog(userId, hydrationDate, liters)
         .subscribe(
           (response) => {
@@ -36,14 +34,8 @@ export class HydrationComponent implements OnInit {
             // Handle error
           }
         );
-
     }
-
-
   }
 
-
-
   water: any = localStorage.getItem("waterQuantity");
-
 }

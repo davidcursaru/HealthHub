@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interface';
 import { Reminders } from '../interfaces/reminders.interface';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +26,11 @@ export class UserService {
     return this.user;
   }
 
+  getLoggedUserId(): number {
+    const userId: any = localStorage.getItem("userId");
+    return userId;
+  }
+
   getFoodCalories(foodInput: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
     return this.http.get<any>(endpoint);
@@ -42,7 +47,7 @@ export class UserService {
     return this.http.get(endpoint);
   }
 
-  getCaloriesBurned(activity: string):Observable<any> {
+  getCaloriesBurned(activity: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
     return this.http.get<any>(endpoint);
   }
@@ -56,6 +61,12 @@ export class UserService {
     };
 
     return this.http.post<any>(endpoint, body);
+  }
+
+  getGoalsTotalValueForCurrentDay(goalType: string, userId: number) {
+    const endpoint = environment.userManagement.baseUrl + 'goals/currentDayValue?goalType=' + goalType + "&userId=" + userId;
+    return this.http.get(endpoint);
+
   }
 
 }

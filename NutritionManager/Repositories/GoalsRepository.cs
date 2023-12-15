@@ -45,6 +45,14 @@ namespace NutritionManager.Repositories
             return await _context.Goals.FindAsync(id);
         }
 
+        public async Task<int> GetGoalsTotalValueForCurrentDay(string goalType, int userId)
+        {
+            var totalValue = await _context.Goals
+                .Where(g => g.UserId == userId && g.GoalType == goalType && (g.Deadline.DayOfYear == DateTime.Now.DayOfYear && g.Deadline.Year == DateTime.Now.Year))
+                .Select(g => g.TargetValue).SumAsync();
+            return totalValue;
+        }
+
         public async Task UpdateGoalAsync(Goals goals)
         {
             _context.Update(goals);

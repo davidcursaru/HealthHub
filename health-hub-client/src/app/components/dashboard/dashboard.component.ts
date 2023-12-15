@@ -16,6 +16,10 @@ import { User } from 'src/app/interfaces/user.interface';
 })
 export class DashboardComponent implements OnInit {
   user: User = {};
+  water: any;
+  goalsCurrentDayValue: any;
+  percentage: any;
+  percentageTitle: any;
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -51,17 +55,31 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     const loggedName: any = this.userService.getLoggedUsername().username;
+    const userId: any = localStorage.getItem("userId");
 
+    this.water = localStorage.getItem("waterQuantity");
     this.userService.getUser(loggedName).subscribe(res => {
       this.user = res;
     });
 
+    this.userService.getGoalsTotalValueForCurrentDay("hydration", userId).subscribe(res => {
+      this.goalsCurrentDayValue = res;
+      localStorage.setItem("GoalsCurrentDayValue", this.goalsCurrentDayValue);
+    });
 
-
-
+    this.goalsCurrentDayValue = localStorage.getItem("GoalsCurrentDayValue");
+    this.percentage = this.calculatePercentage(this.water, this.goalsCurrentDayValue);
+    this.percentageTitle = this.percentage.toString() + "%";
+    console.log("Percentage: ", this.percentageTitle);
+    // console.log("Percentage: ", this.goalsCurrentDayValue);
   }
 
-
+  calculatePercentage(part: number, whole: number): number {
+    if (whole == 0) {
+      return 0
+    }
+    const p = (part / whole) * 100;
+    return Math.floor(p);
+  }
 }

@@ -9,6 +9,7 @@ namespace NutritionManager.Interfaces
         Task<IEnumerable<Goals>> GetAllGoalsAsync();
         Task<IEnumerable<Goals>> GetAllGoalsByUserId(int userId);
         Task<Goals> GetGoalByIdAsync(int id);
+        Task<int> GetGoalsTotalValueForCurrentDay(string goalType, int userId);
         Task DeleteGoalAsync(int id);
         Task UpdateGoalAsync(Goals goals);
     }
