@@ -20,7 +20,7 @@ export class RightSidenavComponent implements OnInit {
   isChecked: boolean[] = [];
   water: any = 0;
   startDate: Date = new Date("2023-12-13");
-  endDate: Date = new Date("2023-12-15");
+  endDate: Date = new Date("2023-12-18");
 
   isoDateString1 = this.startDate.toISOString();
   isoDateString2 = this.endDate.toISOString();

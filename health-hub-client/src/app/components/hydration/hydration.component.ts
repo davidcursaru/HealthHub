@@ -27,6 +27,8 @@ export class HydrationComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log('Hydration log created:', response);
+            const updatedWater = Number(this.water) + Number(this.litersInput);
+            localStorage.setItem('waterQuantity', updatedWater.toString());
             // Handle success
           },
           (error) => {
