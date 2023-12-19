@@ -9,7 +9,7 @@
 
         <mat-card-content class="dashboard-first-card-content" *ngIf="i === 0">
           <div class="left-content">
-            <h1> <span class="normal-text">Hello</span> {{user.lastname}} {{user.firstname}}, </h1>
+            <h1> <span class="normal-text">Hello</span> {{loggedLastName}} {{loggedFirstName}}, </h1>
             <p>Have a nice day and don't forget to take care of your health!</p>
           </div>
           <div class="right-content">
@@ -56,9 +56,9 @@
 
             <!-- Circle progress on the right side -->
             <div class="circle-progress-wrapper">
-              <circle-progress [title]="percentageTitle" [percent]="percentage" [space]="-10" [radius]="45" [outerStrokeWidth]="10"
-                [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
-                [animationDuration]="1000"></circle-progress>
+              <circle-progress [title]="percentageTitle" [percent]="percentage" [space]="-10" [radius]="45"
+                [outerStrokeWidth]="10" [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'"
+                [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"></circle-progress>
             </div>
           </div>
         </mat-card-content>

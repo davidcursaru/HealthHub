@@ -32,6 +32,12 @@ namespace NutritionManager.Controllers
             return Ok(users);
         }
 
+        //[HttpGet("id/{id}")]
+        //public async Task<UserDTO> GetUserById(int id)
+        //{
+        //    return await _userRepository.GetUserByIdAync(id);
+        //}
+
         [HttpGet("username/{username}")]
         public async Task<ActionResult<UserDTO>> GetUserByUsername(string username)
         {

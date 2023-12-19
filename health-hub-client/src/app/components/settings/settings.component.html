@@ -1,1 +1,109 @@
-<h1>Settings</h1>
+<div class="user-profile-wrapper">
+    <div class="edit-profile">
+        <div>
+            <mat-spinner value="40" mode="determinate"></mat-spinner>
+        </div>
+        <div class="edit-profile-desc">
+            <h3>Edit your profile</h3>
+            <p>Your profile description</p>
+        </div>
+        <div>
+            <button mat-raised-button color="primary" type="button" class="add-project-btn"
+                (click)="editMode = !editMode"> Edit profile </button>
+        </div>
+    </div>
+
+    <div class="user-profile">
+        <div class="user-profile-info">
+            <div class="profile-picture">
+                <img src="https://cdn-icons-png.flaticon.com/512/219/219986.png" alt="Profile Picture">
+            </div>
+            <div class="profile-content">
+                <div class="project-count">
+                    <!-- <p>{{ user.projects.length }}</p> -->
+                    <span>Projects</span>
+                </div>
+                <div class="buttons-container">
+                    <button mat-raised-button color="primary" type="button" class="change-password-btn"
+                        (click)="openChangePasswordDialog()">Change
+                        Password</button>
+                    <button mat-raised-button color="warn" type="button" class="delete-account-btn"
+                        (click)="openDeleteAccountConfirmationDialog()">Delete
+                        Account</button>
+                </div>
+            </div>
+        </div>
+        <div class="user-profile-editor">
+            <h2 class="usr-title">Personal Information
+            </h2>
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                <div>
+                    <label for="userName">Username:</label>
+                    <input type="text" id="userName" formControlName="userName">
+                    <div *ngIf="profileForm.get('userName')?.invalid && profileForm.get('username')?.touched">
+                        <small>Username is required.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" formControlName="firstName">
+                    <div *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
+                        <small>First name is required.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" formControlName="lastName">
+                    <div *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
+                        <small>Last name is required.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" formControlName="email">
+                    <div *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+                        <small>Email is required and must be a valid email address.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="weight">Weight:</label>
+                    <input type="text" id="weight" formControlName="weight">
+                    <div *ngIf="profileForm.get('weight')?.invalid && profileForm.get('weight')?.touched">
+                        <small>Weight is required.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="height">Height:</label>
+                    <input type="text" id="height" formControlName="height">
+                    <div *ngIf="profileForm.get('height')?.invalid && profileForm.get('height')?.touched">
+                        <small>Height is required.</small>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="gender">Gender:</label>
+                    <input type="text" id="gender" formControlName="gender">
+                    <div *ngIf="profileForm.get('gender')?.invalid && profileForm.get('gender')?.touched">
+                        <small>Gender is required.</small>
+                    </div>
+                </div>
+
+                <!-- <div>
+                    <label for="dateOfBirth">Date of birth:</label>
+                    <input type="text" id="dateOfBirth" formControlName="dateOfBirth" [disabled]="!editMode">
+                    <div *ngIf="profileForm.get('dateOfBirth')?.invalid && profileForm.get('dateOfBirth')?.touched">
+                        <small>Date of birth is required.</small>
+                    </div>
+                </div> -->
+
+                <button type="submit" [disabled]="profileForm.invalid || !editMode">Save</button>
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, Input, signal, computed } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 export type MenuItem = {
 
@@ -23,15 +24,10 @@ export class CostumSidenavComponent {
     this.sideNavCollapsed.set(val)
   }
 
+  constructor(private userService: UserService) { }
+
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('user');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('waterQuantity');
-    localStorage.removeItem('isDashboardPage');
-    localStorage.removeItem('caloriesFromFood');
+    this.userService.logout();
   }
 
   menuItems = signal<MenuItem[]>([

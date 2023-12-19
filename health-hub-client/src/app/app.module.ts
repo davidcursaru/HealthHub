@@ -34,7 +34,8 @@ import { RightSidenavComponent } from './components/right-sidenav/right-sidenav.
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LiveClockComponent } from './components/live-clock/live-clock.component';
 import { NgCircleProgressModule } from 'ng-circle-progress';
-
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { DeleteAccountConfirmationDialogComponent } from './components/settings/settings.component';
 
 
 
@@ -54,9 +55,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     DashboardComponent,
     RightSidenavComponent,
     LiveClockComponent,
-
-
-
+    ChangePasswordComponent,
+    DeleteAccountConfirmationDialogComponent
   ],
 
   imports: [
@@ -96,13 +96,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       "clockwise": true,
       "startFromZero": false,
       "lazy": false})
-  
-  
-
-
-
-
-
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]

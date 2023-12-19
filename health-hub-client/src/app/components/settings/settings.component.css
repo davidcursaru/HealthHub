@@ -1,0 +1,224 @@
+.user-profile-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.edit-profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 90%;
+    background: rgb(255, 255, 255);
+    background: linear-gradient(270deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(93, 172, 190, 0.6083683473389356) 37%);
+    margin: 10px 20px;
+    padding: 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.edit-profile>div {
+    margin: 0 30px;
+}
+
+.edit-profile-desc {
+    color: #fff;
+}
+
+.user-profile {
+    display: flex;
+    margin: 10px 20px;
+    height: 100%;
+}
+
+.user-profile-info {
+    width: 34%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-right: 2%;
+    /* margin-bottom: 60px; */
+}
+
+.user-profile-editor {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.usr-title {
+    padding: 5px;
+    color: #5dacbe;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 8px;
+}
+
+.profile-picture img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* user profile edit form */
+
+form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 8px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    display: block;
+    width: 110%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.small-error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.project-count {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #888;
+}
+
+.project-count p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 7px;
+}
+
+.project-count span {
+    font-size: 14px;
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.change-password-btn,
+.delete-account-btn {
+    width: 200px;
+    margin-bottom: 10px;
+}
+
+.change-password-btn {
+    background-color: #5dacbe;
+    color: #fff;
+}
+
+.delete-account-btn {
+    background-color: #ff4f4f;
+    color: #fff;
+}
+
+.change-password-btn:hover {
+    background-color: #5e99a8;
+}
+
+.delete-account-btn:hover {
+    background-color: red;
+}
+
+.change-password-btn:active,
+.delete-account-btn:active {
+    background-color: #4c7c89;
+}
+
+/* .user-profile {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      text-align: center;
+  }
+  
+  .profile-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+  }
+  
+  .profile-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: bold;
+      color: #fff;
+      margin-right: 20px;
+  }
+  
+  h1 {
+      font-size: 24px;
+      margin: 0;
+  }
+  
+  .profile-info {
+      margin-top: 20px;
+  }
+  
+  .info-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+  }
+  
+  label {
+      font-weight: bold;
+      width: 120px;
+  }
+  
+  span {
+      flex-grow: 1;
+  } */

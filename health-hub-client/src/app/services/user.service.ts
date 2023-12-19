@@ -1,21 +1,39 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { EventEmitter, Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interface';
 import { Reminders } from '../interfaces/reminders.interface';
 import { environment } from 'src/environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   user: User = {};
+  userNameUpdated: EventEmitter<string> = new EventEmitter();
 
   constructor(private http: HttpClient) { }
+
+  updateUserName(updatedUserName: string) {
+    // Update the userName
+    localStorage.setItem('username', updatedUserName);
+
+    // Emit the userNameUpdated event
+    this.userNameUpdated.emit(updatedUserName);
+  }
+
+  updateUser(user: User) {
+    return this.http.put<User>(environment.userManagement.baseUrl + 'users/update', user);
+  }
 
   getUser(userName: string) {
     const endpoint = environment.userManagement.baseUrl + 'users/username/' + userName;
     return this.http.get<User>(endpoint);
+  }
+
+  getUserByUsername(username: string): Observable<User> {
+    const endpoint = environment.userManagement.baseUrl + 'users/username/' + username;
+    return this.http.get<any>(endpoint);
   }
 
   getLoggedUsername(): User {
@@ -66,7 +84,57 @@ export class UserService {
   getGoalsTotalValueForCurrentDay(goalType: string, userId: number) {
     const endpoint = environment.userManagement.baseUrl + 'goals/currentDayValue?goalType=' + goalType + "&userId=" + userId;
     return this.http.get(endpoint);
+  }
 
+  changePassword(oldPassword: string, newPassword: string): Observable<void> {
+    const idLS = localStorage.getItem("userId");
+    const url = `${environment.userManagement.baseUrl}users/change-password`;
+    const requestBody = {
+      id: idLS,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    };
+    return this.http.put<void>(url, requestBody);
+  }
+
+  deleteAccount(): Observable<void> {
+    const idLS = Number(localStorage.getItem("userId"));
+
+    const url = `${environment.userManagement.baseUrl}users/delete/${idLS}`;
+
+    return this.http.delete<void>(url).pipe(
+      tap(() => {
+        // User deleted successfully
+        // You can perform additional actions here, such as displaying a success message
+        console.log("User deleted successfully");
+      }),
+      catchError((error: HttpErrorResponse) => {
+        // Handle the error appropriately
+        console.error("Error deleting user:", error);
+        // You can display an error message or perform any necessary actions
+
+        // Throw the error again to propagate it to the component
+        throw error;
+      })
+    );
+  }
+
+  logout(): void {
+    // localStorage.clear();
+    localStorage.removeItem('GoalsCurrentDayValue');
+    localStorage.removeItem('ConsumedWaterQuantity');
+    localStorage.removeItem('HydrationGoalsCurrentDay');
+    localStorage.removeItem('UserName');
+    localStorage.removeItem('UserLastName');
+    localStorage.removeItem('UserFirstName');
+    localStorage.removeItem('caloriesBurned');
+    localStorage.removeItem('isDashboardPage');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('caloriesFromFood');
   }
 
 }
