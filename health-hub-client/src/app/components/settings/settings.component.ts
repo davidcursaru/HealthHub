@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.css']
 })
+
 export class SettingsComponent implements OnInit {
   user: User = {};
   profileForm!: FormGroup;
@@ -88,7 +89,7 @@ export class SettingsComponent implements OnInit {
       });
     }
   }
-  
+
   deleteAccount() {
     this.userService.deleteAccount().subscribe(
       () => {

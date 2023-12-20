@@ -3,6 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/interfaces/user.interface';
 
 @Component({
   selector: 'app-auth',
@@ -12,10 +14,15 @@ import { AuthService } from 'src/app/services/auth.service';
 export class AuthComponent {
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private router: Router,
     private _snackBar: MatSnackBar) { }
 
+  userName: any;
+  userId: any;
   isLoginMode: boolean = true;
+  user: User = {};
+
   onSubmit(form: NgForm) {
     if (form.valid) {
       if (this.isLoginMode) {
@@ -31,6 +38,18 @@ export class AuthComponent {
               verticalPosition: 'top',
             });
             this.router.navigate(['layout']);
+
+            // Move this section inside the subscription block
+            const username = localStorage.getItem('username');
+            if (username) {
+              this.userService.getUserByUsername(username).subscribe((res) => {
+                this.userId = res.id;
+                this.user = res;
+                console.log("USER: ", res);
+                localStorage.setItem('userId', this.userId);
+                localStorage.setItem('userInfo', JSON.stringify(this.user));
+              });
+            }
           },
           error: (err: any) => {
             this._snackBar.open('Login Failed', 'Dismiss', {
@@ -39,8 +58,9 @@ export class AuthComponent {
               verticalPosition: 'top',
             });
           }
-        })
+        });
       }
+
       else {
         this.authService.register(form.value).subscribe({
           next: async (res: any) => {
@@ -62,7 +82,7 @@ export class AuthComponent {
               verticalPosition: 'top',
             });
           }
-        })
+        });
       }
     }
     else {

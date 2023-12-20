@@ -14,6 +14,18 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  isLoading$ = this.loadingSubject.asObservable();
+
+  showLoader() {
+    this.loadingSubject.next(true);
+  }
+
+  hideLoader() {
+    this.loadingSubject.next(false);
+  }
+
   updateUserName(updatedUserName: string) {
     // Update the userName
     localStorage.setItem('username', updatedUserName);
@@ -135,6 +147,7 @@ export class UserService {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('userId');
     localStorage.removeItem('caloriesFromFood');
+    localStorage.removeItem('waterQuantity');
   }
 
 }

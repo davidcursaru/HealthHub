@@ -13,6 +13,7 @@ import { CostumSidenavComponent } from './components/costum-sidenav/costum-siden
 import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'auth', component: AuthComponent },
   {
     path: 'layout', canActivate: [authGuard], component: LayoutComponent, children: [
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'loading', pathMatch: 'full' },
+      { path: 'loading', component: LoadingComponent },
       { path: 'dashboard', component: DashboardComponent },
       { path: 'goals', component: GoalsComponent },
       { path: 'calories', component: CaloriesComponent },

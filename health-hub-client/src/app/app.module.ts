@@ -36,6 +36,7 @@ import { LiveClockComponent } from './components/live-clock/live-clock.component
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { DeleteAccountConfirmationDialogComponent } from './components/settings/settings.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 
@@ -56,7 +57,8 @@ import { DeleteAccountConfirmationDialogComponent } from './components/settings/
     RightSidenavComponent,
     LiveClockComponent,
     ChangePasswordComponent,
-    DeleteAccountConfirmationDialogComponent
+    DeleteAccountConfirmationDialogComponent,
+    LoadingComponent
   ],
 
   imports: [
