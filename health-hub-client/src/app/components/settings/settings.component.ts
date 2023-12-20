@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChangePasswordComponent } from '../change-password/change-password.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-settings',
@@ -90,6 +90,11 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  initiateOAuthFlow(): void {
+    // Call the initiateOAuthFlow() function from your AuthService or directly here
+    this.authService.initiateOAuthFlow(); // Or call your function directly here
+  }
+
   deleteAccount() {
     this.userService.deleteAccount().subscribe(
       () => {
@@ -117,6 +122,10 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
+  
+
+  
 
   openChangePasswordDialog() {
     const dialogRef = this.dialog.open(ChangePasswordComponent, {

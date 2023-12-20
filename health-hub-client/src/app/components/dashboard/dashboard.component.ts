@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,6 +26,7 @@ export class DashboardComponent implements OnInit {
   loggedFirstName: any;
   loggedLastName: any;
   userId: any = localStorage.getItem('userId');
+  authorizationCode: string | undefined;
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -53,7 +55,7 @@ export class DashboardComponent implements OnInit {
     })
   );
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute) { }
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
@@ -61,11 +63,15 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     // Deserialize the userInfo from localStorage and assign it to the user variable
+    this.authorizationCode = this.route.snapshot.queryParams['code'];
+    
+    
+
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       this.user = JSON.parse(userInfo);
     }
-    console.log("UserInfo", userInfo);
+    
     //get the currently logged userId
     this.loggedFirstName = this.user?.firstname;
     this.loggedLastName = this.user?.lastname;
