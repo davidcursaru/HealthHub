@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
     this.goalsCurrentDayValue = localStorage.getItem("HydrationGoalsCurrentDay");
     if (this.water == null || this.goalsCurrentDayValue == null) {
       // window.location.reload();
-      setTimeout(() => { }, 0);
+      setTimeout(() => { }, 1);
     }
     this.percentage = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
     this.percentageTitle = this.percentage.toString() + "%";
