@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user.interface';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,26 @@ export class AuthService {
 
     // Redirect the user to Google's OAuth consent screen
     window.location.href = authUrl;
+  }
+
+  exchangeCodeForTokens(authorizationCode: string): Promise<any> {
+    const body = { code: authorizationCode };
+    const endpoint = environment.userManagement.baseUrl + 'google/tokenexchange';
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+        // Add any additional headers if required
+      })
+    };
+
+    return this.http.post<any>(endpoint, body, httpOptions)
+      .toPromise()
+      .then(response => {
+        return response; // Process the response as needed
+      })
+      .catch(error => {
+        throw new Error('Failed to exchange authorization code for tokens: ' + error.message);
+      });
   }
 
   logout() {

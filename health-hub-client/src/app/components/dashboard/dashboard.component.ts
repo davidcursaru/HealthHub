@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -55,7 +56,7 @@ export class DashboardComponent implements OnInit {
     })
   );
 
-  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute) { }
+  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private authService: AuthService) { }
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
@@ -64,6 +65,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     // Deserialize the userInfo from localStorage and assign it to the user variable
     this.authorizationCode = this.route.snapshot.queryParams['code'];
+
+    if (this.authorizationCode) {
+      // Send authorization code to your ASP.NET backend for token exchange
+      
+        this.sendAuthorizationCodeToBackend(this.authorizationCode);
+      
+    } else {
+      // Handle error or redirect to an error page
+      
+    }
     
     
 
@@ -109,5 +120,17 @@ export class DashboardComponent implements OnInit {
     }
     const p = (part / whole) * 100;
     return Math.floor(p);
+  }
+
+  sendAuthorizationCodeToBackend(authorizationCode: string): void {
+    this.authService.exchangeCodeForTokens(authorizationCode)
+      .then(response => {
+        console.log('Tokens received:', response);
+        // Process the tokens received from the backend
+      })
+      .catch(error => {
+        console.error('Error:', error.message);
+        
+      });
   }
 }

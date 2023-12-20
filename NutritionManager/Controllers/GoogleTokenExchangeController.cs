@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NutritionManager.Controllers
 {
-    [Route("api/google/tokenexchange")]
+    [Route("api/[controller]")]
     [ApiController]
     public class GoogleTokenExchangeController : ControllerBase
     {

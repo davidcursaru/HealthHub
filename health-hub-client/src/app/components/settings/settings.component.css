@@ -38,15 +38,16 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-right: 2%;
     border-radius: 10px;
-    margin-bottom: 20px; 
+    margin-bottom: 30px; 
 }
 
 .user-profile-editor {
+    align-items: center;
     display: flex;
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 10px;
-    margin-bottom: 20px; 
+    margin-bottom: 30px; 
     font-weight: bold;
     width: 70%;
 }
@@ -54,6 +55,8 @@
 .usr-title {
     padding: 5px;
     color: #0c1113;
+   
+
 }
 
 .profile-picture {
@@ -150,9 +153,33 @@ button:disabled {
     margin-bottom: 10px;
 }
 
-.change-password-btn {
+.google-sign-in-btn {
     color: #fff;
+    width: 250px;
+    margin-bottom: 10px;
+    position: relative;
+    padding-right: 30px; /* Adjust the padding to accommodate the icon */
+    /* Other button styles */
+  
+    /* Example Google icon */
+    background: url('https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg') no-repeat;
+    background-size: 28px 28px; /* Adjust the size of the icon */
+    background-position: right 10px center;
+    
 }
+
+.google-sign-in-btn:hover {
+    background-color:  #0992B8;
+}
+
+.google-sign-in-btn::after {
+    content: '';
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust the position of the icon */
+  transform: translateY(-50%);
+  background-size: contain;
+  }
 
 .delete-account-btn {
     background-color: #ff4f4f;
