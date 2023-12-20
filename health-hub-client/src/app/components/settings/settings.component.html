@@ -1,8 +1,6 @@
 <div class="user-profile-wrapper">
     <div class="edit-profile">
-        <div>
-            <mat-spinner value="40" mode="determinate"></mat-spinner>
-        </div>
+       
         <div class="edit-profile-desc">
             <h3>Edit your profile</h3>
             <p>Your profile description</p>
@@ -21,7 +19,7 @@
             <div class="profile-content">
                 <div class="project-count">
                     <!-- <p>{{ user.projects.length }}</p> -->
-                    <span>Projects</span>
+                    <span>{{user.lastname}} {{user.firstname}}</span>
                 </div>
                 <div class="buttons-container">
                     <button mat-raised-button color="primary" type="button" class="change-password-btn"
@@ -30,6 +28,9 @@
                     <button mat-raised-button color="warn" type="button" class="delete-account-btn"
                         (click)="openDeleteAccountConfirmationDialog()">Delete
                         Account</button>
+                        <p>Link up with your google account</p>
+                    <button mat-raised-button color="primary" type="button" class="change-password-btn"
+                        >Sign in with Google</button>
                 </div>
             </div>
         </div>

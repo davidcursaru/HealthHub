@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    
 }
 
 .edit-profile {
@@ -11,12 +12,13 @@
     flex-wrap: wrap;
     width: 90%;
     background: rgb(255, 255, 255);
-    background: linear-gradient(270deg,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(93, 172, 190, 0.6083683473389356) 37%);
+    background: linear-gradient(90deg,
+            #0992B8 0%,
+            #2cb9a2b4) 80%;
     margin: 10px 20px;
     padding: 15px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
 }
 
 .edit-profile>div {
@@ -24,20 +26,22 @@
 }
 
 .edit-profile-desc {
-    color: #fff;
+    color: #161414;
 }
 
 .user-profile {
     display: flex;
     margin: 10px 20px;
     height: 100%;
+    
 }
 
 .user-profile-info {
     width: 34%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-right: 2%;
-    /* margin-bottom: 60px; */
+    border-radius: 10px;
+    margin-bottom: 30px; 
 }
 
 .user-profile-editor {
@@ -45,11 +49,14 @@
     flex-direction: column;
     width: 60%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 10px;
+    margin-bottom: 30px; 
+    font-weight: bold;
 }
 
 .usr-title {
     padding: 5px;
-    color: #5dacbe;
+    color: #0c1113;
 }
 
 .profile-picture {
@@ -97,7 +104,7 @@ button {
     width: 110%;
     padding: 10px;
     margin-top: 10px;
-    background-color: #4caf50;
+    background-color: #0992B8;
     color: white;
     border: none;
     border-radius: 4px;
@@ -120,6 +127,7 @@ button:disabled {
     text-align: center;
     margin-bottom: 10px;
     color: #888;
+    font-weight: bold;
 }
 
 .project-count p {
@@ -146,7 +154,6 @@ button:disabled {
 }
 
 .change-password-btn {
-    background-color: #5dacbe;
     color: #fff;
 }
 
@@ -156,7 +163,7 @@ button:disabled {
 }
 
 .change-password-btn:hover {
-    background-color: #5e99a8;
+    background-color:  #0992B8;
 }
 
 .delete-account-btn:hover {
