@@ -34,6 +34,7 @@ namespace NutritionManager.Controllers
                 Username = registerDto.Username.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key,
+                RefreshToken = "",
                 Firstname = registerDto.Firstname,
                 Lastname = registerDto.Lastname,
                 Email = registerDto.Email,

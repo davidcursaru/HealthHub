@@ -16,6 +16,7 @@ namespace NutritionManager.Extensions
             });
 
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IEncryptionService, EncryptionService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGoalsRepository, GoalsRepository>();
             services.AddScoped<IExerciseLogsRepository, ExerciseLogsRepository>();

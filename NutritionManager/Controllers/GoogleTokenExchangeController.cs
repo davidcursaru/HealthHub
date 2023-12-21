@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NutritionManager.Entities;
+using NutritionManager.Interfaces;
+using NutritionManager.Services;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -12,19 +15,22 @@ namespace NutritionManager.Controllers
     public class GoogleTokenExchangeController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly EncryptionService _encryptionService;
+        private readonly IUserRepository _userRepository;
 
-        public GoogleTokenExchangeController(IHttpClientFactory httpClientFactory)
+        public GoogleTokenExchangeController(IHttpClientFactory httpClientFactory, IUserRepository userRepository)
         {
             _httpClientFactory = httpClientFactory;
+            _userRepository = userRepository;
         }
 
-        [HttpPost("google/tokenexchange")]
-        public async Task<IActionResult> ExchangeCodeForTokens([FromBody] string authorizationCode)
+        [HttpPost("google/tokenexchange/{userId}")]
+        public async Task<IActionResult> ExchangeCodeForTokens([FromBody] string authorizationCode, int userId)
         {
             try
             {
-                string clientId = "127406299666-bclt8sqnp7kitp93tepatq1pk63p3273.apps.googleusercontent.com";
-                string clientSecret = "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";
+                string clientId = "107922064959-rbl1v0muvto2dkmccsbtj5epu3r6ricq.apps.googleusercontent.com";
+                string clientSecret = "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";
                 string redirectUri = "http://localhost:4200/layout/dashboard";
 
                 var requestData = new Dictionary<string, string>
@@ -47,6 +53,10 @@ namespace NutritionManager.Controllers
                     {
                         PropertyNameCaseInsensitive = true
                     });
+
+                    User user = await _userRepository.GetUserByIdAync(userId);
+                    user.RefreshToken = tokenResponse.Refresh_token;
+                    await _userRepository.SaveAllAsync();
 
                     // Store tokens securely in your backend or perform further actions with the tokens
                     return Ok(tokenResponse);
