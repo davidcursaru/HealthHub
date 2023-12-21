@@ -68,21 +68,21 @@ export class DashboardComponent implements OnInit {
 
     if (this.authorizationCode) {
       // Send authorization code to your ASP.NET backend for token exchange
-      
-        this.sendAuthorizationCodeToBackend(this.authorizationCode);
-      
+
+      this.sendAuthorizationCodeToBackend(this.authorizationCode);
+
     } else {
       // Handle error or redirect to an error page
-      
+
     }
-    
-    
+
+
 
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       this.user = JSON.parse(userInfo);
     }
-    
+
     //get the currently logged userId
     this.loggedFirstName = this.user?.firstname;
     this.loggedLastName = this.user?.lastname;
@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
     }
     this.percentage = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
     this.percentageTitle = this.percentage.toString() + "%";
-    console.log("percentage: ", this.percentage);
+
   }
 
   //Function to calculate precentage for the progress circle
@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit {
       })
       .catch(error => {
         console.error('Error:', error.message);
-        
+
       });
   }
 }

@@ -38,13 +38,13 @@ export class LayoutComponent implements OnInit {
       this.userService.getFoodCalories('500g steak').subscribe((res: any) => {
         const calories = res[0].cholesterol_mg;
         localStorage.setItem("caloriesFromFood", calories);
-        console.log(calories);
+
       });
 
       this.userService.getCaloriesBurned('boxing').subscribe((res) => {
         const caloriesBurned = res[0].calories_per_hour;
         localStorage.setItem("caloriesBurned", caloriesBurned);
-        console.log("Calories burned: ", caloriesBurned);
+
       });
     });
 
