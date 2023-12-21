@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
   loggedFirstName: any;
   loggedLastName: any;
   userId: any = localStorage.getItem('userId');
-  authorizationCode: string | undefined;
+  authorizationCode: string | any;
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -55,6 +55,7 @@ export class DashboardComponent implements OnInit {
       ];
     })
   );
+  decodedAuthorizationCode: string |  any;
 
   constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private authService: AuthService) { }
 
@@ -65,11 +66,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     // Deserialize the userInfo from localStorage and assign it to the user variable
     this.authorizationCode = this.route.snapshot.queryParams['code'];
-
-    if (this.authorizationCode) {
+    this.decodedAuthorizationCode = decodeURIComponent(this.authorizationCode);
+    console.log(this.decodedAuthorizationCode);
+    
+    if (this.decodedAuthorizationCode) {
       // Send authorization code to your ASP.NET backend for token exchange
 
-      this.sendAuthorizationCodeToBackend(this.authorizationCode);
+      this.sendAuthorizationCodeToBackend(this.decodedAuthorizationCode);
 
     } else {
       // Handle error or redirect to an error page
@@ -124,13 +127,6 @@ export class DashboardComponent implements OnInit {
 
   sendAuthorizationCodeToBackend(authorizationCode: string): void {
     this.authService.exchangeCodeForTokens(authorizationCode)
-      .then(response => {
-        console.log('Tokens received:', response);
-        // Process the tokens received from the backend
-      })
-      .catch(error => {
-        console.error('Error:', error.message);
-
-      });
+     
   }
 }

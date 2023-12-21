@@ -44,30 +44,33 @@ export class AuthService {
     const clientId = '127406299666-bclt8sqnp7kitp93tepatq1pk63p3273.apps.googleusercontent.com';
     const redirectUri = 'http://localhost:4200/layout/dashboard';
     const scope = 'https://www.googleapis.com/auth/fitness.activity.read';
-    const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&prompt=consent&access_type=offline&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 
     // Redirect the user to Google's OAuth consent screen
     window.location.href = authUrl;
   }
 
-  exchangeCodeForTokens(authorizationCode: string): Promise<any> {
-    const body = { code: authorizationCode };
-    const endpoint = environment.userManagement.baseUrl + 'google/tokenexchange';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-        // Add any additional headers if required
-      })
-    };
+  exchangeCodeForTokens(authorizationCode: string): void {
+    const body = JSON.stringify( authorizationCode );
+    console.log("body: ",body);
+    const endpoint = environment.userManagement.baseUrl + 'GoogleTokenExchange/google/tokenexchange';
+  
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    
 
-    return this.http.post<any>(endpoint, body, httpOptions)
-      .toPromise()
-      .then(response => {
-        return response; // Process the response as needed
-      })
-      .catch(error => {
-        throw new Error('Failed to exchange authorization code for tokens: ' + error.message);
-      });
+    this.http.post<any>(endpoint, body, { headers }).subscribe(
+      response => {
+        console.log('Response:', response);
+        // Handle the response as needed
+      },
+      error => {
+        console.error('Error:', error);
+        // Handle errors if any
+      }
+    );
+  
   }
 
   logout() {

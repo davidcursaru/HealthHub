@@ -18,7 +18,7 @@ namespace NutritionManager.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [HttpPost]
+        [HttpPost("google/tokenexchange")]
         public async Task<IActionResult> ExchangeCodeForTokens([FromBody] string authorizationCode)
         {
             try
