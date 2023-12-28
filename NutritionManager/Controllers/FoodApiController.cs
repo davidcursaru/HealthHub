@@ -7,11 +7,13 @@ namespace NutritionManager.Controllers
     public class FoodApiController : ControllerBase
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public FoodApiController(IHttpClientFactory httpClientFactory)
+        public FoodApiController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("https://api.api-ninjas.com/v1/");
+            _configuration = configuration;
         }
 
         [HttpGet("nutrition")]
@@ -19,7 +21,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-                string apiKey = "fbr6JUc9cxJKGnhXgfHMWw==FDIAvsijhTShl7hI"; // Replace with your actual API key
+                string apiKey = _configuration["NinjasAPIKey:APIKey"];
 
                 _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 
@@ -28,7 +30,7 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    return Ok(result); // Return the response data
+                    return Ok(result); 
                 }
                 else
                 {

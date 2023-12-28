@@ -2,6 +2,7 @@
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
 using NutritionManager.Services;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -17,11 +18,13 @@ namespace NutritionManager.Controllers
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly EncryptionService _encryptionService;
         private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
 
-        public GoogleTokenExchangeController(IHttpClientFactory httpClientFactory, IUserRepository userRepository)
+        public GoogleTokenExchangeController(IHttpClientFactory httpClientFactory, IUserRepository userRepository, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _userRepository = userRepository;
+            _configuration = configuration;
         }
 
         [HttpPost("google/tokenexchange/{userId}")]
@@ -29,8 +32,8 @@ namespace NutritionManager.Controllers
         {
             try
             {
-                string clientId = "107922064959-rbl1v0muvto2dkmccsbtj5epu3r6ricq.apps.googleusercontent.com";
-                string clientSecret = "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";
+                string clientId = _configuration["GoogleAuth:ClientId"]; ;
+                string clientSecret = _configuration["GoogleAuth:ClientSecret"]; 
                 string redirectUri = "http://localhost:4200/layout/dashboard";
 
                 var requestData = new Dictionary<string, string>
@@ -56,6 +59,7 @@ namespace NutritionManager.Controllers
 
                     User user = await _userRepository.GetUserByIdAync(userId);
                     user.RefreshToken = tokenResponse.Refresh_token;
+                    user.AccessToken = tokenResponse.Access_token;
                     await _userRepository.SaveAllAsync();
 
                     // Store tokens securely in your backend or perform further actions with the tokens
