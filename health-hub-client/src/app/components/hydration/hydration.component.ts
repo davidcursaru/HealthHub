@@ -18,7 +18,7 @@ export class HydrationComponent implements OnInit {
   }
 
   createLog() {
-    const userId = 7;
+    const userId = 1;
     const hydrationDate = this.currentDate;
     const liters = this.litersInput;
 

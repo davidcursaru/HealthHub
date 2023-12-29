@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { GoogleAPIService } from 'src/app/services/google-api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,9 +17,21 @@ import { AuthService } from 'src/app/services/auth.service';
 export class DashboardComponent implements OnInit {
   user: User | null = null;
   water: any;
+  steps: any;
+  activeMinutes: any;
+  StepsCountCurrentDay: any;
+  BMRCaloriesCurrentDay: any;
+  HeartMinutesCurrentDay: any;
+  ActiveMinutesCurrentDay: any;
   goalsCurrentDayValue: any;
-  percentage: any;
-  percentageTitle: any;
+  goalsCurrentDaySteps: number=200;
+  goalsCurrentDayActiveMinutes: number= 10;
+  percentageHydration: any;
+  percentageSteps: any;
+  percentageActiveMinutes: any;
+  percentageTitleHydration: any;
+  percentageTitleSteps: any;
+  percentageTitleActiveMinutes: any;
   startDate: Date = new Date();
   endDate: Date = new Date();
   isoDateString1 = this.startDate.toISOString();
@@ -28,6 +41,9 @@ export class DashboardComponent implements OnInit {
   loggedLastName: any;
   userId: any = localStorage.getItem('userId');
   authorizationCode: string | any;
+  startTimeMillis: number = 0;
+  endTimeMillis: number = 0;
+
 
   private breakpointObserver = inject(BreakpointObserver);
 
@@ -50,14 +66,21 @@ export class DashboardComponent implements OnInit {
         { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
         { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
         { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
-        { title: 'Report overview month/week/day', cols: 2, rows: 3, route: 'layout/reports' },
-        { title: 'Upcoming activity/ reminder', cols: 1, rows: 3, route: 'layout/scheduling' }
+        { title: 'Report overview', cols: 2, rows: 4, route: 'layout/reports' },
+        { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
+        { title: 'Active minutes', cols: 1, rows: 2 }
       ];
     })
   );
   decodedAuthorizationCode: string | any;
 
-  constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private googleAPIService: GoogleAPIService
+  ) {}
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
@@ -67,6 +90,10 @@ export class DashboardComponent implements OnInit {
     // Deserialize the userInfo from localStorage and assign it to the user variable
     this.authorizationCode = this.route.snapshot.queryParams['code'];
     this.decodedAuthorizationCode = decodeURIComponent(this.authorizationCode);
+
+    this.setTimeRangeMillis();
+    console.log("start time in millis: ", this.startTimeMillis);
+    console.log("end time in millis: ", this.endTimeMillis);
 
 
     if (this.decodedAuthorizationCode) {
@@ -79,7 +106,10 @@ export class DashboardComponent implements OnInit {
 
     }
 
-
+    this.getStepCountData();
+    this.getBMRCaloriesData();
+    this.getHeartMinutesData();
+    this.getActiveMinutesData();
 
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
@@ -111,8 +141,20 @@ export class DashboardComponent implements OnInit {
       // window.location.reload();
       setTimeout(() => { }, 1);
     }
-    this.percentage = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
-    this.percentageTitle = this.percentage.toString() + "%";
+
+    this.steps= localStorage.getItem("StepsCountCurrentDay");
+    this.activeMinutes = localStorage.getItem("ActiveMinutesCurrentDay");
+
+
+    this.percentageHydration = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
+    this.percentageTitleHydration = this.percentageHydration.toString() + "%";
+   
+
+    this.percentageSteps = this.calculatePercentage(Number(this.steps), Number(this.goalsCurrentDaySteps));
+    this.percentageTitleSteps = this.percentageSteps.toString() + "%";
+    
+    this.percentageActiveMinutes = this.calculatePercentage(Number(this.activeMinutes), Number(this.goalsCurrentDayActiveMinutes));
+    this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
 
   }
 
@@ -129,4 +171,83 @@ export class DashboardComponent implements OnInit {
     this.authService.exchangeCodeForTokens(authorizationCode)
 
   }
+
+  setTimeRangeMillis(): void {
+    const now = new Date();
+    this.endTimeMillis = Date.now();
+    now.setHours(0, 0, 0, 0); 
+    this.startTimeMillis = now.getTime();
+  }
+
+  getStepCountData(): void {
+    this.googleAPIService.getStepCount(this.userId, this.startTimeMillis, this.endTimeMillis)
+      .subscribe(
+        (data) => {
+          // Handle the step count data received from the backend
+          this.StepsCountCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
+          localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay.toString());
+          console.log("Steps count today: ", this.StepsCountCurrentDay);
+
+        },
+        (error) => {
+          console.error('Error fetching step count data:', error);
+        }
+      );
+  }
+
+  getBMRCaloriesData(): void {
+    this.googleAPIService.getBMRCalories(this.userId, this.startTimeMillis, this.endTimeMillis)
+      .subscribe(
+        (data) => {
+          // Handle the step count data received from the backend
+          this.BMRCaloriesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
+          const roundedValue = Math.round(this.BMRCaloriesCurrentDay);
+          localStorage.setItem("BMRCaloriesCurrentDay", roundedValue.toString());
+          console.log("BMR Calories today: ", roundedValue);
+
+        },
+        (error) => {
+          console.error('Error fetching step count data:', error);
+        }
+      );
+  }
+
+  getHeartMinutesData(): void {
+    this.googleAPIService.getHeartMinutes(this.userId, this.startTimeMillis, this.endTimeMillis)
+      .subscribe(
+        (data) => {
+          // Handle the step count data received from the backend
+          this.HeartMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
+          localStorage.setItem("HeartMinutesCurrentDay", this.HeartMinutesCurrentDay);
+          console.log("Heart minutes today: ", this.HeartMinutesCurrentDay);
+
+        },
+        (error) => {
+          console.error('Error fetching step count data:', error);
+        }
+      );
+  }
+
+  getActiveMinutesData(): void {
+    this.googleAPIService.getActiveMinutes(this.userId, this.startTimeMillis, this.endTimeMillis)
+      .subscribe(
+        (data) => {
+          // Handle the step count data received from the backend
+          this.ActiveMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
+          localStorage.setItem("ActiveMinutesCurrentDay", this.ActiveMinutesCurrentDay);
+          console.log("Active minutes today: ", this.ActiveMinutesCurrentDay);
+
+        },
+        (error) => {
+          console.error('Error fetching step count data:', error);
+        }
+      );
+  }
+
+
+
+
+
+
+
 }

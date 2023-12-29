@@ -148,6 +148,8 @@ export class UserService {
     localStorage.removeItem('userId');
     localStorage.removeItem('caloriesFromFood');
     localStorage.removeItem('waterQuantity');
+    localStorage.removeItem('StepsCountCurrentDay');
+    localStorage.removeItem('ActiveMinutesCurrentDay');
   }
 
 }

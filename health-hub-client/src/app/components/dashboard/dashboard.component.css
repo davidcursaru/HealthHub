@@ -10,7 +10,35 @@
 
 .mat-h1 {
   font-size: x-large;
+  display: flex;
+  justify-content: space-between;
 }
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.heart-points {
+  font-size: 1em; /* Smaller font size for the Heart Points */
+  display: flex;
+  align-items: center;
+  
+}
+
+.points{
+  margin-left: 3px;
+}
+
+.icon {
+  font-size: 1.5em; /* Larger font size for the icon */
+  vertical-align: middle;
+  margin-right: 4px; /* Adjust icon spacing */
+  color: #0992B8;
+}
+
 
 .dashboard-card {
   position: absolute;

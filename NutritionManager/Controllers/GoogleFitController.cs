@@ -110,7 +110,7 @@ namespace NutritionManager.Controllers
 
         //Fetch the Burned calories from Google FIT in a time range
 
-        [HttpPost("BurnedCalories/{userId}")]
+        [HttpPost("BMRCalories/{userId}")]
         public async Task<IActionResult> GetBurnedCalories(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
         {
             try
