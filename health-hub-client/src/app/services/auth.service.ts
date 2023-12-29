@@ -11,11 +11,13 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(user: User) {
-    return this.http.post('https://localhost:5000/api/account/login', user);
+    const endpoint = environment.userManagement.baseUrl + 'account/login';
+    return this.http.post(endpoint, user);
   }
 
   register(user: User) {
-    return this.http.post('https://localhost:5000/api/account/register', user);
+    const endpoint = environment.userManagement.baseUrl + 'account/register';
+    return this.http.post(endpoint, user);
   }
 
   storeToken(tokenVal: string) {
@@ -41,7 +43,7 @@ export class AuthService {
 
   initiateOAuthFlow(): void {
     // Construct the OAuth consent screen URL
-    const clientId = '127406299666-bclt8sqnp7kitp93tepatq1pk63p3273.apps.googleusercontent.com';
+    const clientId = environment.GoogleAPI.clientId;
     const redirectUri = 'http://localhost:4200/layout/dashboard';
     const scope = 'https://www.googleapis.com/auth/fitness.activity.read';
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&prompt=consent&access_type=offline&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
@@ -53,7 +55,6 @@ export class AuthService {
   exchangeCodeForTokens(authorizationCode: string): void {
     const userId = localStorage.getItem('userId');
     const body = JSON.stringify(authorizationCode);
-    console.log("body: ", body);
     const endpoint = environment.userManagement.baseUrl + 'GoogleTokenExchange/google/tokenexchange/' + userId;
 
     const headers = new HttpHeaders({
@@ -63,12 +64,11 @@ export class AuthService {
 
     this.http.post<any>(endpoint, body, { headers }).subscribe(
       response => {
-        console.log('Response:', response);
-        // Handle the response as needed
+        console.log('ExchangeCodeForTokens Response:', response);
       },
       error => {
         console.error('Error:', error);
-        // Handle errors if any
+
       }
     );
 

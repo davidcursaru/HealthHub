@@ -25,13 +25,15 @@ namespace NutritionManager.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("dailysteps/{userId}")]
-        public async Task<IActionResult> GetDailyStepCount(int userId, [FromBody] DailyStepCountRequest dailyStepCountRequest)
+
+        //Fetch the step count from Google FIT in a time range
+
+        [HttpPost("StepsCount/{userId}")]
+        public async Task<IActionResult> GetStepCount(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
         {
             try
             {
-                // Retrieve user's access token and refresh token from the database based on the userId
-                // This assumes you have a service or repository to fetch user data
+                
                 User user = await _userRepository.GetUserByIdAync(userId);
 
 
@@ -50,18 +52,17 @@ namespace NutritionManager.Controllers
                     {
                         new
                         {
-                            dataTypeName = "com.google.active_minutes",
-                            dataSourceId = "derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes"
+                            dataTypeName = "com.google.step_count.delta",
+                            dataSourceId = "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps"
                         }
                     },
                     bucketByTime = new { durationMillis = 86400000 },
-                    startTimeMillis = dailyStepCountRequest.StartTimeMillis,
-                    endTimeMillis = dailyStepCountRequest.EndTimeMillis
+                    startTimeMillis = timeRangeRequest.StartTimeMillis,
+                    endTimeMillis = timeRangeRequest.EndTimeMillis
                 };
 
                 var client = _httpClientFactory.CreateClient();
 
-                // Add necessary headers (Authorization header with access token)
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
@@ -72,19 +73,17 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    // Parse content to extract daily step count information
-                    //var dailyStepCount = ParseContentForStepCount(responseContent);
-                    return Ok(responseContent); // Return the step count or relevant information
+                    return Ok(responseContent); 
                 }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        // Access token expired, attempt to refresh the token
+                        
                         var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
                         if (tokenRefreshed)
                         {
-                            // Retry step count request after obtaining the new access token
+                            
                             accessToken = user.AccessToken;
 
                             client.DefaultRequestHeaders.Remove("Authorization");
@@ -95,7 +94,255 @@ namespace NutritionManager.Controllers
                             if (retryResponse.IsSuccessStatusCode)
                             {
                                 var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
-                                return Ok(retryResponseContent); // Return the step count or relevant information
+                                return Ok(retryResponseContent); 
+                            }
+                        }
+                    }
+                    return BadRequest("Failed to fetch daily step count from Google Fit API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+        //Fetch the Burned calories from Google FIT in a time range
+
+        [HttpPost("BurnedCalories/{userId}")]
+        public async Task<IActionResult> GetBurnedCalories(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
+        {
+            try
+            {
+                
+                User user = await _userRepository.GetUserByIdAync(userId);
+
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                string accessToken = user.AccessToken;
+                string refreshToken = user.RefreshToken;
+
+
+                var requestData = new
+                {
+                    aggregateBy = new[]
+                    {
+                        new
+                        {
+                            dataTypeName = "com.google.calories.expended",
+                            dataSourceId = "derived:com.google.calories.expended:com.google.android.gms:merge_calories_expended"
+                        }
+                    },
+                    bucketByTime = new { durationMillis = 86400000 },
+                    startTimeMillis = timeRangeRequest.StartTimeMillis,
+                    endTimeMillis = timeRangeRequest.EndTimeMillis
+                };
+
+                var client = _httpClientFactory.CreateClient();
+
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent(JsonSerializer.Serialize(requestData), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Ok(responseContent); 
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
+                        if (tokenRefreshed)
+                        {
+                            
+                            accessToken = user.AccessToken;
+
+                            client.DefaultRequestHeaders.Remove("Authorization");
+                            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                            var retryResponse = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
+                                return Ok(retryResponseContent); 
+                            }
+                        }
+                    }
+                    return BadRequest("Failed to fetch daily step count from Google Fit API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+        //Fetch the active minutes from Google FIT in a time range
+
+        [HttpPost("ActiveMinutes/{userId}")]
+        public async Task<IActionResult> GetActiveMinutes(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
+        {
+            try
+            {
+               
+                User user = await _userRepository.GetUserByIdAync(userId);
+
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                string accessToken = user.AccessToken;
+                string refreshToken = user.RefreshToken;
+
+
+                var requestData = new
+                {
+                    aggregateBy = new[]
+                    {
+                        new
+                        {
+                            dataTypeName =  "com.google.active_minutes",
+                            dataSourceId = "derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes"
+                        }
+                    },
+                    bucketByTime = new { durationMillis = 86400000 },
+                    startTimeMillis = timeRangeRequest.StartTimeMillis,
+                    endTimeMillis = timeRangeRequest.EndTimeMillis
+                };
+
+                var client = _httpClientFactory.CreateClient();
+
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent(JsonSerializer.Serialize(requestData), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Ok(responseContent); 
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        
+                        var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
+                        if (tokenRefreshed)
+                        {
+                            
+                            accessToken = user.AccessToken;
+
+                            client.DefaultRequestHeaders.Remove("Authorization");
+                            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                            var retryResponse = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
+                                return Ok(retryResponseContent); 
+                            }
+                        }
+                    }
+                    return BadRequest("Failed to fetch daily step count from Google Fit API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+        //Fetch the heart minutes from Google FIT in a time range
+
+        [HttpPost("HeartMinutes/{userId}")]
+        public async Task<IActionResult> GetHeartMinutes(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
+        {
+            try
+            {
+               
+                User user = await _userRepository.GetUserByIdAync(userId);
+
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                string accessToken = user.AccessToken;
+                string refreshToken = user.RefreshToken;
+
+
+                var requestData = new
+                {
+                    aggregateBy = new[]
+                    {
+                        new
+                        {
+                            dataTypeName =  "com.google.heart_minutes",
+                            dataSourceId = "derived:com.google.heart_minutes:com.google.android.gms:merge_heart_minutes"
+                        }
+                    },
+                    bucketByTime = new { durationMillis = 86400000 },
+                    startTimeMillis = timeRangeRequest.StartTimeMillis,
+                    endTimeMillis = timeRangeRequest.EndTimeMillis
+                };
+
+                var client = _httpClientFactory.CreateClient();
+
+                
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent(JsonSerializer.Serialize(requestData), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Ok(responseContent); 
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        
+                        var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
+                        if (tokenRefreshed)
+                        {
+                            
+                            accessToken = user.AccessToken;
+
+                            client.DefaultRequestHeaders.Remove("Authorization");
+                            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                            var retryResponse = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
+                                return Ok(retryResponseContent); 
                             }
                         }
                     }
@@ -110,15 +357,10 @@ namespace NutritionManager.Controllers
 
         private async Task<bool> RefreshAccessToken(string refreshToken, int userId)
         {
-            // Implement logic to refresh the access token using the provided refresh token
-            // Make a request to the OAuth2 token endpoint with the refresh token
-            // Parse the response to obtain the new access token and update the database
-            // Return true if the access token was successfully refreshed, false otherwise
             User user = await _userRepository.GetUserByIdAync(userId);
 
             try
             {
-                // Example code to refresh the access token using the refresh token
                 var tokenRefreshUrl = "https://oauth2.googleapis.com/token";
 
                 string clientId = _configuration["GoogleAuth:ClientId"]; 
@@ -142,27 +384,27 @@ namespace NutritionManager.Controllers
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                    // Parse refreshedTokenResponse to extract the new access token
-                    // Update the database with the new access token for the user
+                    
                     user.AccessToken = RefreshedTokenResponse.Access_token;
                     await _userRepository.SaveAllAsync();
 
-                    return true; // Access token refreshed successfully
+                    return true; 
                 }
                 else
                 {
-                    // Handle the case where token refresh fails
-                    return false; // Access token refresh failed
+                    
+                    return false; 
                 }
             }
             catch (Exception)
             {
-                return false; // Access token refresh failed due to an exception
+                return false; 
             }
         }
     }
 
-    public class DailyStepCountRequest
+
+    public class TimeRangeRequest
     {
         public long StartTimeMillis { get; set; }
         public long EndTimeMillis { get; set; }

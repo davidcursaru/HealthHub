@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
       ];
     })
   );
-  decodedAuthorizationCode: string |  any;
+  decodedAuthorizationCode: string | any;
 
   constructor(private router: Router, private userService: UserService, private route: ActivatedRoute, private authService: AuthService) { }
 
@@ -67,8 +67,8 @@ export class DashboardComponent implements OnInit {
     // Deserialize the userInfo from localStorage and assign it to the user variable
     this.authorizationCode = this.route.snapshot.queryParams['code'];
     this.decodedAuthorizationCode = decodeURIComponent(this.authorizationCode);
-    console.log(this.decodedAuthorizationCode);
-    
+
+
     if (this.decodedAuthorizationCode) {
       // Send authorization code to your ASP.NET backend for token exchange
 
@@ -127,6 +127,6 @@ export class DashboardComponent implements OnInit {
 
   sendAuthorizationCodeToBackend(authorizationCode: string): void {
     this.authService.exchangeCodeForTokens(authorizationCode)
-     
+
   }
 }

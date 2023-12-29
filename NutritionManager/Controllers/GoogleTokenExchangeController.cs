@@ -62,8 +62,7 @@ namespace NutritionManager.Controllers
                     user.AccessToken = tokenResponse.Access_token;
                     await _userRepository.SaveAllAsync();
 
-                    // Store tokens securely in your backend or perform further actions with the tokens
-                    return Ok(tokenResponse);
+                    return Ok(200);
                 }
                 else
                 {
@@ -81,6 +80,6 @@ namespace NutritionManager.Controllers
     {
         public string Access_token { get; set; }
         public string Refresh_token { get; set; }
-        // Add other token-related properties if needed
+        
     }
 }
