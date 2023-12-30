@@ -19,16 +19,20 @@ export class DashboardComponent implements OnInit {
   water: any;
   steps: any;
   activeMinutes: any;
+  BMRcalories: any;
   StepsCountCurrentDay: any;
   BMRCaloriesCurrentDay: any;
   HeartMinutesCurrentDay: any;
   ActiveMinutesCurrentDay: any;
   goalsCurrentDayValue: any;
-  goalsCurrentDaySteps: number=200;
-  goalsCurrentDayActiveMinutes: number= 10;
+  goalsCurrentDaySteps: number=7500;
+  goalsCurrentDayActiveMinutes: number= 100;
+  goalsCurrentDayBMRcalories: number=3000;
+  percentageBMRcalories: any;
   percentageHydration: any;
   percentageSteps: any;
   percentageActiveMinutes: any;
+  percentageTitleBMRcalories: any;
   percentageTitleHydration: any;
   percentageTitleSteps: any;
   percentageTitleActiveMinutes: any;
@@ -144,7 +148,10 @@ export class DashboardComponent implements OnInit {
 
     this.steps= localStorage.getItem("StepsCountCurrentDay");
     this.activeMinutes = localStorage.getItem("ActiveMinutesCurrentDay");
+    this.BMRcalories = localStorage.getItem("BMRCaloriesCurrentDay");
 
+    this.percentageBMRcalories = this.calculatePercentage(Number(this.BMRcalories), Number(this.goalsCurrentDayBMRcalories));
+    this.percentageTitleBMRcalories = this.percentageBMRcalories.toString() + "%";
 
     this.percentageHydration = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
     this.percentageTitleHydration = this.percentageHydration.toString() + "%";
