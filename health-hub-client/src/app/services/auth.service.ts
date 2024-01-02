@@ -44,8 +44,9 @@ export class AuthService {
   initiateOAuthFlow(): void {
     // Construct the OAuth consent screen URL
     const clientId = environment.GoogleAPI.clientId;
+    const scope = 'https://www.googleapis.com/auth/fitness.activity.read https://www.googleapis.com/auth/fitness.sleep.read';
+
     const redirectUri = 'http://localhost:4200/layout/dashboard';
-    const scope = 'https://www.googleapis.com/auth/fitness.activity.read';
     const authUrl = `https://accounts.google.com/o/oauth2/auth?response_type=code&prompt=consent&access_type=offline&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
 
     // Redirect the user to Google's OAuth consent screen

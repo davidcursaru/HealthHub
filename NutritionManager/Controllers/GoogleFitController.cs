@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
-using NutritionManager.Repositories;
-using NutritionManager.Services;
-using System;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace NutritionManager.Controllers
 {
@@ -33,7 +28,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-                
+
                 User user = await _userRepository.GetUserByIdAync(userId);
 
 
@@ -44,7 +39,7 @@ namespace NutritionManager.Controllers
 
                 string accessToken = user.AccessToken;
                 string refreshToken = user.RefreshToken;
-               
+
 
                 var requestData = new
                 {
@@ -73,17 +68,17 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return Ok(responseContent); 
+                    return Ok(responseContent);
                 }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        
+
                         var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
                         if (tokenRefreshed)
                         {
-                            
+
                             accessToken = user.AccessToken;
 
                             client.DefaultRequestHeaders.Remove("Authorization");
@@ -94,7 +89,7 @@ namespace NutritionManager.Controllers
                             if (retryResponse.IsSuccessStatusCode)
                             {
                                 var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
-                                return Ok(retryResponseContent); 
+                                return Ok(retryResponseContent);
                             }
                         }
                     }
@@ -115,7 +110,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-                
+
                 User user = await _userRepository.GetUserByIdAync(userId);
 
 
@@ -155,7 +150,7 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return Ok(responseContent); 
+                    return Ok(responseContent);
                 }
                 else
                 {
@@ -164,7 +159,7 @@ namespace NutritionManager.Controllers
                         var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
                         if (tokenRefreshed)
                         {
-                            
+
                             accessToken = user.AccessToken;
 
                             client.DefaultRequestHeaders.Remove("Authorization");
@@ -175,7 +170,7 @@ namespace NutritionManager.Controllers
                             if (retryResponse.IsSuccessStatusCode)
                             {
                                 var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
-                                return Ok(retryResponseContent); 
+                                return Ok(retryResponseContent);
                             }
                         }
                     }
@@ -197,7 +192,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-               
+
                 User user = await _userRepository.GetUserByIdAync(userId);
 
 
@@ -237,17 +232,17 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return Ok(responseContent); 
+                    return Ok(responseContent);
                 }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        
+
                         var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
                         if (tokenRefreshed)
                         {
-                            
+
                             accessToken = user.AccessToken;
 
                             client.DefaultRequestHeaders.Remove("Authorization");
@@ -258,7 +253,7 @@ namespace NutritionManager.Controllers
                             if (retryResponse.IsSuccessStatusCode)
                             {
                                 var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
-                                return Ok(retryResponseContent); 
+                                return Ok(retryResponseContent);
                             }
                         }
                     }
@@ -280,7 +275,7 @@ namespace NutritionManager.Controllers
         {
             try
             {
-               
+
                 User user = await _userRepository.GetUserByIdAync(userId);
 
 
@@ -310,7 +305,7 @@ namespace NutritionManager.Controllers
 
                 var client = _httpClientFactory.CreateClient();
 
-                
+
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
@@ -321,17 +316,17 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    return Ok(responseContent); 
+                    return Ok(responseContent);
                 }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
-                        
+
                         var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
                         if (tokenRefreshed)
                         {
-                            
+
                             accessToken = user.AccessToken;
 
                             client.DefaultRequestHeaders.Remove("Authorization");
@@ -342,11 +337,158 @@ namespace NutritionManager.Controllers
                             if (retryResponse.IsSuccessStatusCode)
                             {
                                 var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
-                                return Ok(retryResponseContent); 
+                                return Ok(retryResponseContent);
                             }
                         }
                     }
                     return BadRequest("Failed to fetch daily step count from Google Fit API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        //Fetch sleep details (deep sleep, normal sleep, REM etc)
+
+
+
+        [HttpPost("SleepPhases/{userId}")]
+        public async Task<IActionResult> GetSleepPhases(int userId, [FromBody] TimeRangeRequest timeRangeRequest)
+        {
+            try
+            {
+
+                User user = await _userRepository.GetUserByIdAync(userId);
+
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                string accessToken = user.AccessToken;
+                string refreshToken = user.RefreshToken;
+
+
+                var requestData = new
+                {
+                    aggregateBy = new[]
+                    {
+                        new
+                        {
+                            dataTypeName =  "com.google.sleep.segment"
+
+
+                        }
+                    },
+
+                    startTimeMillis = timeRangeRequest.StartTimeMillis,
+                    endTimeMillis = timeRangeRequest.EndTimeMillis
+                };
+
+                var client = _httpClientFactory.CreateClient();
+
+
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var content = new StringContent(JsonSerializer.Serialize(requestData), System.Text.Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Ok(responseContent);
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+
+                        var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
+                        if (tokenRefreshed)
+                        {
+
+                            accessToken = user.AccessToken;
+
+                            client.DefaultRequestHeaders.Remove("Authorization");
+                            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                            var retryResponse = await client.PostAsync("https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate", content);
+
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
+                                return Ok(retryResponseContent);
+                            }
+                        }
+                    }
+                    return BadRequest("Failed to fetch daily step count from Google Fit API.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+        //Fetch sessions from Google Fit
+
+        [HttpGet("Sessions/{userId}")]
+        public async Task<IActionResult> GetSessions(int userId, string startTime, string endTime)
+        {
+            try
+            {
+                // Construct the request URL with start and end time parameters
+                string requestUrl = $"https://www.googleapis.com/fitness/v1/users/me/sessions?startTime={startTime}&endTime={endTime}";
+
+                User user = await _userRepository.GetUserByIdAync(userId);
+
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                string accessToken = user.AccessToken;
+                string refreshToken = user.RefreshToken;
+
+                var client = _httpClientFactory.CreateClient();
+
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+
+                var response = await client.GetAsync(requestUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Ok(responseContent);
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        var tokenRefreshed = await RefreshAccessToken(refreshToken, userId);
+                        if (tokenRefreshed)
+                        {
+                            accessToken = user.AccessToken;
+
+                            client.DefaultRequestHeaders.Remove("Authorization");
+                            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+
+                            var retryResponse = await client.GetAsync(requestUrl);
+
+                            if (retryResponse.IsSuccessStatusCode)
+                            {
+                                var retryResponseContent = await retryResponse.Content.ReadAsStringAsync();
+                                return Ok(retryResponseContent);
+                            }
+                        }
+                    }
+                    return BadRequest("Failed to fetch sessions from Google Fit API.");
                 }
             }
             catch (Exception ex)
@@ -363,7 +505,7 @@ namespace NutritionManager.Controllers
             {
                 var tokenRefreshUrl = "https://oauth2.googleapis.com/token";
 
-                string clientId = _configuration["GoogleAuth:ClientId"]; 
+                string clientId = _configuration["GoogleAuth:ClientId"];
                 string clientSecret = _configuration["GoogleAuth:ClientSecret"];
 
                 var requestData = new Dictionary<string, string>
@@ -384,21 +526,21 @@ namespace NutritionManager.Controllers
                     {
                         PropertyNameCaseInsensitive = true
                     });
-                    
+
                     user.AccessToken = RefreshedTokenResponse.Access_token;
                     await _userRepository.SaveAllAsync();
 
-                    return true; 
+                    return true;
                 }
                 else
                 {
-                    
-                    return false; 
+
+                    return false;
                 }
             }
             catch (Exception)
             {
-                return false; 
+                return false;
             }
         }
     }
@@ -413,6 +555,6 @@ namespace NutritionManager.Controllers
     public class RefreshedTokenResponse
     {
         public string Access_token { get; set; }
-       
+
     }
 }
