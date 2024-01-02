@@ -259,6 +259,7 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching step count data:', error);
+          
         }
       );
   }
