@@ -33,6 +33,24 @@ namespace NutritionManager.Repositories
             return await _context.ExerciseLogs.ToListAsync();
         }
 
+        public async Task<IEnumerable<ExerciseLogs>> GetExerciseLogsInterval(int userId, DateTime startDate, DateTime endDate)
+        {
+            if
+            (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var exerciseLogs = await _context.ExerciseLogs
+                .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId).ToListAsync();
+
+            return exerciseLogs;
+        }
+
         public async Task<ExerciseLogs> GetExerciseLogsByIdAsync(int id)
         {
             return await _context.ExerciseLogs.FindAsync(id);

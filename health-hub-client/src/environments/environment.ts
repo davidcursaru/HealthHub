@@ -5,6 +5,6 @@ export const environment = {
   },
 
   GoogleAPI: {
-    clientId: '127406299666-bclt8sqnp7kitp93tepatq1pk63p3273.apps.googleusercontent.com'
+    clientId: '107922064959-rbl1v0muvto2dkmccsbtj5epu3r6ricq.apps.googleusercontent.com'
   }
 };

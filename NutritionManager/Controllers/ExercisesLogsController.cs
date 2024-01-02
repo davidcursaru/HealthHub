@@ -35,6 +35,12 @@ namespace NutritionManager.Controllers
             return await _exerciseLogsRepository.GetExerciseLogsByIdAsync(id);
         }
 
+        [HttpGet("interval")]
+        public async Task<IEnumerable<ExerciseLogs>> GetExerciseLogsIntervalAsync(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _exerciseLogsRepository.GetExerciseLogsInterval(userId, startDate, endDate);
+        }
+
         [HttpPost]
         public async Task<ExerciseLogs> CreateExerciseLogsAsync(ExerciseLogs exerciseLogs)
         {

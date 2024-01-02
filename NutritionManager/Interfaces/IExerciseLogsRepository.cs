@@ -8,6 +8,7 @@ namespace NutritionManager.Interfaces
         Task<IEnumerable<ExerciseLogs>> GetAllExercisesLogsAsync();
         Task<ExerciseLogs> GetExerciseLogsByIdAsync(int id);
         Task<IEnumerable<ExerciseLogs>> GetAllExercisesByUserId(int userId);
+        Task<IEnumerable<ExerciseLogs>> GetExerciseLogsInterval(int userId, DateTime startDate, DateTime endDate);
         Task DeleteExerciseAsync(int id);
         Task UpdateExerciseAsync(ExerciseLogs exercise);
     }

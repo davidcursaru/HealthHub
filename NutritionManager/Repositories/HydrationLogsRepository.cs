@@ -48,12 +48,10 @@ namespace NutritionManager.Repositories
 
         public async Task<int> GetHydrationLogsCount(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
-
             if
             (startDate.Date == endDate.Date)
             {
                 endDate = endDate.AddDays(1);
-               
             }
             else
             {

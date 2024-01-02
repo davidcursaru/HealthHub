@@ -3,7 +3,7 @@
   <div class="dashboard-header">
     <h1 class="mat-h1">Dashboard Overview</h1>
     <p class="heart-points">
-      <mat-icon class="icon">favorite_border</mat-icon> Cardio Points:  <span class="points">{{ HeartMinutesCurrentDay ? HeartMinutesCurrentDay : '0' }}</span>
+      <mat-icon class="icon">favorite_border</mat-icon> Cardio Points:  <span class="points">{{ HeartMinutesCurrentDay }}</span>
     </p>
   </div>
   
@@ -136,7 +136,7 @@
           <div class="hydration-log-wrapper">
             <!-- Hydration logs information on the left side -->
             <div class="hydration-log-info">
-              <p><span class="bold">{{steps ? steps: 0}}</span><span class="grey-text">/{{goalsCurrentDaySteps}} steps</span></p>
+              <p><span class="bold">{{steps}}</span><span class="grey-text">/{{goalsCurrentDaySteps}} steps</span></p>
 
               <!-- Add more hydration logs here -->
             </div>
@@ -155,7 +155,7 @@
           <div class="hydration-log-wrapper">
             <!-- Hydration logs information on the left side -->
             <div class="hydration-log-info">
-              <p><span class="bold">{{activeMinutes ? activeMinutes: 0}}</span><span class="grey-text">/{{goalsCurrentDayActiveMinutes}} minutes</span></p>
+              <p><span class="bold">{{activeMinutes}}</span><span class="grey-text">/{{goalsCurrentDayActiveMinutes}} minutes</span></p>
 
               <!-- Add more hydration logs here -->
             </div>

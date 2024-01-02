@@ -25,9 +25,9 @@ export class DashboardComponent implements OnInit {
   HeartMinutesCurrentDay: any;
   ActiveMinutesCurrentDay: any;
   goalsCurrentDayValue: any;
-  goalsCurrentDaySteps: number=7500;
-  goalsCurrentDayActiveMinutes: number= 100;
-  goalsCurrentDayBMRcalories: number=3000;
+  goalsCurrentDaySteps: number = 7500;
+  goalsCurrentDayActiveMinutes: number = 100;
+  goalsCurrentDayBMRcalories: number = 3000;
   percentageBMRcalories: any;
   percentageHydration: any;
   percentageSteps: any;
@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private googleAPIService: GoogleAPIService
-  ) {}
+  ) { }
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
@@ -146,7 +146,7 @@ export class DashboardComponent implements OnInit {
       setTimeout(() => { }, 1);
     }
 
-    this.steps= localStorage.getItem("StepsCountCurrentDay");
+    this.steps = localStorage.getItem("StepsCountCurrentDay");
     this.activeMinutes = localStorage.getItem("ActiveMinutesCurrentDay");
     this.BMRcalories = localStorage.getItem("BMRCaloriesCurrentDay");
 
@@ -155,11 +155,11 @@ export class DashboardComponent implements OnInit {
 
     this.percentageHydration = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
     this.percentageTitleHydration = this.percentageHydration.toString() + "%";
-   
+
 
     this.percentageSteps = this.calculatePercentage(Number(this.steps), Number(this.goalsCurrentDaySteps));
     this.percentageTitleSteps = this.percentageSteps.toString() + "%";
-    
+
     this.percentageActiveMinutes = this.calculatePercentage(Number(this.activeMinutes), Number(this.goalsCurrentDayActiveMinutes));
     this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
 
@@ -182,7 +182,7 @@ export class DashboardComponent implements OnInit {
   setTimeRangeMillis(): void {
     const now = new Date();
     this.endTimeMillis = Date.now();
-    now.setHours(0, 0, 0, 0); 
+    now.setHours(0, 0, 0, 0);
     this.startTimeMillis = now.getTime();
   }
 
@@ -192,7 +192,10 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.StepsCountCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
-          localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay.toString());
+          if(this.StepsCountCurrentDay === undefined){
+            this.StepsCountCurrentDay = 0;
+          }
+          localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay);
           console.log("Steps count today: ", this.StepsCountCurrentDay);
 
         },
@@ -208,10 +211,13 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.BMRCaloriesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
-          const roundedValue = Math.round(this.BMRCaloriesCurrentDay);
+          const roundedValue = 0;
+          if (this.BMRCaloriesCurrentDay != undefined) {
+            const roundedValue = Math.round(this.BMRCaloriesCurrentDay);
+          }
+
           localStorage.setItem("BMRCaloriesCurrentDay", roundedValue.toString());
           console.log("BMR Calories today: ", roundedValue);
-
         },
         (error) => {
           console.error('Error fetching step count data:', error);
@@ -225,6 +231,9 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.HeartMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
+          if(this.HeartMinutesCurrentDay === undefined){
+            this.HeartMinutesCurrentDay = 0;
+          }
           localStorage.setItem("HeartMinutesCurrentDay", this.HeartMinutesCurrentDay);
           console.log("Heart minutes today: ", this.HeartMinutesCurrentDay);
 
@@ -241,6 +250,9 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.ActiveMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
+          if(this.ActiveMinutesCurrentDay === undefined){
+            this.ActiveMinutesCurrentDay = 0;
+          }
           localStorage.setItem("ActiveMinutesCurrentDay", this.ActiveMinutesCurrentDay);
           console.log("Active minutes today: ", this.ActiveMinutesCurrentDay);
 
