@@ -25,7 +25,7 @@ export class DashboardComponent implements OnInit {
   HeartMinutesCurrentDay: any;
   ActiveMinutesCurrentDay: any;
   goalsCurrentDayValue: any;
-  goalsCurrentDaySteps: number = 7500;
+  goalsCurrentDaySteps: any = 0;
   goalsCurrentDayActiveMinutes: number = 100;
   goalsCurrentDayBMRcalories: number = 3000;
   percentageBMRcalories: any;
@@ -125,6 +125,11 @@ export class DashboardComponent implements OnInit {
     this.loggedLastName = this.user?.lastname;
 
     //Service for getting the Goal/ Desired Value for the hydration goal type for the current day 
+    this.userService.getGoalsTotalValueForCurrentDay("steps", this.userId).subscribe(res => {
+      this.goalsCurrentDaySteps = res.toString();
+      //localStorage.setItem("HydrationGoalsCurrentDay", this.goalsCurrentDayValue);
+    });
+
     this.userService.getGoalsTotalValueForCurrentDay("hydration", this.userId).subscribe(res => {
       this.goalsCurrentDayValue = res;
       localStorage.setItem("HydrationGoalsCurrentDay", this.goalsCurrentDayValue);

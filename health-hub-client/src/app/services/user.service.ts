@@ -150,6 +150,8 @@ export class UserService {
     localStorage.removeItem('waterQuantity');
     localStorage.removeItem('StepsCountCurrentDay');
     localStorage.removeItem('ActiveMinutesCurrentDay');
+    localStorage.removeItem('BMRCaloriesCurrentDay');
+    localStorage.removeItem('HeartMinutesCurrentDay');
   }
 
 }
