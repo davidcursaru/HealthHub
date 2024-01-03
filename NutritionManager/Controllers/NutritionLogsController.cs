@@ -29,6 +29,12 @@ namespace NutritionManager.Controllers
             return await _nutritionLogsRepository.GetAllNutritionLogsByUserId(userId);
         }
 
+        [HttpGet("interval")]
+        public async Task<IEnumerable<NutritionLogs>> GetNutritionLogsIntervalAsync(int userId, DateTime startDate, DateTime endDate)
+        {
+            return await _nutritionLogsRepository.GetNutritionLogsInterval(userId, startDate, endDate);
+        }
+
         [HttpGet("id/{id}")]
         public async Task<NutritionLogs> GetNutritionLogsById(int id)
         {

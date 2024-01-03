@@ -39,6 +39,23 @@ namespace NutritionManager.Repositories
             return nutritionLogs;
         }
 
+        public async Task<IEnumerable<NutritionLogs>> GetNutritionLogsInterval(int userId, DateTime startDate, DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var nutritionLogs = await _context.NutritionLogs
+                .Where(r => r.ConsumptionDate >= startDate.Date && r.ConsumptionDate <= endDate.Date && r.UserId == userId).ToListAsync();
+
+            return nutritionLogs;
+        }
+
         public async Task<NutritionLogs> GetNutritionLogsById(int id)
         {
             return await _context.NutritionLogs.FindAsync(id);

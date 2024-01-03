@@ -1,4 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NutritionManager.Entities;
+using NutritionManager.Interfaces;
+using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace NutritionManager.Controllers
 {
@@ -8,9 +12,11 @@ namespace NutritionManager.Controllers
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly INutritionLogsRepository _nutritionLogsRepository;
 
-        public FoodApiController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public FoodApiController(IHttpClientFactory httpClientFactory, IConfiguration configuration, INutritionLogsRepository nutritionLogsRepository)
         {
+            _nutritionLogsRepository = nutritionLogsRepository;
             _httpClient = httpClientFactory.CreateClient();
             _httpClient.BaseAddress = new Uri("https://api.api-ninjas.com/v1/");
             _configuration = configuration;
@@ -30,7 +36,7 @@ namespace NutritionManager.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string result = await response.Content.ReadAsStringAsync();
-                    return Ok(result); 
+                    return Ok(result);
                 }
                 else
                 {
@@ -41,6 +47,55 @@ namespace NutritionManager.Controllers
             {
                 return StatusCode(500, $"Exception: {ex.Message}");
             }
+        }
+
+        [HttpGet("calories-intake")]
+        public async Task<string> GetCaloriesIntake(int userId, DateTime startDate, DateTime endDate)
+        {
+            IEnumerable<NutritionLogs> nutritionLogs = _nutritionLogsRepository.GetNutritionLogsInterval(userId, startDate, endDate).Result;
+            double caloriesSum = 0;
+            string apiKey = _configuration["NinjasAPIKey:APIKey"];
+            _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
+
+            List<double> tmp = new();
+            List<object> nutritionItems = new();
+            List<double> proteins = new();
+
+            for (int i = 0; i < nutritionLogs.Count(); i++)
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync($"nutrition?query={nutritionLogs.ElementAt(i).FoodConsumed}");
+                string result = await response.Content.ReadAsStringAsync();
+                JsonDocument doc = JsonDocument.Parse(result);
+                JsonElement root = doc.RootElement;
+
+                if (root.ValueKind == JsonValueKind.Array)
+                {
+                    var firstElement = root[0];
+                    double totalCalories = firstElement.GetProperty("calories").GetDouble();
+                    double totalProteins = firstElement.GetProperty("protein_g").GetDouble();
+                    caloriesSum += totalCalories; 
+                    tmp.Add(totalCalories);
+                    proteins.Add(totalProteins);
+                }
+
+                var nutritionItem = new
+                {
+                    Name = nutritionLogs.ElementAt(i).FoodConsumed,
+                    Calories = tmp[i],
+                    Proteins = proteins[i]
+                };
+                nutritionItems.Add(nutritionItem);
+            }
+
+            //caloriesSum = tmp.Sum();
+
+            var nutritionData = new
+            {
+                CaloriesSum = caloriesSum,
+                NutritionLogs = nutritionItems
+            };
+
+            return JsonSerializer.Serialize(nutritionData);
         }
     }
 }
