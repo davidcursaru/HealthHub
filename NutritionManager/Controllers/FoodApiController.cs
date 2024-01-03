@@ -63,7 +63,8 @@ namespace NutritionManager.Controllers
 
             for (int i = 0; i < nutritionLogs.Count(); i++)
             {
-                HttpResponseMessage response = await _httpClient.GetAsync($"nutrition?query={nutritionLogs.ElementAt(i).FoodConsumed}");
+                string conc = nutritionLogs.ElementAt(i).Grams.ToString() + "g " + nutritionLogs.ElementAt(i).FoodConsumed;
+                HttpResponseMessage response = await _httpClient.GetAsync($"nutrition?query={conc}");
                 string result = await response.Content.ReadAsStringAsync();
                 JsonDocument doc = JsonDocument.Parse(result);
                 JsonElement root = doc.RootElement;
