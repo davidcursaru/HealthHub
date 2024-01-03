@@ -22,20 +22,23 @@
 }
 
 .heart-points {
-  font-size: 1em; /* Smaller font size for the Heart Points */
+  font-size: 1em;
+  /* Smaller font size for the Heart Points */
   display: flex;
   align-items: center;
-  
+
 }
 
-.points{
+.points {
   margin-left: 3px;
 }
 
 .icon {
-  font-size: 1.5em; /* Larger font size for the icon */
+  font-size: 1.5em;
+  /* Larger font size for the icon */
   vertical-align: middle;
-  margin-right: 4px; /* Adjust icon spacing */
+  margin-right: 4px;
+  /* Adjust icon spacing */
   color: #0992B8;
 }
 
@@ -136,6 +139,13 @@
 .sixth-card {
 
   background: white;
+
+}
+
+.toggle-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
 
 }
 

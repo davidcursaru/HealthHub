@@ -16,37 +16,56 @@ import { GoogleAPIService } from 'src/app/services/google-api.service';
 
 export class DashboardComponent implements OnInit {
   user: User | null = null;
-  water: any;
-  steps: any;
-  activeMinutes: any;
-  BMRcalories: any;
+
+  showCaloriesBurned: boolean = true;
+
+  WaterConsumptionCurrentDay: any;
+  CaloriesIntakeCurrentDay: any;
   StepsCountCurrentDay: any;
   BMRCaloriesCurrentDay: any;
+  BurnedCaloriesFromExercises: any;
+  TotalBurnedCaloriesCurrentDay: any;
   HeartMinutesCurrentDay: any;
   ActiveMinutesCurrentDay: any;
-  goalsCurrentDayValue: any;
-  goalsCurrentDaySteps: any = 0;
-  goalsCurrentDayActiveMinutes: number = 100;
-  goalsCurrentDayBMRcalories: number = 3000;
-  percentageBMRcalories: any;
+  ExerciseDurationCurrentDay: any;
+
+  goalsCurrentDayHydration: any;
+  goalsCurrentDaySteps: any;
+  goalsCurrentDayActiveMinutes: any;
+  goalsCurrentDayBurnedCalories: any;
+  goalsCurrentDayExerciseDuration: any;
+  goalsCurrentDayCaloriesIntake: any;
+
+  percentageBurnedCalories: any;
+  percentageCaloriesIntake: any;
   percentageHydration: any;
   percentageSteps: any;
   percentageActiveMinutes: any;
-  percentageTitleBMRcalories: any;
+  percentageExercise: any;
+
+
+  percentageTitleBurnedcalories: any;
+  percentageTitleCaloriesIntake: any;
   percentageTitleHydration: any;
   percentageTitleSteps: any;
   percentageTitleActiveMinutes: any;
-  startDate: Date = new Date();
+  percentageTitleExercise: any;
+
+  currentDate = new Date();
+  startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0, 0);
   endDate: Date = new Date();
   isoDateString1 = this.startDate.toISOString();
   isoDateString2 = this.endDate.toISOString();
+  startTimeMillis: number = 0;
+  endTimeMillis: number = 0;
+
   loggedUserName: any;
   loggedFirstName: any;
   loggedLastName: any;
   userId: any = localStorage.getItem('userId');
+
   authorizationCode: string | any;
-  startTimeMillis: number = 0;
-  endTimeMillis: number = 0;
+
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -91,7 +110,16 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Deserialize the userInfo from localStorage and assign it to the user variable
+
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      this.user = JSON.parse(userInfo);
+    }
+
+    //get the currently logged userId
+    this.loggedFirstName = this.user?.firstname;
+    this.loggedLastName = this.user?.lastname;
+
     this.authorizationCode = this.route.snapshot.queryParams['code'];
     this.decodedAuthorizationCode = decodeURIComponent(this.authorizationCode);
 
@@ -114,59 +142,115 @@ export class DashboardComponent implements OnInit {
     this.getBMRCaloriesData();
     this.getHeartMinutesData();
     this.getActiveMinutesData();
+    this.getConsumedCaloriesInterval(this.userId, this.isoDateString1, this.isoDateString2);
+    this.getExerciseBurnedCaloriesInterval(this.userId, this.isoDateString1, this.isoDateString2);
 
-    const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
-      this.user = JSON.parse(userInfo);
-    }
-
-    //get the currently logged userId
-    this.loggedFirstName = this.user?.firstname;
-    this.loggedLastName = this.user?.lastname;
-
-    //Service for getting the Goal/ Desired Value for the hydration goal type for the current day 
-    this.userService.getGoalsTotalValueForCurrentDay("steps", this.userId).subscribe(res => {
-      this.goalsCurrentDaySteps = res.toString();
-      //localStorage.setItem("HydrationGoalsCurrentDay", this.goalsCurrentDayValue);
-    });
-
-    this.userService.getGoalsTotalValueForCurrentDay("hydration", this.userId).subscribe(res => {
-      this.goalsCurrentDayValue = res;
-      localStorage.setItem("HydrationGoalsCurrentDay", this.goalsCurrentDayValue);
-    });
 
     //Service for getting the Water consumed by the user in the current day range
     this.userService.getWaterQuantity(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
       (res) => {
-        this.water = res;
+        this.WaterConsumptionCurrentDay = res;
         localStorage.setItem("ConsumedWaterQuantity", res.toString());
       }
     );
 
+
+
+    //Service for getting the Goal/ Desired Value for the goals type for the current day 
+    this.userService.getGoalsTotalValueForCurrentDay("Steps", this.userId).subscribe(res => {
+      this.goalsCurrentDaySteps = res.toString();
+      if (this.goalsCurrentDaySteps === undefined) {
+        this.goalsCurrentDaySteps = 0;
+      }
+      localStorage.setItem("StepsGoalsCurrentDay", this.goalsCurrentDaySteps);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Exercise", this.userId).subscribe(res => {
+      this.goalsCurrentDayExerciseDuration = res.toString();
+      if (this.goalsCurrentDayExerciseDuration === undefined) {
+        this.goalsCurrentDayExerciseDuration = 0;
+      }
+      localStorage.setItem("ExerciseDurationGoalsCurrentDay", this.goalsCurrentDayExerciseDuration);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Active minutes", this.userId).subscribe(res => {
+      this.goalsCurrentDayActiveMinutes = res.toString();
+      if (this.goalsCurrentDayActiveMinutes === undefined) {
+        this.goalsCurrentDayActiveMinutes = 0;
+      }
+      localStorage.setItem("ActiveMinutesGoalsCurrentDay", this.goalsCurrentDayActiveMinutes);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Burned calories", this.userId).subscribe(res => {
+      this.goalsCurrentDayBurnedCalories = res.toString();
+      if (this.goalsCurrentDayBurnedCalories === undefined) {
+        this.goalsCurrentDayBurnedCalories = 0;
+      }
+      localStorage.setItem("BurnedCaloriesGoalsCurrentDay", this.goalsCurrentDayBurnedCalories);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Calories intake", this.userId).subscribe(res => {
+      this.goalsCurrentDayCaloriesIntake = res.toString();
+      if (this.goalsCurrentDayCaloriesIntake === undefined) {
+        this.goalsCurrentDayCaloriesIntake = 0;
+      }
+      localStorage.setItem("CaloriesIntakeGoalsCurrentDay", this.goalsCurrentDayCaloriesIntake);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Hydration", this.userId).subscribe(res => {
+      this.goalsCurrentDayHydration = res;
+      if (this.goalsCurrentDayHydration === undefined) {
+        this.goalsCurrentDayHydration = 0;
+      }
+      localStorage.setItem("HydrationGoalsCurrentDay", this.goalsCurrentDayHydration);
+    });
+
+
+
     //add the data in the local storage and use it to calculate the precentage for the ng circle
-    this.water = localStorage.getItem("ConsumedWaterQuantity");
-    this.goalsCurrentDayValue = localStorage.getItem("HydrationGoalsCurrentDay");
-    if (this.water == null || this.goalsCurrentDayValue == null) {
+
+    this.goalsCurrentDayBurnedCalories = localStorage.getItem("BurnedCaloriesGoalsCurrentDay");
+    this.goalsCurrentDayHydration = localStorage.getItem("HydrationGoalsCurrentDay");
+    this.goalsCurrentDayExerciseDuration = localStorage.getItem("ExerciseDurationGoalsCurrentDay");
+    this.goalsCurrentDaySteps = localStorage.getItem("StepsGoalsCurrentDay");
+    this.goalsCurrentDayActiveMinutes = localStorage.getItem("ActiveMinutesGoalsCurrentDay");
+    this.goalsCurrentDayCaloriesIntake = localStorage.getItem("CaloriesIntakeGoalsCurrentDay");
+
+
+    this.BMRCaloriesCurrentDay = localStorage.getItem("BMRCaloriesCurrentDay");
+    this.BurnedCaloriesFromExercises = localStorage.getItem("BurnedCaloriesFromExercises");
+    this.TotalBurnedCaloriesCurrentDay = Number(this.BurnedCaloriesFromExercises) + Number(this.BMRCaloriesCurrentDay);
+    localStorage.setItem("TotalBurnedCaloriesCurrentDay", this.TotalBurnedCaloriesCurrentDay.toString());
+    this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
+    this.StepsCountCurrentDay = localStorage.getItem("StepsCountCurrentDay");
+    this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
+    this.ActiveMinutesCurrentDay = localStorage.getItem("ActiveMinutesCurrentDay");
+    this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+
+    if (this.WaterConsumptionCurrentDay == null || this.goalsCurrentDayHydration == null) {
       // window.location.reload();
       setTimeout(() => { }, 1);
     }
 
-    this.steps = localStorage.getItem("StepsCountCurrentDay");
-    this.activeMinutes = localStorage.getItem("ActiveMinutesCurrentDay");
-    this.BMRcalories = localStorage.getItem("BMRCaloriesCurrentDay");
 
-    this.percentageBMRcalories = this.calculatePercentage(Number(this.BMRcalories), Number(this.goalsCurrentDayBMRcalories));
-    this.percentageTitleBMRcalories = this.percentageBMRcalories.toString() + "%";
+    this.percentageBurnedCalories = this.calculatePercentage(Number(this.TotalBurnedCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
+    this.percentageTitleBurnedcalories = this.percentageBurnedCalories.toString() + "%";
 
-    this.percentageHydration = this.calculatePercentage(Number(this.water), Number(this.goalsCurrentDayValue));
+    this.percentageHydration = this.calculatePercentage(Number(this.WaterConsumptionCurrentDay), Number(this.goalsCurrentDayHydration));
     this.percentageTitleHydration = this.percentageHydration.toString() + "%";
 
 
-    this.percentageSteps = this.calculatePercentage(Number(this.steps), Number(this.goalsCurrentDaySteps));
+    this.percentageSteps = this.calculatePercentage(Number(this.StepsCountCurrentDay), Number(this.goalsCurrentDaySteps));
     this.percentageTitleSteps = this.percentageSteps.toString() + "%";
 
-    this.percentageActiveMinutes = this.calculatePercentage(Number(this.activeMinutes), Number(this.goalsCurrentDayActiveMinutes));
+    this.percentageActiveMinutes = this.calculatePercentage(Number(this.ActiveMinutesCurrentDay), Number(this.goalsCurrentDayActiveMinutes));
     this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
+
+    this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
+    this.percentageTitleExercise = this.percentageExercise.toString() + "%";
+
+    this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+    this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
   }
 
@@ -197,7 +281,7 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.StepsCountCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
-          if(this.StepsCountCurrentDay === undefined){
+          if (this.StepsCountCurrentDay === undefined) {
             this.StepsCountCurrentDay = 0;
           }
           localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay);
@@ -216,17 +300,17 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.BMRCaloriesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
-          
-          this.BMRcalories =0;
+
+
           if (this.BMRCaloriesCurrentDay != undefined) {
-            this.BMRcalories = Math.round(this.BMRCaloriesCurrentDay);
+            this.BMRCaloriesCurrentDay = Math.round(this.BMRCaloriesCurrentDay);
           }
 
-          localStorage.setItem("BMRCaloriesCurrentDay", this.BMRcalories.toString());
-          console.log("BMR Calories today: ", this.BMRcalories);
+          localStorage.setItem("BMRCaloriesCurrentDay", this.BMRCaloriesCurrentDay.toString());
+          console.log("BMR Calories today: ", this.BMRCaloriesCurrentDay);
         },
         (error) => {
-          console.error('Error fetching step count data:', error);
+          console.error('Error fetching BMR Calories count data:', error);
         }
       );
   }
@@ -237,7 +321,7 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.HeartMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
-          if(this.HeartMinutesCurrentDay === undefined){
+          if (this.HeartMinutesCurrentDay === undefined) {
             this.HeartMinutesCurrentDay = 0;
           }
           localStorage.setItem("HeartMinutesCurrentDay", this.HeartMinutesCurrentDay);
@@ -256,7 +340,7 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.ActiveMinutesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.intVal;
-          if(this.ActiveMinutesCurrentDay === undefined){
+          if (this.ActiveMinutesCurrentDay === undefined) {
             this.ActiveMinutesCurrentDay = 0;
           }
           localStorage.setItem("ActiveMinutesCurrentDay", this.ActiveMinutesCurrentDay);
@@ -270,6 +354,60 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  getExerciseBurnedCaloriesInterval(userId: number, startDate: string, endDate: string): void {
+    this.userService.getCaloriesBurnedInterval(userId, startDate, endDate)
+      .subscribe(
+        (data) => {
+
+          this.BurnedCaloriesFromExercises = data.CaloriesSum;
+          if (this.BurnedCaloriesFromExercises === undefined) {
+            this.BurnedCaloriesFromExercises = 0;
+          }
+
+          this.ExerciseDurationCurrentDay = data.TotalMinutes;
+          if (this.ExerciseDurationCurrentDay === undefined) {
+            this.ExerciseDurationCurrentDay = 0;
+          }
+
+          localStorage.setItem("BurnedCaloriesFromExercises", this.BurnedCaloriesFromExercises.toString());
+          localStorage.setItem("ExerciseDurationCurrentDay", this.ExerciseDurationCurrentDay.toString());
+
+
+
+        },
+        (error) => {
+          console.error('Error fetching burned calories interval data:', error);
+
+        }
+      );
+  }
+
+  getConsumedCaloriesInterval(userId: number, startDate: string, endDate: string): void {
+    this.userService.getCaloriesIntakeInterval(userId, startDate, endDate)
+      .subscribe(
+        (data) => {
+
+          this.CaloriesIntakeCurrentDay = data.CaloriesSum;
+          if (this.CaloriesIntakeCurrentDay === undefined) {
+            this.CaloriesIntakeCurrentDay = 0;
+          }
+          else {
+            this.CaloriesIntakeCurrentDay = Math.round(this.CaloriesIntakeCurrentDay);
+          }
+
+          localStorage.setItem("CaloriesIntakeCurrentDay", this.CaloriesIntakeCurrentDay.toString());
+
+        },
+        (error) => {
+          console.error('Error fetching burned calories interval data:', error);
+
+        }
+      );
+  }
+
+  toggleContent(): void {
+    this.showCaloriesBurned = !this.showCaloriesBurned; // Toggle the flag value
+  }
 
 
 

@@ -82,6 +82,19 @@ export class UserService {
     return this.http.get<any>(endpoint);
   }
 
+  getCaloriesBurnedInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesapi/intervalCalories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
+
+  getCaloriesIntakeInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'foodapi/calories-intake?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
+
+
+
+
   createHydrationLog(userId: number, hydrationDate: Date, liters: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs';
     const body = {
@@ -132,26 +145,26 @@ export class UserService {
   }
 
   logout(): void {
-    // localStorage.clear();
-    localStorage.removeItem('GoalsCurrentDayValue');
-    localStorage.removeItem('ConsumedWaterQuantity');
-    localStorage.removeItem('HydrationGoalsCurrentDay');
-    localStorage.removeItem('UserName');
-    localStorage.removeItem('UserLastName');
-    localStorage.removeItem('UserFirstName');
-    localStorage.removeItem('caloriesBurned');
-    localStorage.removeItem('isDashboardPage');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('caloriesFromFood');
-    localStorage.removeItem('waterQuantity');
-    localStorage.removeItem('StepsCountCurrentDay');
-    localStorage.removeItem('ActiveMinutesCurrentDay');
-    localStorage.removeItem('BMRCaloriesCurrentDay');
-    localStorage.removeItem('HeartMinutesCurrentDay');
+    localStorage.clear();
+    // localStorage.removeItem('GoalsCurrentDayValue');
+    // localStorage.removeItem('ConsumedWaterQuantity');
+    // localStorage.removeItem('HydrationGoalsCurrentDay');
+    // localStorage.removeItem('UserName');
+    // localStorage.removeItem('UserLastName');
+    // localStorage.removeItem('UserFirstName');
+    // localStorage.removeItem('caloriesBurned');
+    // localStorage.removeItem('isDashboardPage');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('user');
+    // localStorage.removeItem('username');
+    // localStorage.removeItem('userInfo');
+    // localStorage.removeItem('userId');
+    // localStorage.removeItem('caloriesFromFood');
+    // localStorage.removeItem('waterQuantity');
+    // localStorage.removeItem('StepsCountCurrentDay');
+    // localStorage.removeItem('ActiveMinutesCurrentDay');
+    // localStorage.removeItem('BMRCaloriesCurrentDay');
+    // localStorage.removeItem('HeartMinutesCurrentDay');
   }
 
 }
