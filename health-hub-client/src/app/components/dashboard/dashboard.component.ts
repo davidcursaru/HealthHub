@@ -216,13 +216,14 @@ export class DashboardComponent implements OnInit {
         (data) => {
           // Handle the step count data received from the backend
           this.BMRCaloriesCurrentDay = data.bucket[0]?.dataset[0]?.point[0]?.value[0]?.fpVal;
-          const roundedValue = 0;
+          
+          this.BMRcalories =0;
           if (this.BMRCaloriesCurrentDay != undefined) {
-            const roundedValue = Math.round(this.BMRCaloriesCurrentDay);
+            this.BMRcalories = Math.round(this.BMRCaloriesCurrentDay);
           }
 
-          localStorage.setItem("BMRCaloriesCurrentDay", roundedValue.toString());
-          console.log("BMR Calories today: ", roundedValue);
+          localStorage.setItem("BMRCaloriesCurrentDay", this.BMRcalories.toString());
+          console.log("BMR Calories today: ", this.BMRcalories);
         },
         (error) => {
           console.error('Error fetching step count data:', error);
@@ -264,7 +265,7 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching step count data:', error);
-          
+
         }
       );
   }
