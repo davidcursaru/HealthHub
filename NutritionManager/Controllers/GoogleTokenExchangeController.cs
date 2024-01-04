@@ -2,12 +2,8 @@
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
 using NutritionManager.Services;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
+
 
 namespace NutritionManager.Controllers
 {

@@ -11,7 +11,8 @@ export class HydrationComponent implements OnInit {
 
   currentDate: Date = new Date();
   litersInput: number = 0;
-  userId:any = localStorage.getItem('userId');
+  userId: any = localStorage.getItem('userId');
+
   ngOnInit() {
     timer(0, 1000).subscribe(() => {
       this.currentDate = new Date;
@@ -29,11 +30,9 @@ export class HydrationComponent implements OnInit {
             console.log('Hydration log created:', response);
             const updatedWater = Number(this.water) + Number(this.litersInput);
             localStorage.setItem('waterQuantity', updatedWater.toString());
-            // Handle success
           },
           (error) => {
             console.error('Error creating hydration log:', error);
-            // Handle error
           }
         );
     }

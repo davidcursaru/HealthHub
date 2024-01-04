@@ -2,7 +2,6 @@ import { Component, OnInit, computed, signal } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-layout',
@@ -32,19 +31,6 @@ export class LayoutComponent implements OnInit {
 
     this.userInitials1 = this.getInitials(this.user.firstname);
     this.userInitials2 = this.getInitials(this.user.lastname);
-
-    //   this.userService.getFoodCalories('500g steak').subscribe((res: any) => {
-    //     const calories = res[0].cholesterol_mg;
-    //     localStorage.setItem("caloriesFromFood", calories);
-
-    //   });
-
-    //   this.userService.getCaloriesBurned('boxing').subscribe((res) => {
-    //     const caloriesBurned = res[0].calories_per_hour;
-    //     localStorage.setItem("caloriesBurned", caloriesBurned);
-
-    //   });
-    // });
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
