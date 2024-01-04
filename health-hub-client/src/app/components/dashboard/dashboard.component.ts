@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -62,7 +63,7 @@ export class DashboardComponent implements OnInit {
   loggedUserName: any;
   loggedFirstName: any;
   loggedLastName: any;
-  userId: any = localStorage.getItem('userId');
+  userId: any;
 
   authorizationCode: string | any;
 
@@ -111,10 +112,26 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    // Get the user's local timezone offset in minutes
+    const timezoneOffset = new Date().getTimezoneOffset();
+
+    // Adjust startDate and endDate using the timezone offset
+    this.startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - timezoneOffset, 0);
+    this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - timezoneOffset, 59);
+
+    // Convert startDate and endDate to ISO strings
+    this.isoDateString1 = this.startDate.toISOString();
+    this.isoDateString2 = this.endDate.toISOString();
+
+
+
+    this.userId = localStorage.getItem('userId');
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       this.user = JSON.parse(userInfo);
     }
+
+
 
     //get the currently logged userId
     this.loggedFirstName = this.user?.firstname;
@@ -124,9 +141,6 @@ export class DashboardComponent implements OnInit {
     this.decodedAuthorizationCode = decodeURIComponent(this.authorizationCode);
 
     this.setTimeRangeMillis();
-    console.log("start time in millis: ", this.startTimeMillis);
-    console.log("end time in millis: ", this.endTimeMillis);
-
 
     if (this.decodedAuthorizationCode) {
       // Send authorization code to your ASP.NET backend for token exchange
@@ -147,6 +161,8 @@ export class DashboardComponent implements OnInit {
 
 
     //Service for getting the Water consumed by the user in the current day range
+    console.log("startDate: ", this.isoDateString1);
+    console.log("startDate: ", this.isoDateString2);
     this.userService.getWaterQuantity(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
       (res) => {
         this.WaterConsumptionCurrentDay = res;
@@ -408,10 +424,6 @@ export class DashboardComponent implements OnInit {
   toggleContent(): void {
     this.showCaloriesBurned = !this.showCaloriesBurned; // Toggle the flag value
   }
-
-
-
-
 
 
 }

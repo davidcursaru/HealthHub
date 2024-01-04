@@ -45,7 +45,6 @@ export class AuthComponent {
               this.userService.getUserByUsername(username).subscribe((res) => {
                 this.userId = res.id;
                 this.user = res;
-                console.log("USER: ", res);
                 localStorage.setItem('userId', this.userId);
                 localStorage.setItem('userInfo', JSON.stringify(this.user));
               });

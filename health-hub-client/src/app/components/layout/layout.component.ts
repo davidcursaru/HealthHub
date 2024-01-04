@@ -24,29 +24,33 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.showLoader();
-    const loggedName: any = this.userService.getLoggedUsername().username;
-    const loggedUserId = localStorage.getItem('userId');
+    //const loggedName: any = this.userService.getLoggedUsername().username;
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      this.user = JSON.parse(userInfo);
+    }
+   // const loggedUserId = localStorage.getItem('userId');
 
-    this.userService.getUser(loggedName).subscribe(res => {
-      this.user = res;
-      localStorage.setItem('userInfo', JSON.stringify(this.user));
-      localStorage.setItem('userId', JSON.stringify(this.user.id));
+    // this.userService.getUser(loggedName).subscribe(res => {
+    //   this.user = res;
+    //   localStorage.setItem('userInfo', JSON.stringify(this.user));
+    //   localStorage.setItem('userId', JSON.stringify(this.user.id));
 
       this.userInitials1 = this.getInitials(this.user.firstname);
-      this.userInitials2 = this.getInitials(this.user.lastname);
+       this.userInitials2 = this.getInitials(this.user.lastname);
 
-      this.userService.getFoodCalories('500g steak').subscribe((res: any) => {
-        const calories = res[0].cholesterol_mg;
-        localStorage.setItem("caloriesFromFood", calories);
+    //   this.userService.getFoodCalories('500g steak').subscribe((res: any) => {
+    //     const calories = res[0].cholesterol_mg;
+    //     localStorage.setItem("caloriesFromFood", calories);
 
-      });
+    //   });
 
-      this.userService.getCaloriesBurned('boxing').subscribe((res) => {
-        const caloriesBurned = res[0].calories_per_hour;
-        localStorage.setItem("caloriesBurned", caloriesBurned);
+    //   this.userService.getCaloriesBurned('boxing').subscribe((res) => {
+    //     const caloriesBurned = res[0].calories_per_hour;
+    //     localStorage.setItem("caloriesBurned", caloriesBurned);
 
-      });
-    });
+    //   });
+    // });
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
