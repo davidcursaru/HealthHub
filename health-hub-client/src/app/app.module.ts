@@ -37,8 +37,6 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { DeleteAccountConfirmationDialogComponent } from './components/settings/settings.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
 
 
@@ -99,9 +97,7 @@ import { EffectsModule } from '@ngrx/effects';
       "showBackground": false,
       "clockwise": true,
       "startFromZero": false,
-      "lazy": false}),
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([])
+      "lazy": false})
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]
