@@ -53,6 +53,27 @@ namespace NutritionManager.Repositories
             return totalValue;
         }
 
+        public async Task<int> GetGoalsValueForInterval(int userId, string goalType, DateTime startDate, DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var goals = await _context.Goals
+                .Where(r => r.StartGoalDate >= startDate.Date
+                && r.Deadline <= endDate.Date
+                && r.UserId == userId
+                && r.GoalType == goalType)
+                .Select(g => g.TargetValue).SumAsync();
+
+            return goals;
+        }
+
         public async Task UpdateGoalAsync(Goals goals)
         {
             _context.Update(goals);
