@@ -32,23 +32,21 @@ export class AuthComponent {
             this.authService.storeToken(res.token);
             this.authService.storeUser(res);
             localStorage.setItem('username', res.username);
+            if (res.username) {
+              this.userService.getUserByUsername(res.username).subscribe((res) => {
+                this.userId = res.id;
+                this.user = res;
+                localStorage.setItem('userId', this.userId);
+                localStorage.setItem('userInfo', JSON.stringify(this.user));
+
+              });
+            }
             this._snackBar.open('Login Successful', 'Dismiss', {
               duration: 3000,
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
             this.router.navigate(['layout']);
-
-            // Move this section inside the subscription block
-            const username = localStorage.getItem('username');
-            if (username) {
-              this.userService.getUserByUsername(username).subscribe((res) => {
-                this.userId = res.id;
-                this.user = res;
-                localStorage.setItem('userId', this.userId);
-                localStorage.setItem('userInfo', JSON.stringify(this.user));
-              });
-            }
           },
           error: (err: any) => {
             this._snackBar.open('Login Failed', 'Dismiss', {

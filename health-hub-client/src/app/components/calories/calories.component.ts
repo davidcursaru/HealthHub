@@ -13,6 +13,6 @@ export class CaloriesComponent implements OnInit{
   caloriesBurned = localStorage.getItem("caloriesBurned");
   
   ngOnInit(): void {
-    // this.calories = localStorage.getItem("caloriesFromFood");
+    
   }
 }

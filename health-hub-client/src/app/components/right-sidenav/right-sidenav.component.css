@@ -1,6 +1,5 @@
 .grid-container {
     margin: 5px;
-
 }
 
 .mat-grid-header {
@@ -16,61 +15,39 @@
     border-radius: 20px;
 }
 
-
 .right-sidenav-card-content {
     text-align: center;
     font-weight: bold;
     font-size: small;
     color: black;
-
-
-
-
-
-
 }
 
 .card {
     background: white;
-
 }
 
 .profile-div {
     width: 43px;
-    /* Set the width and height of the circle */
     height: 43px;
     border-radius: 50%;
-    /* Make it a circle */
-
-    /* Set border color and width */
     background-color: #2cb9a2b4;
-    /* Set background color */
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 10px;
-
 }
 
 .center-circle {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Adjust padding, margin, etc., if needed */
 }
 
 .profile-pic {
-
     margin: 0;
-    /* Remove default margin */
     font-size: 20px;
-    /* Adjust font size */
     font-weight: bold;
-    /* Optionally set font weight */
     color: #151414;
-    /* Set text color */
-
-
 }
 
 .mat-grid-list {
@@ -78,20 +55,17 @@
 }
 
 .mat-grid {
-
     height: 20px;
     border-right: 2px solid #0e0d0d;
 
     .gender-div1 {
         font-size: small;
-
         color: black;
         opacity: .6;
     }
 
     .gender-div2 {
         margin-top: 10px;
-
     }
 }
 
@@ -101,8 +75,6 @@
 
 .gender-contaienr {
     display: block;
-
-
 }
 
 .mat-h1 {
@@ -115,13 +87,9 @@
     top: 0;
     right: 0;
     padding: 8px;
-
 }
 
-
-
 .reminder-card {
-
     position: relative;
     display: flex;
     justify-content: space-between;
@@ -134,10 +102,6 @@
     border-radius: 12px;
     overflow-y: scroll;
     max-height: 100px;
-
-
-
-
 }
 
 .grid-tile-reminders {
@@ -148,7 +112,6 @@
     margin-left: 10px;
     font-weight: bold;
     font-size: 18px;
-
 }
 
 .cards-container {
@@ -159,17 +122,11 @@
     display: flex;
     flex-grow: 1;
     justify-content: space-between;
-
-
-
 }
 
 .reminder-content-right {
     font-weight: bold;
     font-size: small;
-
-
-    /* margin-right: auto; */
 }
 
 .reminder-content-left {
@@ -186,9 +143,6 @@
     height: 20px;
     background-color: #53a9ff;
     margin-bottom: 20px;
-
-
-
 }
 
 .reminder-icon-container {
@@ -205,12 +159,8 @@
     justify-content: center;
     align-items: center;
     width: 30px;
-    /* Adjust the width and height according to your requirement */
     height: 30px;
-
-    /* Border color */
     border-radius: 10px;
-    /* Adjust the border-radius to control corner roundness */
     background-color: #53a9ff;
     color: #173239
 }

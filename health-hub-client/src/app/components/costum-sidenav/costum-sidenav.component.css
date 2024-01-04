@@ -1,16 +1,12 @@
 :host * {
     transition: all 350ms ease;
-
 }
 
 .sidenav-header {
-
     text-align: center;
     display: flex;
     flex-direction: column;
     height: 100%;
-
-
 
     .header-text {
 
@@ -26,20 +22,16 @@
             margin: 0;
             font-size: 0.8rem;
         }
-
-
     }
 
     .hide-header-text {
         opacity: 0;
         height: 0px !important;
     }
-
 }
 
 .menu-list {
     flex: 1;
-    /* Take remaining space */
     display: flex;
     flex-direction: column;
 }
@@ -47,7 +39,6 @@
 .menu-item {
     border-left: 5px solid;
     border-left-color: rgba(0, 0, 0, 0);
-
 }
 
 .selected-menu-item {

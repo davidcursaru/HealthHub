@@ -42,12 +42,6 @@
             <input matInput placeholder="Enter your birth date" type="date" name="dateOfBirth" ngModel
                 [required]="true">
         </mat-form-field>
-        <!-- <mat-form-field appearance="fill" class="example-full-width" *ngIf="!isLoginMode">
-            <mat-label>Birth date</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="Enter your birth date" name="dateOfBirth" ngModel [required]="true"> 
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field> -->
 
         <mat-form-field appearance="fill"
             [ngClass]="{'example-full-width2': isLoginMode, 'example-full-width': !isLoginMode}">

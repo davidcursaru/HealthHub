@@ -71,7 +71,6 @@ export class CostumSidenavComponent {
       label: 'Profile Settings',
       route: '/layout/settings',
     }
-
   ]);
 
 }

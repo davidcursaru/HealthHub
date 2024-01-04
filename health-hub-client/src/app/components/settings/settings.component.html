@@ -1,6 +1,6 @@
 <div class="user-profile-wrapper">
     <div class="edit-profile">
-       
+
         <div class="edit-profile-desc">
             <h3>Edit your profile</h3>
             <p>Your profile description</p>
@@ -28,9 +28,9 @@
                     <button mat-raised-button color="warn" type="button" class="delete-account-btn"
                         (click)="openDeleteAccountConfirmationDialog()">Delete
                         Account</button>
-                        <p>Link up with your google account</p>
-                    <button  type="button" class="google-sign-in-btn"
-                    (click)="initiateOAuthFlow()" >Sign in with Google</button>
+                    <p>Link up with your google account</p>
+                    <button type="button" class="google-sign-in-btn" (click)="initiateOAuthFlow()">Sign in with
+                        Google</button>
                 </div>
             </div>
         </div>
@@ -93,14 +93,6 @@
                         <small>Gender is required.</small>
                     </div>
                 </div>
-
-                <!-- <div>
-                    <label for="dateOfBirth">Date of birth:</label>
-                    <input type="text" id="dateOfBirth" formControlName="dateOfBirth" [disabled]="!editMode">
-                    <div *ngIf="profileForm.get('dateOfBirth')?.invalid && profileForm.get('dateOfBirth')?.touched">
-                        <small>Date of birth is required.</small>
-                    </div>
-                </div> -->
 
                 <button type="submit" [disabled]="profileForm.invalid || !editMode">Save</button>
             </form>

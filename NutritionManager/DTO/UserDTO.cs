@@ -14,10 +14,10 @@ namespace NutritionManager.DTO
         public string Gender { get; set; }
         public int Age { get; set; }
 
-        public List<GoalsDTO> Goals { get; set; }
-        public List<ExerciseLogsDTO> ExerciseLogs { get; set; }
-        public List<HydrationLogsDTO> HydrationLogs { get; set; }
-        public List<NutritionLogsDTO> NutritionLogs { get; set; }
-        public List<RemindersDTO> Reminders { get; set; }
+        //public List<GoalsDTO> Goals { get; set; }
+        //public List<ExerciseLogsDTO> ExerciseLogs { get; set; }
+        //public List<HydrationLogsDTO> HydrationLogs { get; set; }
+        //public List<NutritionLogsDTO> NutritionLogs { get; set; }
+        //public List<RemindersDTO> Reminders { get; set; }
     }
 }

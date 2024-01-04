@@ -31,7 +31,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.displayUser();
-    //console.log("user:" + this.userService.user.userName);
+
     this.profileForm = this.formBuilder.group({
       userName: [{ value: '', disabled: this.editMode }, Validators.required],
       firstName: [{ value: '', disabled: this.editMode }, Validators.required],
@@ -40,7 +40,6 @@ export class SettingsComponent implements OnInit {
       weight: [{ value: '', disabled: this.editMode }, Validators.required],
       height: [{ value: '', disabled: this.editMode }, Validators.required],
       gender: [{ value: '', disabled: this.editMode }, Validators.required]
-      // dateOfBirth: ['', Validators.required],
     });
   }
 
@@ -91,8 +90,7 @@ export class SettingsComponent implements OnInit {
   }
 
   initiateOAuthFlow(): void {
-    // Call the initiateOAuthFlow() function from your AuthService or directly here
-    this.authService.initiateOAuthFlow(); // Or call your function directly here
+    this.authService.initiateOAuthFlow();
   }
 
   deleteAccount() {
@@ -122,10 +120,6 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
-
-  
-
-  
 
   openChangePasswordDialog() {
     const dialogRef = this.dialog.open(ChangePasswordComponent, {

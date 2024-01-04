@@ -6,16 +6,12 @@
 
     <div class="user">
 
-      
-
-
         <button mat-icon-button class="mat-icon" [matMenuTriggerFor]="menu">
             <div class="center-circle">
                 <div class="profile-div">
                     <p class="profile-pic">{{userInitials2}}{{userInitials1}}</p>
                 </div>
             </div>
-
 
         </button>
 
@@ -51,7 +47,8 @@
         <router-outlet></router-outlet>
     </mat-sidenav-content>
 
-    <mat-sidenav class="right-sidenav" *ngIf="isDashboardPage"  mode="side" opened="true" position="end" [style.width]="'300px'">
+    <mat-sidenav class="right-sidenav" *ngIf="isDashboardPage" mode="side" opened="true" position="end"
+        [style.width]="'300px'">
         <app-right-sidenav></app-right-sidenav>
     </mat-sidenav>
 

@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    
+
 }
 
 .edit-profile {
@@ -30,7 +30,7 @@
 .user-profile {
     display: flex;
     margin: 10px 20px;
-    
+
 }
 
 .user-profile-info {
@@ -38,7 +38,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-right: 2%;
     border-radius: 10px;
-    margin-bottom: 30px; 
+    margin-bottom: 30px;
 }
 
 .user-profile-editor {
@@ -47,7 +47,7 @@
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 10px;
-    margin-bottom: 30px; 
+    margin-bottom: 30px;
     font-weight: bold;
     width: 70%;
 }
@@ -55,7 +55,7 @@
 .usr-title {
     padding: 5px;
     color: #0c1113;
-   
+
 
 }
 
@@ -76,8 +76,6 @@
     height: auto;
     object-fit: cover;
 }
-
-/* user profile edit form */
 
 form {
     max-width: 400px;
@@ -159,29 +157,25 @@ button:disabled {
     width: 250px;
     margin-bottom: 10px;
     position: relative;
-    padding-right: 30px; /* Adjust the padding to accommodate the icon */
-    /* Other button styles */
-  
-    /* Example Google icon */
+    padding-right: 30px;
     background: url('https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg') no-repeat;
-    background-size: 28px 28px; /* Adjust the size of the icon */
+    background-size: 28px 28px;
     background-position: right 10px center;
-    background-color:#0c1113
-    
+    background-color: #0c1113
 }
 
 .google-sign-in-btn:hover {
-    background-color:  #0992B8;
+    background-color: #0992B8;
 }
 
 .google-sign-in-btn::after {
     content: '';
-  position: absolute;
-  top: 50%;
-  right: 10px; /* Adjust the position of the icon */
-  transform: translateY(-50%);
-  background-size: contain;
-  }
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background-size: contain;
+}
 
 .delete-account-btn {
     background-color: #ff4f4f;
@@ -189,7 +183,7 @@ button:disabled {
 }
 
 .change-password-btn:hover {
-    background-color:  #0992B8;
+    background-color: #0992B8;
 }
 
 .delete-account-btn:hover {
@@ -200,58 +194,3 @@ button:disabled {
 .delete-account-btn:active {
     background-color: #4c7c89;
 }
-
-/* .user-profile {
-      max-width: 500px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #f9f9f9;
-      text-align: center;
-  }
-  
-  .profile-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-  }
-  
-  .profile-circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background-color: #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      font-weight: bold;
-      color: #fff;
-      margin-right: 20px;
-  }
-  
-  h1 {
-      font-size: 24px;
-      margin: 0;
-  }
-  
-  .profile-info {
-      margin-top: 20px;
-  }
-  
-  .info-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-  }
-  
-  label {
-      font-weight: bold;
-      width: 120px;
-  }
-  
-  span {
-      flex-grow: 1;
-  } */

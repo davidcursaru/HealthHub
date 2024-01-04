@@ -42,7 +42,6 @@
   color: #0992B8;
 }
 
-
 .dashboard-card {
   position: absolute;
   top: 15px;
@@ -52,7 +51,6 @@
   border-radius: 20px;
   transition: transform 0.3s ease-in-out;
 }
-
 
 .dashboard-first-card-content {
   display: flex;

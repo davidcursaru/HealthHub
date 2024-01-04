@@ -16,9 +16,4 @@ export interface User{
     gender?: string;
     token?: string;
 
-    // goals: Goals[];
-    // exerciseLogs: ExerciseLogs[];
-    // hydrationLogs: HydrationLogs[];
-    // nutritionLogs: NutritionLogs[];
-    // reminders: Reminders[];
 }

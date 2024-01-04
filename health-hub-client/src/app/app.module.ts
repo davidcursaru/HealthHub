@@ -38,8 +38,6 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { DeleteAccountConfirmationDialogComponent } from './components/settings/settings.component';
 import { LoadingComponent } from './components/loading/loading.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -97,7 +95,8 @@ import { LoadingComponent } from './components/loading/loading.component';
       "showBackground": false,
       "clockwise": true,
       "startFromZero": false,
-      "lazy": false})
+      "lazy": false
+    })
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]
