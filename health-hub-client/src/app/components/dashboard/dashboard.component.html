@@ -87,10 +87,10 @@
             <mat-icon>swap_horiz</mat-icon>
           </button>
 
-          <div class="hydration-log-wrapper" *ngIf="showCaloriesBurned">
+          <div class="hydration-log-wrapper" *ngIf="!showCaloriesBurned">
             <!-- Total Burned Calories -->
             <div class="hydration-log-info">
-              <p><span class="bold">{{TotalBurnedCaloriesCurrentDay}}</span><span
+              <p><span class="bold">{{BurnedCaloriesFromExercises + BMRCaloriesCurrentDay}}</span><span
                   class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal Burned calories</span></p>
             </div>
 
@@ -103,7 +103,7 @@
             </div>
           </div>
 
-          <div class="hydration-log-wrapper" *ngIf="!showCaloriesBurned">
+          <div class="hydration-log-wrapper" *ngIf="showCaloriesBurned">
             <!--  Calories intake -->
             <div class="hydration-log-info">
               <p><span class="bold">{{CaloriesIntakeCurrentDay}}</span><span

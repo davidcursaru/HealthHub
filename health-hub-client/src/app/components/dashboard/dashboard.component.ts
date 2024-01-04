@@ -7,6 +7,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
+import { interval } from 'rxjs';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class DashboardComponent implements OnInit {
   StepsCountCurrentDay: any;
   BMRCaloriesCurrentDay: any;
   BurnedCaloriesFromExercises: any;
-  TotalBurnedCaloriesCurrentDay: any;
+  // TotalBurnedCaloriesCurrentDay: any;
   HeartMinutesCurrentDay: any;
   ActiveMinutesCurrentDay: any;
   ExerciseDurationCurrentDay: any;
@@ -235,8 +236,8 @@ export class DashboardComponent implements OnInit {
 
     this.BMRCaloriesCurrentDay = localStorage.getItem("BMRCaloriesCurrentDay");
     this.BurnedCaloriesFromExercises = localStorage.getItem("BurnedCaloriesFromExercises");
-    this.TotalBurnedCaloriesCurrentDay = Number(this.BurnedCaloriesFromExercises) + Number(this.BMRCaloriesCurrentDay);
-    localStorage.setItem("TotalBurnedCaloriesCurrentDay", this.TotalBurnedCaloriesCurrentDay.toString());
+    // this.TotalBurnedCaloriesCurrentDay = Number(this.BurnedCaloriesFromExercises) + Number(this.BMRCaloriesCurrentDay);
+    // localStorage.setItem("TotalBurnedCaloriesCurrentDay", this.TotalBurnedCaloriesCurrentDay.toString());
     this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
     this.StepsCountCurrentDay = localStorage.getItem("StepsCountCurrentDay");
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
@@ -249,25 +250,27 @@ export class DashboardComponent implements OnInit {
     }
 
 
-    this.percentageBurnedCalories = this.calculatePercentage(Number(this.TotalBurnedCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
-    this.percentageTitleBurnedcalories = this.percentageBurnedCalories.toString() + "%";
+    interval(100).subscribe(()=>{
+      
+      this.percentageHydration = this.calculatePercentage(Number(this.WaterConsumptionCurrentDay), Number(this.goalsCurrentDayHydration));
+      this.percentageTitleHydration = this.percentageHydration.toString() + "%";
+      
+      this.percentageBurnedCalories = this.calculatePercentage(Number(this.BurnedCaloriesFromExercises) + Number(this.BMRCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
+      this.percentageTitleBurnedcalories = this.percentageBurnedCalories.toString() + "%";
+  
+      this.percentageSteps = this.calculatePercentage(Number(this.StepsCountCurrentDay), Number(this.goalsCurrentDaySteps));
+      this.percentageTitleSteps = this.percentageSteps.toString() + "%";
+  
+      this.percentageActiveMinutes = this.calculatePercentage(Number(this.ActiveMinutesCurrentDay), Number(this.goalsCurrentDayActiveMinutes));
+      this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
+  
+      this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
+      this.percentageTitleExercise = this.percentageExercise.toString() + "%";
+  
+      this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+      this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
-    this.percentageHydration = this.calculatePercentage(Number(this.WaterConsumptionCurrentDay), Number(this.goalsCurrentDayHydration));
-    this.percentageTitleHydration = this.percentageHydration.toString() + "%";
-
-
-    this.percentageSteps = this.calculatePercentage(Number(this.StepsCountCurrentDay), Number(this.goalsCurrentDaySteps));
-    this.percentageTitleSteps = this.percentageSteps.toString() + "%";
-
-    this.percentageActiveMinutes = this.calculatePercentage(Number(this.ActiveMinutesCurrentDay), Number(this.goalsCurrentDayActiveMinutes));
-    this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
-
-    this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
-    this.percentageTitleExercise = this.percentageExercise.toString() + "%";
-
-    this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
-    this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
-
+    })
   }
 
   //Function to calculate precentage for the progress circle
