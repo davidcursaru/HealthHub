@@ -23,8 +23,6 @@ export class CaloriesComponent implements OnInit {
   TotalBurnedCaloriesCurrentDay: any;
   foodItemExists: boolean = false;
 
-
-
   private breakpointObserver = inject(BreakpointObserver);
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -62,7 +60,7 @@ export class CaloriesComponent implements OnInit {
     this.Recommendation = this.getRecommendation(this.BMIClassification);
 
     this.TotalBurnedCaloriesCurrentDay = localStorage.getItem("TotalBurnedCaloriesCurrentDay");
-    this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCaloriesCurrentDay");
+    this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
     this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
 
   }
