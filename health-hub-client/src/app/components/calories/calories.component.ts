@@ -3,6 +3,7 @@ import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
+import { NutrientValues } from 'src/app/interfaces/nutrients.interface';
 
 @Component({
 
@@ -13,6 +14,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class CaloriesComponent implements OnInit {
   user: User | null = null;
+  gender: any;
   weight: any;
   height: any;
   BMI: any;
@@ -22,6 +24,56 @@ export class CaloriesComponent implements OnInit {
   CaloriesIntakeCurrentDay: any;
   TotalBurnedCaloriesCurrentDay: any;
   foodItemExists: boolean = false;
+  calories: any;
+  fat: any;
+  saturatedFat: any;
+  protein: any;
+  sodium: any;
+  potassium: any;
+  cholesterol: any;
+  carbohydrates: any;
+  fiber: any;
+  sugar: any;
+  foodScore: any;
+  foodName: any;
+  MALE_GOAL = {
+    calories: 2500,
+    protein: 56,
+    carbohydrates: 130,
+    sugar: 36,
+    fiber: 38,
+    fat: 69,
+    saturatedFat: 20,
+    cholesterol: 300,
+    sodium: 2300,
+    potassium: 4700,
+  };
+
+  FEMALE_GOAL = {
+    calories: 2000,
+    protein: 46,
+    carbohydrates: 130,
+    sugar: 36,
+    fiber: 25,
+    fat: 62,
+    saturatedFat: 20,
+    cholesterol: 300,
+    sodium: 2300,
+    potassium: 4700,
+  };
+  private nutrientWeights: NutrientValues = {
+    calories: 1,
+    protein: 2,
+    carbohydrates: 1,
+    sugar: 1.5,
+    fiber: 2.5,
+    fat: 1,
+    saturatedFat: 1.2,
+    cholesterol: 1.2,
+    sodium: 1.5,
+    potassium: 2,
+  };
+
 
   private breakpointObserver = inject(BreakpointObserver);
   /** Based on the screen size, switch from standard to one column per row */
@@ -54,6 +106,7 @@ export class CaloriesComponent implements OnInit {
     }
     this.weight = this.user?.weight;
     this.height = this.user?.height;
+    this.gender = this.user?.gender;
 
     this.BMI = this.calculateBMI(Number(this.weight), Number(this.height));
     this.BMIClassification = this.getBMIClassification(this.BMI);
@@ -132,20 +185,18 @@ export class CaloriesComponent implements OnInit {
     }
   }
 
-  createNutritionLog(formValue: any){
+  createNutritionLog(formValue: any) {
     const foodItems = formValue.foodItems;
     const foodGrams = formValue.foodGrams;
-    const userId : any = this.user?.id;
+    const userId: any = this.user?.id;
     this.getNutritionalValues(formValue);
-    if(this.foodItemExists)
-    {
-        this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) =>{
-          console.log(res);
-        });
-        
+    if (this.foodItemExists) {
+      this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) => {
+
+      });
+
     }
-    else
-    {
+    else {
       console.log("Food item does not exists, check spelling or try again");
     }
 
@@ -156,28 +207,84 @@ export class CaloriesComponent implements OnInit {
     const foodGrams = formValue.foodGrams;
 
     this.userService.getFoodCalories(foodGrams.toString() + 'g ' + foodItems).subscribe(
-        (res: any) => {
-            if (res && res.length > 0) {
-                const calories = res[0].calories;
-                console.log("Calories of food item:", calories);
-                this.foodItemExists = true;
-                // Do something with the calories value
-            } else {
-                console.log("No data or empty response received.");
-                this.foodItemExists = false;
-                // Handle the case where there is no data or an empty response
-            }
-        },
-        (error) => {
-            console.error("Error fetching data:", error);
-            // Handle error cases here
+      (res: any) => {
+        if (res && res.length > 0) {
+          this.foodName = res[0].name;
+          this.calories = res[0].calories;
+          this.fat = res[0].fat_total_g;
+          this.saturatedFat = res[0].fat_saturated_g;
+          this.protein = res[0].protein_g;
+          this.sodium = res[0].sodium_mg;
+          this.potassium = res[0].potassium_mg;
+          this.cholesterol = res[0].cholesterol_mg;
+          this.carbohydrates = res[0].carbohydrates_total_g;
+          this.fiber = res[0].fiber_g;
+          this.sugar = res[0].sugar_g;
+          this.foodItemExists = true;
+
+          const nutrientValues: NutrientValues = {
+            calories: this.calories,
+            protein: this.protein,
+            carbohydrates: this.carbohydrates,
+            sugar: this.sugar,
+            fiber: this.fiber,
+            fat: this.fat,
+            saturatedFat: this.saturatedFat,
+            cholesterol: this.cholesterol,
+            sodium: this.sodium,
+            potassium: this.potassium,
+          };
+
+          this.foodScore = this.calculateHealthScore(nutrientValues, this.gender);
+          console.log("health score: ", this.foodScore);
+
+        } else {
+          console.log("No data or empty response received.");
+          this.foodItemExists = false;
         }
+      },
+      (error) => {
+        console.error("Error fetching data:", error);
+      }
     );
+  }
+
+  calculateHealthScore(nutrientValues: NutrientValues, gender: string): number {
+    const goals = gender === 'Male' ? this.MALE_GOAL : this.FEMALE_GOAL;
+    let healthScore = 0;
+
+    const nutrientKeys = Object.keys(goals) as (keyof NutrientValues)[];
+
+    for (let i = 0; i < nutrientKeys.length; i++) {
+      const nutrient = nutrientKeys[i];
+      const diff = nutrientValues[nutrient] - goals[nutrient];
+
+      // Apply nutrient weight
+      const weightedDiff = diff * this.nutrientWeights[nutrient];
+
+      if (weightedDiff <= 0) {
+        healthScore += 10; // Positive health score for meeting or exceeding goals
+      } else {
+        // Apply thresholds
+        const threshold = goals[nutrient] * 1.2; // Example: 20% threshold increase
+        const percentageExceeded = (diff / threshold) * 100;
+
+        // Apply nutrient ratio (if needed)
+        // For example, check if the ratio of sodium to potassium is within a healthy range
+
+        healthScore -= percentageExceeded > 50 ? 50 : percentageExceeded; // Cap the decrease
+      }
+    }
+
+    return Math.max(healthScore, 0); // Ensure health score is non-negative
+  }
 }
 
-}
 
 
- 
+
+
+
+
 
 

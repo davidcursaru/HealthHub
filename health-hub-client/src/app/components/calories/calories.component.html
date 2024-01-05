@@ -129,6 +129,24 @@
                                     </button>
                                 </div>
                             </div>
+                            <div *ngIf="foodItemExists">
+                                <p style="font-size: large;font-weight: bold;">{{foodName}}</p>
+                                <p>Score: {{foodScore}}</p>
+                                <p>Calories: {{ calories }} kcal</p>
+                                <p>Proteins: {{ protein }} g</p>
+                                <p>Carbohydrates: {{ carbohydrates }} g</p>
+                                <p>Sugar: {{ sugar }} g</p>
+                                <p>Fiber: {{ fiber }} g</p>
+                                <p>Fat: {{ fat }} g</p>
+                                <p>Saturated fat: {{ saturatedFat}} g</p>
+                                <p>Cholesterol: {{ cholesterol } mg}</p>
+                                <p>Sodium: {{ sodium }} mg</p>
+                                <p>Potassium: {{ potassium }} mg</p>
+                
+                              </div>
+                              <div *ngIf="!foodItemExists">
+                                <p style="font-weight: bold;">No data available for the provided food item. Check the spelling and try again.</p>
+                              </div>
                         </form>
                     </ng-container>
                 </mat-card-content>
