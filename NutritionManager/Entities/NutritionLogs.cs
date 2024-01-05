@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public DateTime ConsumptionDate { get; set; }
+        public DateTime ConsumptionDate { get; set; } = DateTime.Now;
         public string FoodConsumed { get; set; }
         public int Grams { get; set; }
     }

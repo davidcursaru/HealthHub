@@ -104,7 +104,7 @@
 
                 <mat-card-content class="calculator-card-content" *ngIf="i === 3">
                     <ng-container>
-                        <form #foodForm="ngForm">
+                        <form #foodForm="ngForm" (ngSubmit)="getNutritionalValues(foodForm.value)">
                             <div class="calculator-info-container">
                                 <mat-form-field appearance="fill" class="mat-form-field">
                                     <mat-label>Food input</mat-label>
@@ -123,7 +123,7 @@
                                         style="margin-right: 10px;">
                                         Calculate
                                     </button>
-                                    <button mat-raised-button color="primary" type="submit"
+                                    <button mat-raised-button color="primary" type="submit" (click)="createNutritionLog(foodForm.value)"
                                         [disabled]="!foodForm.valid">
                                         Create Log
                                     </button>
@@ -133,26 +133,7 @@
                     </ng-container>
                 </mat-card-content>
 
-                <mat-card-content class="calculator-card-content" *ngIf="i === 4">
-                    <ng-container>
-                        <form #foodForm="ngForm">
-                            <div class="calculator-info-container">
-                                <mat-form-field appearance="fill" class="mat-form-field">
-                                    <mat-label>Food input</mat-label>
-                                    <input matInput type="string" name="foodItems" placeholder="Enter food items"
-                                        ngModel required>
-                                </mat-form-field>
-
-                                <div style="margin-top: 20px; width: auto;">
-                                    <button mat-raised-button color="primary" type="submit"
-                                        [disabled]="!foodForm.valid">
-                                        Search
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </ng-container>
-                </mat-card-content>
+                
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
 

@@ -21,6 +21,7 @@ export class CaloriesComponent implements OnInit {
   WaterConsumptionCurrentDay: any;
   CaloriesIntakeCurrentDay: any;
   TotalBurnedCaloriesCurrentDay: any;
+  foodItemExists: boolean = false;
 
 
 
@@ -45,7 +46,7 @@ export class CaloriesComponent implements OnInit {
     })
   );
 
-  constructor(private userService: UserService){}
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
 
@@ -133,10 +134,52 @@ export class CaloriesComponent implements OnInit {
     }
   }
 
-  getNutritionalValues(): void {
+  createNutritionLog(formValue: any){
+    const foodItems = formValue.foodItems;
+    const foodGrams = formValue.foodGrams;
+    const userId : any = this.user?.id;
+    this.getNutritionalValues(formValue);
+    if(this.foodItemExists)
+    {
+        this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) =>{
+          console.log(res);
+        });
+        
+    }
+    else
+    {
+      console.log("Food item does not exists, check spelling or try again");
+    }
+
   }
+
+  getNutritionalValues(formValue: any) {
+    const foodItems = formValue.foodItems;
+    const foodGrams = formValue.foodGrams;
+
+    this.userService.getFoodCalories(foodGrams.toString() + 'g ' + foodItems).subscribe(
+        (res: any) => {
+            if (res && res.length > 0) {
+                const calories = res[0].calories;
+                console.log("Calories of food item:", calories);
+                this.foodItemExists = true;
+                // Do something with the calories value
+            } else {
+                console.log("No data or empty response received.");
+                this.foodItemExists = false;
+                // Handle the case where there is no data or an empty response
+            }
+        },
+        (error) => {
+            console.error("Error fetching data:", error);
+            // Handle error cases here
+        }
+    );
+}
+
+}
 
 
  
 
-}
+
