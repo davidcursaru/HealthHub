@@ -1,0 +1,144 @@
+.grid-container {
+    margin-bottom: 30px;
+    margin-left: auto;
+
+}
+
+.mat-h1 {
+    font-size: x-large;
+    display: flex;
+    justify-content: space-between;
+}
+
+.calories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.calories-card {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.BMI-card-header {
+    display: flex;
+    align-items: center;
+}
+
+.BMI-card-title {
+    margin-left: 8px;
+    /* Adjust the space between icon and title */
+    font-size: 18px;
+}
+
+.BMI-card-icon {
+    font-size: x-large !important;
+    color: rgb(34, 43, 107);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #2cb9a2b4;
+}
+
+/* CSS */
+.bmi-info-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .bmi-circle {
+    position: relative;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 10px; /* Adjust margin as needed */
+  }
+  
+  .icon-inside-circle {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    top: 59%;
+    left: 48.5%;
+    transform: translate(-50%, -50%);
+    
+  }
+  
+  .checkmark-icon{
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .warning-icon {
+    font-size: 22px;
+    color: rgb(196, 140, 44);
+    font-weight: bold;
+  }
+  
+  /* Rest of your CSS styles */
+
+
+.normal-weight {
+    background-color: #1a641c;
+    /* Green color for normal weight */
+}
+
+.underweight {
+    background-color: #d72215;
+    /* Red color for underweight */
+}
+
+.overweight {
+    background-color: #b23317;
+    /* Orange color for overweight */
+}
+
+.obese {
+    background-color: #980704;
+    /* Dark red color for obese */
+}
+
+.calories-data{
+    display: block;
+}
+
+.calculator-card-content{
+    margin-top: 30px;
+}
+
+.calculator-info-container {
+    display: flex;
+    
+}
+
+.mat-form-field {
+    margin-right: 20px; /* Adjust the margin between form fields */
+}
+
+.button-container {
+
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 20px; /* Adjust the space between the fields and the button */
+
+}
+
+
+
+

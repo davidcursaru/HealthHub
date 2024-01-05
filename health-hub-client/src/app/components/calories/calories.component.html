@@ -1,3 +1,163 @@
-<h1>Calories {{calories}}</h1>
-<h1>Calories burned {{caloriesBurned}}</h1>
+<div class="grid-container">
 
+    <div class="calories-header">
+        <h1 class="mat-h1">Calories tracker</h1>
+    </div>
+
+    <mat-grid-list cols="3" rowHeight="110px">
+        <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
+            <mat-card class="calories-card"
+                [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
+
+
+                <!----------HEADERS OF THE MAT-CARDS ------------>
+                <mat-card-header>
+                    <mat-card-title *ngIf="i === 0">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">assessment</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 1">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">whatshot</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 2">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">water_drop</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 3">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">fact_check</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 4">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">search</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                </mat-card-header>
+
+
+                <!----------END OF HEADERS OF THE MAT-CARDS ------------>
+
+                <!----------CONTENT OF THE MAT-CARDS ------------>
+
+                <mat-card-content class="bmi-card-content" *ngIf="i === 0">
+                    <ng-container>
+                        <div class="bmi-info-container">
+                            <p>
+                                <span style="font-weight: bold; font-size: 1em;">BMI:</span>
+                                {{ BMI }} ({{ BMIClassification }})
+                            </p>
+                            <div class="bmi-circle" [ngClass]="getBMICircleClass(BMIClassification)">
+                                <span class="icon-inside-circle">
+                                    <mat-icon class="checkmark-icon"
+                                        *ngIf="isNormalWeight(BMIClassification)">check</mat-icon>
+                                    <mat-icon class="warning-icon"
+                                        *ngIf="!isNormalWeight(BMIClassification)">report_problem</mat-icon>
+                                </span>
+
+                            </div>
+                        </div>
+                        <p>
+                            <span style="font-weight: bold; font-size: 1em;">Recommendation:</span> {{ Recommendation }}
+                        </p>
+                    </ng-container>
+                </mat-card-content>
+
+                <mat-card-content class="calories-card-content" *ngIf="i === 1">
+                    <ng-container>
+                        <div class="calories-info-container">
+                            <p class="calories-data">
+                                <span style="font-weight: bold; font-size: 1em;display:block;">Calories intake: <span
+                                        style="font-weight: normal;">{{CaloriesIntakeCurrentDay ?
+                                        CaloriesIntakeCurrentDay: 0}} kcal</span></span>
+                                <span style="font-weight: bold; font-size: 1em;display:block;">Calories burned: <span
+                                        style="font-weight: normal;">{{TotalBurnedCaloriesCurrentDay ?
+                                        TotalBurnedCaloriesCurrentDay: 0}} kcal</span></span>
+                                <span style="font-weight: bold; font-size: 1em;display:block;">Calories surplus: <span
+                                        style="font-weight: normal;">{{CaloriesIntakeCurrentDay -
+                                        TotalBurnedCaloriesCurrentDay}} kcal</span></span>
+                            </p>
+                        </div>
+                        <p>
+                            <span style="font-weight: bold; font-size: 1em;">Recommendation: </span>
+                            {{ getCalorieRecommendation(BMIClassification) }}
+                        </p>
+                    </ng-container>
+                </mat-card-content>
+
+                <mat-card-content class="hydration-card-content" *ngIf="i === 2">
+                    <app-hydration></app-hydration>
+                </mat-card-content>
+
+                <mat-card-content class="calculator-card-content" *ngIf="i === 3">
+                    <ng-container>
+                        <form #foodForm="ngForm">
+                            <div class="calculator-info-container">
+                                <mat-form-field appearance="fill" class="mat-form-field">
+                                    <mat-label>Food input</mat-label>
+                                    <input matInput type="string" name="foodItems" placeholder="Enter food items"
+                                        ngModel required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Grams</mat-label>
+                                    <input matInput type="number" name="foodGrams" placeholder="Enter food grams"
+                                        ngModel required>
+                                </mat-form-field>
+
+                                <div class="button-container">
+                                    <button mat-raised-button color="primary" type="submit" [disabled]="!foodForm.valid"
+                                        style="margin-right: 10px;">
+                                        Calculate
+                                    </button>
+                                    <button mat-raised-button color="primary" type="submit"
+                                        [disabled]="!foodForm.valid">
+                                        Create Log
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+                </mat-card-content>
+
+                <mat-card-content class="calculator-card-content" *ngIf="i === 4">
+                    <ng-container>
+                        <form #foodForm="ngForm">
+                            <div class="calculator-info-container">
+                                <mat-form-field appearance="fill" class="mat-form-field">
+                                    <mat-label>Food input</mat-label>
+                                    <input matInput type="string" name="foodItems" placeholder="Enter food items"
+                                        ngModel required>
+                                </mat-form-field>
+
+                                <div style="margin-top: 20px; width: auto;">
+                                    <button mat-raised-button color="primary" type="submit"
+                                        [disabled]="!foodForm.valid">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </ng-container>
+                </mat-card-content>
+
+                <!----------END OF CONTENT OF THE MAT-CARDS ------------>
+
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+</div>

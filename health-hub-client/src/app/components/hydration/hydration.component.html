@@ -1,4 +1,21 @@
-<h1>Hydration tracker {{water}}</h1>
+<ng-container>
+    <div class="hydration-info-container">
+        <p class="hydration-data">
+            <span style="font-weight: bold; font-size: 1em;display:block;">Water intake:
+                <span style="font-weight: normal;">{{ water }} ml</span>
+            </span>
+        </p>
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Water input</mat-label>
+                <input matInput type="number" [(ngModel)]="userWaterIntake" placeholder="Enter liters">
+            </mat-form-field>
+            <button mat-raised-button color="primary" (click)="createLog()" style="margin-left: 10px;">Create Log</button>
+        </p>
+    </div>
+    <p>
+        <span style="font-weight: bold; font-size: 1em;">Recommendation:</span>
+        <span> The recommended daily water intake based on your weight is: <span style="font-weight: bold;">{{ calculateRecommendedWaterIntake(weight) }} ml</span>/day</span>
+    </p>
+</ng-container>
 
-<input type="number" [(ngModel)]="litersInput" placeholder="Enter liters">
-<button (click)="createLog()">Create Log</button>

@@ -47,9 +47,9 @@ export class CostumSidenavComponent {
       route: '/layout/calories',
     },
     {
-      icon: 'water_drop',
-      label: 'Hydration tracker',
-      route: '/layout/hydration',
+      icon: 'bed',
+      label: 'Sleep tracker',
+      route: '/layout/dashboard',
     },
     {
       icon: 'fitness_center',

@@ -58,11 +58,6 @@ namespace NutritionManager.Repositories
         public async Task<User> GetUserByUsernameAsyc(string username)
         {
             return await _context.Users
-                .Include(g => g.Goals)
-                .Include(e => e.ExerciseLogs)
-                .Include(h => h.HydrationLogs)
-                .Include(n => n.NutritionLogs)
-                .Include(r => r.Reminders)
                 .SingleOrDefaultAsync(x => x.Username == username);
         }
 

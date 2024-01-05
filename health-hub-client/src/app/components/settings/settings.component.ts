@@ -76,10 +76,12 @@ export class SettingsComponent implements OnInit {
         gender: this.profileForm.value.gender
       };
 
+
       this.updatedUsername = this.profileForm.value.userName;
 
       this.userService.updateUser(updatedUser).subscribe(() => {
         this.userService.updateUserName(this.profileForm.value.userName); // Update the userName in AuthService
+        localStorage.setItem('userInfo', JSON.stringify(updatedUser));
         this._snackBar.open('User updated successfully', 'Close', {
           duration: 2000,
           horizontalPosition: 'center',

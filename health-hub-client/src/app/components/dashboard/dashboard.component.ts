@@ -230,6 +230,8 @@ export class DashboardComponent implements OnInit {
       this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
     })
+
+    localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString())
   }
 
   //Function to calculate precentage for the progress circle
@@ -267,6 +269,7 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching step count data:', error);
+          this.StepsCountCurrentDay = 0;
         }
       );
   }
@@ -281,6 +284,9 @@ export class DashboardComponent implements OnInit {
 
           if (this.BMRCaloriesCurrentDay != undefined) {
             this.BMRCaloriesCurrentDay = Math.round(this.BMRCaloriesCurrentDay);
+          }
+          else{
+            this.BMRCaloriesCurrentDay = 0;
           }
 
           localStorage.setItem("BMRCaloriesCurrentDay", this.BMRCaloriesCurrentDay.toString());
