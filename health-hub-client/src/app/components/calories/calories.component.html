@@ -123,35 +123,77 @@
                                         style="margin-right: 10px;">
                                         Calculate
                                     </button>
-                                    <button mat-raised-button color="primary" type="submit" (click)="createNutritionLog(foodForm.value)"
-                                        [disabled]="!foodForm.valid">
+                                    <button mat-raised-button color="primary" type="submit"
+                                        (click)="createNutritionLog(foodForm.value)" [disabled]="!foodForm.valid">
                                         Create Log
                                     </button>
                                 </div>
                             </div>
-                            <div *ngIf="foodItemExists">
-                                <p style="font-size: large;font-weight: bold;">{{foodName}}</p>
-                                <p>Score: {{foodScore}}</p>
-                                <p>Calories: {{ calories }} kcal</p>
-                                <p>Proteins: {{ protein }} g</p>
-                                <p>Carbohydrates: {{ carbohydrates }} g</p>
-                                <p>Sugar: {{ sugar }} g</p>
-                                <p>Fiber: {{ fiber }} g</p>
-                                <p>Fat: {{ fat }} g</p>
-                                <p>Saturated fat: {{ saturatedFat}} g</p>
-                                <p>Cholesterol: {{ cholesterol } mg}</p>
-                                <p>Sodium: {{ sodium }} mg</p>
-                                <p>Potassium: {{ potassium }} mg</p>
-                
-                              </div>
-                              <div *ngIf="!foodItemExists">
-                                <p style="font-weight: bold;">No data available for the provided food item. Check the spelling and try again.</p>
-                              </div>
+                            <div *ngIf="foodItemExists" class="food-details-container">
+
+                                <div class="food-header">
+                                    <p class="food-name">Food item: {{ foodName }}</p>
+                                    <p class="food-score"><span style="font-weight: bold;">Score:</span> {{ foodScore }}
+                                    </p>
+                                </div>
+
+                                <div class="nutrient-details">
+                                    <div class="column">
+                                        <p class="calories-data">
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Calories:
+                                                <span style="font-weight: normal;">{{ calories}} kcal</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Proteins:
+                                                <span style="font-weight: normal;">{{protein}} g</span></span>
+                                            <span
+                                                style="font-weight: bold; font-size: 1em;display:block;">Carbohydrates:
+                                                <span style="font-weight: normal;">{{carbohydrates
+                                                    }} g</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Sugar: <span
+                                                    style="font-weight: normal;">{{sugar
+                                                    }} g</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Fiber: <span
+                                                    style="font-weight: normal;">{{fiber
+                                                    }} g</span></span>
+                                        </p>
+                                    </div>
+
+
+                                    <div class="column">
+                                        <p class="calories-data">
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Sodium: <span
+                                                    style="font-weight: normal;">{{ sodium}} mg</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Potassium:
+                                                <span style="font-weight: normal;">{{potassium}} mg</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Fat: <span
+                                                    style="font-weight: normal;">{{fat
+                                                    }} g</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Saturated
+                                                fat: <span style="font-weight: normal;">{{saturatedFat
+                                                    }} g</span></span>
+                                            <span style="font-weight: bold; font-size: 1em;display:block;">Cholesterol:
+                                                <span style="font-weight: normal;">{{cholesterol
+                                                    }} g</span></span>
+                                        </p>
+
+                                        <!-- Add the other nutrient values in a similar manner -->
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="!foodItemExists">
+                                <p style="font-weight: bold;">No data available for the provided food item. Check the
+                                    spelling and try again.</p>
+                            </div>
+
+
+
                         </form>
                     </ng-container>
                 </mat-card-content>
 
-                
+
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
 

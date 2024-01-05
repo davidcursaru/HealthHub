@@ -276,7 +276,7 @@ export class CaloriesComponent implements OnInit {
       }
     }
 
-    return Math.max(healthScore, 0); // Ensure health score is non-negative
+    return Math.round(Math.max(healthScore, 0)); // Ensure health score is non-negative
   }
 }
 

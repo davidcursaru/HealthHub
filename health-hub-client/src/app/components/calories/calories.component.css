@@ -139,6 +139,35 @@
 
 }
 
-
-
-
+.food-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px; /* Reduced vertical space */
+  }
+  
+  .nutrient-details {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reduced vertical space */
+    margin-right: 30px;
+  }
+  
+  .bold-text {
+    font-weight: bold;
+  }
+  
+  .food-name {
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+  
+  .food-score {
+    font-size: 1.2em;
+  }
+  
