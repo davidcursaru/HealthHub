@@ -4,7 +4,7 @@
         <h1 class="mat-h1">Calories tracker</h1>
     </div>
 
-    <mat-grid-list cols="3" rowHeight="110px">
+    <mat-grid-list cols="3" rowHeight="115px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="calories-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
@@ -42,7 +42,7 @@
 
                     <mat-card-title *ngIf="i === 4">
                         <div class="BMI-card-header">
-                            <mat-icon class="BMI-card-icon">search</mat-icon>
+                            <mat-icon class="BMI-card-icon">history</mat-icon>
                             <span class="BMI-card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
@@ -133,8 +133,14 @@
 
                                 <div class="food-header">
                                     <p class="food-name">Food item: {{ foodName }}</p>
-                                    <p class="food-score"><span style="font-weight: bold;">Score:</span> {{ foodScore }}
-                                    </p>
+                                    <div class="grade-container">
+                                        <p class="food-score">
+                                            <span style="font-weight: bold;">Score:</span> {{ foodScore }}
+                                        </p>
+                                        <p class="food-grade" [ngClass]="getGradeClass(foodScore)">
+                                            <span style="font-weight: bold;"></span> {{ getGrade(foodScore) }}
+                                        </p>
+                                    </div>
                                 </div>
 
                                 <div class="nutrient-details">

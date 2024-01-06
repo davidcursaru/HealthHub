@@ -62,17 +62,18 @@ export class CaloriesComponent implements OnInit {
     potassium: 4700,
   };
   private nutrientWeights: NutrientValues = {
-    calories: 1,
-    protein: 2,
+    calories: 1.2,
+    protein: 1,
     carbohydrates: 1,
-    sugar: 1.5,
-    fiber: 2.5,
+    sugar: 2,
+    fiber: 1,
     fat: 1,
-    saturatedFat: 1.2,
-    cholesterol: 1.2,
-    sodium: 1.5,
-    potassium: 2,
+    saturatedFat: 2,
+    cholesterol: 2,
+    sodium: 2,
+    potassium: 1,
   };
+
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -91,7 +92,7 @@ export class CaloriesComponent implements OnInit {
         { title: 'Calories intake', cols: 1, rows: 2, route: '' },
         { title: 'Water intake', cols: 1, rows: 3, route: '' },
         { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
-        { title: 'Search available food items', cols: 1, rows: 3, route: '' },
+        { title: 'Recently consumed food items', cols: 1, rows: 3, route: '' },
       ];
     })
   );
@@ -258,26 +259,65 @@ export class CaloriesComponent implements OnInit {
     for (let i = 0; i < nutrientKeys.length; i++) {
       const nutrient = nutrientKeys[i];
       const diff = nutrientValues[nutrient] - goals[nutrient];
+      const goalThreshold = goals[nutrient] * 0.5;
 
-      // Apply nutrient weight
-      const weightedDiff = diff * this.nutrientWeights[nutrient];
-
-      if (weightedDiff <= 0) {
-        healthScore += 10; // Positive health score for meeting or exceeding goals
+      if (diff <= -goalThreshold) {
+        healthScore += 10; // Positive health score for being lower than 50% of the goal
       } else {
-        // Apply thresholds
-        const threshold = goals[nutrient] * 1.2; // Example: 20% threshold increase
-        const percentageExceeded = (diff / threshold) * 100;
+        // Apply thresholds for certain nutrients
+        const threshold = goals[nutrient];
+        const percentageExceeded = Math.abs((diff / threshold) * 100);
+        // Setting specific thresholds for nutrients that can be harmful in excess
+        const maxThresholds: { [key in keyof NutrientValues]: number } = {
+          sodium: 2300,
+          cholesterol: 300,
+          fat: 70,
+          saturatedFat: 25,
+          sugar: 40,
+          calories: 2500,
+          protein: 200,
+          carbohydrates: 300,
+          fiber: 80,
+          potassium: 5000,
+        };
 
-        // Apply nutrient ratio (if needed)
-        // For example, check if the ratio of sodium to potassium is within a healthy range
-
-        healthScore -= percentageExceeded > 50 ? 50 : percentageExceeded; // Cap the decrease
+        if (maxThresholds[nutrient] !== undefined && nutrientValues[nutrient] > maxThresholds[nutrient]) {
+          healthScore -= percentageExceeded * this.nutrientWeights[nutrient];
+        }
       }
     }
 
-    return Math.round(Math.max(healthScore, 0)); // Ensure health score is non-negative
+    return Math.round(Math.max(healthScore, 0));
   }
+
+  // Inside CaloriesComponent class
+
+getGrade(score: number): string {
+  if (score >= 75) {
+    return 'A';
+  } else if (score >= 50) {
+    return 'B';
+  } else if (score >= 25) {
+    return 'C';
+  } else {
+    return 'D';
+  }
+}
+
+getGradeClass(score: number): string {
+  if (score >= 75) {
+    return 'grade-a';
+  } else if (score >= 50) {
+    return 'grade-b';
+  } else if (score >= 25) {
+    return 'grade-c';
+  } else {
+    return 'grade-d';
+  }
+}
+
+
+
 }
 
 

@@ -10,7 +10,9 @@ import { User } from 'src/app/interfaces/user.interface';
 export class HydrationComponent implements OnInit {
   constructor(private userService: UserService) { }
 
-  currentDate: Date = new Date();
+
+  currentDate = new Date();
+
   water: any;
   userWaterIntake: number = 0;
   userId: any = localStorage.getItem('userId');
@@ -39,7 +41,7 @@ export class HydrationComponent implements OnInit {
     const liters = this.userWaterIntake;
 
     if (this.userWaterIntake) {
-      this.userService.createHydrationLog(this.userId, hydrationDate, liters)
+      this.userService.createHydrationLog(this.userId, liters)
         .subscribe(
           (response) => {
             console.log('Hydration log created:', response);
@@ -66,5 +68,5 @@ export class HydrationComponent implements OnInit {
     return userWeight * 30; // Assuming 30ml per kg of body weight
   }
 
-  
+
 }
