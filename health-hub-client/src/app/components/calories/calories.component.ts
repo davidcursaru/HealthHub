@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { NutrientValues } from 'src/app/interfaces/nutrients.interface';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
 
   selector: 'app-calories',
@@ -23,6 +23,12 @@ export class CaloriesComponent implements OnInit {
   WaterConsumptionCurrentDay: any;
   CaloriesIntakeCurrentDay: any;
   TotalBurnedCaloriesCurrentDay: any;
+  goalsCurrentDayCaloriesIntake: any;
+  goalsCurrentDayBurnedCalories: any;
+  percentageCaloriesIntake: any;
+  percentageTitleCaloriesIntake: any;
+  percentageBurnedCalories: any;
+  percentageTitleBurnedCalories: any;
   foodItemExists: boolean = false;
   calories: any;
   fat: any;
@@ -74,8 +80,6 @@ export class CaloriesComponent implements OnInit {
     potassium: 1,
   };
 
-
-
   private breakpointObserver = inject(BreakpointObserver);
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
@@ -92,12 +96,12 @@ export class CaloriesComponent implements OnInit {
         { title: 'Calories intake', cols: 1, rows: 2, route: '' },
         { title: 'Water intake', cols: 1, rows: 3, route: '' },
         { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
-        { title: 'Recently consumed food items', cols: 1, rows: 3, route: '' },
+        { title: 'Progress ', cols: 1, rows: 3, route: '' },
       ];
     })
   );
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -114,8 +118,16 @@ export class CaloriesComponent implements OnInit {
     this.Recommendation = this.getRecommendation(this.BMIClassification);
 
     this.TotalBurnedCaloriesCurrentDay = localStorage.getItem("TotalBurnedCaloriesCurrentDay");
+    this.goalsCurrentDayBurnedCalories = localStorage.getItem("BurnedCaloriesGoalsCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+    this.goalsCurrentDayCaloriesIntake = localStorage.getItem("CaloriesIntakeGoalsCurrentDay");
     this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
+
+    this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+    this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
+
+    this.percentageBurnedCalories = this.calculatePercentage(Number(this.TotalBurnedCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
+    this.percentageTitleBurnedCalories = this.percentageBurnedCalories.toString() + "%";
 
   }
 
@@ -191,16 +203,35 @@ export class CaloriesComponent implements OnInit {
     const foodGrams = formValue.foodGrams;
     const userId: any = this.user?.id;
     this.getNutritionalValues(formValue);
-    if (this.foodItemExists) {
-      this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) => {
+    setTimeout(() => {
+      console.log("Food item exists: ", this.foodItemExists);
 
-      });
+      if (this.foodItemExists) {
+        this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) => {
+          this.snackBar.open('Nutrition log created successfully', 'Close', {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
 
-    }
-    else {
-      console.log("Food item does not exists, check spelling or try again");
-    }
+          this.CaloriesIntakeCurrentDay = Math.round((this.CaloriesIntakeCurrentDay ? parseFloat(this.CaloriesIntakeCurrentDay) : 0) + parseFloat(this.calories));
+          this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+          this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
+          localStorage.setItem('CaloriesIntakeCurrentDay', this.CaloriesIntakeCurrentDay.toString());
+
+
+        });
+      } else {
+        this.snackBar.open('Nutrition log creation failed. Check the spelling of the food item and try again.', 'Close', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'],
+        });
+      }
+    }, 1000);
   }
 
   getNutritionalValues(formValue: any) {
@@ -237,11 +268,12 @@ export class CaloriesComponent implements OnInit {
           };
 
           this.foodScore = this.calculateHealthScore(nutrientValues, this.gender);
-          console.log("health score: ", this.foodScore);
+          console.log("a intrat in subcribe: ", this.foodItemExists);
 
         } else {
-          console.log("No data or empty response received.");
           this.foodItemExists = false;
+          console.log("No data or empty response received. ", this.foodItemExists);
+
         }
       },
       (error) => {
@@ -290,33 +322,37 @@ export class CaloriesComponent implements OnInit {
     return Math.round(Math.max(healthScore, 0));
   }
 
-  // Inside CaloriesComponent class
-
-getGrade(score: number): string {
-  if (score >= 75) {
-    return 'A';
-  } else if (score >= 50) {
-    return 'B';
-  } else if (score >= 25) {
-    return 'C';
-  } else {
-    return 'D';
+  getGrade(score: number): string {
+    if (score >= 75) {
+      return 'A';
+    } else if (score >= 50) {
+      return 'B';
+    } else if (score >= 25) {
+      return 'C';
+    } else {
+      return 'D';
+    }
   }
-}
 
-getGradeClass(score: number): string {
-  if (score >= 75) {
-    return 'grade-a';
-  } else if (score >= 50) {
-    return 'grade-b';
-  } else if (score >= 25) {
-    return 'grade-c';
-  } else {
-    return 'grade-d';
+  getGradeClass(score: number): string {
+    if (score >= 75) {
+      return 'grade-a';
+    } else if (score >= 50) {
+      return 'grade-b';
+    } else if (score >= 25) {
+      return 'grade-c';
+    } else {
+      return 'grade-d';
+    }
   }
-}
 
-
+  calculatePercentage(part: number, whole: number): number {
+    if (whole === 0) {
+      return 0;
+    }
+    const p = (part / whole) * 100;
+    return Math.floor(p);
+  }
 
 }
 

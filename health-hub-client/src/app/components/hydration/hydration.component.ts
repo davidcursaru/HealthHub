@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { timer } from 'rxjs/internal/observable/timer';
 import { User } from 'src/app/interfaces/user.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-hydration',
   templateUrl: './hydration.component.html',
   styleUrls: ['./hydration.component.css']
 })
 export class HydrationComponent implements OnInit {
-  constructor(private userService: UserService) { }
-
+  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
 
   currentDate = new Date();
 
@@ -18,6 +18,9 @@ export class HydrationComponent implements OnInit {
   userId: any = localStorage.getItem('userId');
   weight: any;
   user: User = {};
+  goalsCurrentDayHydration: any;
+  percentageHydration: any;
+  percentageTitleHydration: any;
 
   ngOnInit() {
     const userInfo = localStorage.getItem('userInfo');
@@ -44,10 +47,16 @@ export class HydrationComponent implements OnInit {
       this.userService.createHydrationLog(this.userId, liters)
         .subscribe(
           (response) => {
-            console.log('Hydration log created:', response);
+
             const updatedWater = Number(this.water) + Number(this.userWaterIntake);
             this.updateWaterIntake();
-            localStorage.setItem('waterQuantity', updatedWater.toString());
+            localStorage.setItem('ConsumedWaterQuantity', updatedWater.toString());
+            this.snackBar.open('Hydration log created successfully', 'Close', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['snackbar-success'],
+            });
           },
           (error) => {
             console.error('Error creating hydration log:', error);
@@ -57,15 +66,11 @@ export class HydrationComponent implements OnInit {
   }
 
   updateWaterIntake() {
-    // Update the current water intake data displayed on the card
     this.water = Number(localStorage.getItem("ConsumedWaterQuantity")) + this.userWaterIntake;
-    // You might perform other actions here (e.g., API call to  update backend)
   }
 
   calculateRecommendedWaterIntake(userWeight: number): number {
-    // Calculate the recommended water intake based on user weight
-    // Example calculation (you can adjust this formula based on your requirements)
-    return userWeight * 30; // Assuming 30ml per kg of body weight
+    return userWeight * 30;
   }
 
 

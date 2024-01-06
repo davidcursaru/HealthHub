@@ -42,7 +42,7 @@
 
                     <mat-card-title *ngIf="i === 4">
                         <div class="BMI-card-header">
-                            <mat-icon class="BMI-card-icon">history</mat-icon>
+                            <mat-icon class="BMI-card-icon">hourglass_top</mat-icon>
                             <span class="BMI-card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
@@ -200,6 +200,40 @@
                 </mat-card-content>
 
 
+                <mat-card-content class="progress-calories-tracker" *ngIf="i === 4">
+
+                    <div class="progress-wrapper">
+                        <!--  Calories intake progress -->
+                        <div>
+                            <p><span class="bold">{{CaloriesIntakeCurrentDay}}</span><span
+                                    class="grey-text">/{{goalsCurrentDayCaloriesIntake}} kcal Calories intake</span></p>
+                        </div>
+
+                        <!-- Circle progress on the right side -->
+                        <div>
+                            <circle-progress [title]="percentageTitleCaloriesIntake"
+                                [percent]="percentageCaloriesIntake" [space]="-10" [radius]="45" [outerStrokeWidth]="10"
+                                [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                                [animation]="true" [animationDuration]="1000"></circle-progress>
+                        </div>
+                    </div>
+
+                    <div class="progress-wrapper">
+                        <!--  Calories burned intake -->
+                        <div>
+                            <p><span class="bold">{{TotalBurnedCaloriesCurrentDay}}</span><span
+                                    class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal Burned calories</span></p>
+                        </div>
+
+                        <!-- Circle progress on the right side -->
+                        <div>
+                            <circle-progress [title]="percentageTitleBurnedCalories"
+                                [percent]="percentageBurnedCalories" [space]="-10" [radius]="45" [outerStrokeWidth]="10"
+                                [innerStrokeWidth]="10" [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'"
+                                [animation]="true" [animationDuration]="1000"></circle-progress>
+                        </div>
+                    </div>
+                </mat-card-content>
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
 

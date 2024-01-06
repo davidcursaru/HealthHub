@@ -234,7 +234,7 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString())
   }
 
-  //Function to calculate precentage for the progress circle
+  //Function to calculate precentage for the progress circlehttp://localhost:4200/layout/dashboard
   calculatePercentage(part: number, whole: number): number {
     if (whole === 0) {
       return 0;
