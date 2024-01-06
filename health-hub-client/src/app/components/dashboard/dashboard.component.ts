@@ -208,6 +208,7 @@ export class DashboardComponent implements OnInit {
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
     this.ActiveMinutesCurrentDay = localStorage.getItem("ActiveMinutesCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+
     localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString());
 
     interval(100).subscribe(() => {
@@ -229,6 +230,7 @@ export class DashboardComponent implements OnInit {
 
       this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
       this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
+
 
     })
     

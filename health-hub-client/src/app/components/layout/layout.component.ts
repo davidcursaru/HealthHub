@@ -15,6 +15,7 @@ export class LayoutComponent implements OnInit {
   userInitials2?: string;
   user: User = {};
   isLoading = this.userService.isLoading$;
+  userInitial: any;
 
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
 
@@ -24,12 +25,13 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.showLoader();
+    this.userInitial= localStorage.getItem("username");
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       this.user = JSON.parse(userInfo);
     }
 
-    this.userInitials1 = this.getInitials(this.user.firstname);
+    this.userInitials1 = this.getInitials(this.userInitial);
     this.userInitials2 = this.getInitials(this.user.lastname);
 
     this.router.events.subscribe((event) => {
