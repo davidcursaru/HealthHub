@@ -229,12 +229,13 @@ export class DashboardComponent implements OnInit {
       this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
       this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
+      localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString())
+
     })
 
-    localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString())
+
   }
 
-  //Function to calculate precentage for the progress circlehttp://localhost:4200/layout/dashboard
   calculatePercentage(part: number, whole: number): number {
     if (whole === 0) {
       return 0;
@@ -285,7 +286,7 @@ export class DashboardComponent implements OnInit {
           if (this.BMRCaloriesCurrentDay != undefined) {
             this.BMRCaloriesCurrentDay = Math.round(this.BMRCaloriesCurrentDay);
           }
-          else{
+          else {
             this.BMRCaloriesCurrentDay = 0;
           }
 

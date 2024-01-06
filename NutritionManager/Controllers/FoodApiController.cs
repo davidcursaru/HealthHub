@@ -58,8 +58,8 @@ namespace NutritionManager.Controllers
             _httpClient.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
 
             List<double> tmp = new();
-            List<object> nutritionItems = new();
-            List<double> proteins = new();
+            //List<object> nutritionItems = new();
+            //List<double> proteins = new();
 
             for (int i = 0; i < nutritionLogs.Count(); i++)
             {
@@ -73,19 +73,19 @@ namespace NutritionManager.Controllers
                 {
                     var firstElement = root[0];
                     double totalCalories = firstElement.GetProperty("calories").GetDouble();
-                    double totalProteins = firstElement.GetProperty("protein_g").GetDouble();
-                    caloriesSum += totalCalories; 
+                    //double totalProteins = firstElement.GetProperty("protein_g").GetDouble();
+                    caloriesSum += Math.Round(totalCalories); 
                     tmp.Add(totalCalories);
-                    proteins.Add(totalProteins);
+                    //proteins.Add(totalProteins);
                 }
 
-                var nutritionItem = new
-                {
-                    Name = nutritionLogs.ElementAt(i).FoodConsumed,
-                    Calories = tmp[i],
-                    Proteins = proteins[i]
-                };
-                nutritionItems.Add(nutritionItem);
+                //var nutritionItem = new
+                //{
+                //    Name = nutritionLogs.ElementAt(i).FoodConsumed,
+                //    Calories = tmp[i],
+                //    Proteins = proteins[i]
+                //};
+                //nutritionItems.Add(nutritionItem);
             }
 
             //caloriesSum = tmp.Sum();
@@ -93,7 +93,7 @@ namespace NutritionManager.Controllers
             var nutritionData = new
             {
                 CaloriesSum = caloriesSum,
-                NutritionLogs = nutritionItems
+                //NutritionLogs = nutritionItems
             };
 
             return JsonSerializer.Serialize(nutritionData);
