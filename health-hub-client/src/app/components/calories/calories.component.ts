@@ -205,9 +205,11 @@ export class CaloriesComponent implements OnInit {
     this.getNutritionalValues(formValue);
     setTimeout(() => {
       console.log("Food item exists: ", this.foodItemExists);
-
+      
+      const calories = localStorage.getItem("CaloriesDb");
+      console.log("calories: ", calories)
       if (this.foodItemExists) {
-        this.userService.createNutritionLog(userId, foodItems, foodGrams).subscribe((res: any) => {
+        this.userService.createNutritionLog(userId, foodItems, foodGrams, Number(calories)).subscribe((res: any) => {
           this.snackBar.open('Nutrition log created successfully', 'Close', {
             duration: 4000,
             horizontalPosition: 'center',
@@ -243,6 +245,7 @@ export class CaloriesComponent implements OnInit {
         if (res && res.length > 0) {
           this.foodName = res[0].name;
           this.calories = res[0].calories;
+          localStorage.setItem("CaloriesDb", this.calories.toString());
           this.fat = res[0].fat_total_g;
           this.saturatedFat = res[0].fat_saturated_g;
           this.protein = res[0].protein_g;

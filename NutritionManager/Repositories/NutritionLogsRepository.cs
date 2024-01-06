@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
@@ -54,6 +55,25 @@ namespace NutritionManager.Repositories
                 .Where(r => r.ConsumptionDate >= startDate.Date && r.ConsumptionDate <= endDate.Date && r.UserId == userId).ToListAsync();
 
             return nutritionLogs;
+        }
+
+        public async Task<double> GetNutritionLogsTotalCalories(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var calories = await _context.NutritionLogs
+                .Where(r => r.ConsumptionDate >= startDate.Date && r.ConsumptionDate <= endDate.Date && r.UserId == userId)
+                .Select(r => r.Calories)
+                .SumAsync();
+
+            return calories;
         }
 
         public async Task<NutritionLogs> GetNutritionLogsById(int id)

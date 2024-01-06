@@ -41,6 +41,12 @@ namespace NutritionManager.Controllers
             return await _nutritionLogsRepository.GetNutritionLogsById(id);
         }
 
+        [HttpGet("total-calories-intake")]
+        public async Task<double> GetNutritionLogsTotalCaloriesAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            return await _nutritionLogsRepository.GetNutritionLogsTotalCalories(userId, startDate, endDate);
+        }
+
         [HttpPost]
         public async Task<NutritionLogs> CreateNutritionLogsAsync(NutritionLogs nutritionLogs)
         {

@@ -102,12 +102,25 @@ export class UserService {
     return this.http.post<any>(endpoint, body);
   }
 
-  createNutritionLog(userId: number, foodInput: string, foodGrams: number): Observable<any> {
+  createNutritionLog(userId: number, foodInput: string, foodGrams: number, calories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs';
     const body = {
       userId: userId,
       foodConsumed: foodInput,
-      grams: foodGrams
+      grams: foodGrams,
+      calories: calories
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
+
+  createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
+    const body = {
+      userId: userId,
+      exerciseType: exerciseType,
+      exerciseDuration: exerciseDuration,
+      burnedCalories: burnedCalories
     };
 
     return this.http.post<any>(endpoint, body);

@@ -7,5 +7,6 @@
         public DateTime ConsumptionDate { get; set; } = DateTime.Now;
         public string FoodConsumed { get; set; }
         public int Grams { get; set; }
+        public double Calories { get; set; }
     }
 }
