@@ -9,7 +9,6 @@
             <mat-card class="calories-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
 
-
                 <!----------HEADERS OF THE MAT-CARDS ------------>
                 <mat-card-header>
                     <mat-card-title *ngIf="i === 0">
@@ -47,12 +46,9 @@
                         </div>
                     </mat-card-title>
                 </mat-card-header>
-
-
                 <!----------END OF HEADERS OF THE MAT-CARDS ------------>
 
                 <!----------CONTENT OF THE MAT-CARDS ------------>
-
                 <mat-card-content class="bmi-card-content" *ngIf="i === 0">
                     <ng-container>
                         <div class="bmi-info-container">
@@ -180,25 +176,17 @@
                                                 <span style="font-weight: normal;">{{cholesterol
                                                     }} g</span></span>
                                         </p>
-
-                                        <!-- Add the other nutrient values in a similar manner -->
                                     </div>
-
                                 </div>
-
                             </div>
 
                             <div *ngIf="!foodItemExists">
                                 <p style="font-weight: bold;">No data available for the provided food item. Check the
                                     spelling and try again.</p>
                             </div>
-
-
-
                         </form>
                     </ng-container>
                 </mat-card-content>
-
 
                 <mat-card-content class="progress-calories-tracker" *ngIf="i === 4">
 
@@ -208,7 +196,6 @@
                             <p><span class="bold">{{CaloriesIntakeCurrentDay}}</span><span
                                     class="grey-text">/{{goalsCurrentDayCaloriesIntake}} kcal Calories intake</span></p>
                         </div>
-
                         <!-- Circle progress on the right side -->
                         <div>
                             <circle-progress [title]="percentageTitleCaloriesIntake"
@@ -224,7 +211,6 @@
                             <p><span class="bold">{{TotalBurnedCaloriesCurrentDay}}</span><span
                                     class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal Burned calories</span></p>
                         </div>
-
                         <!-- Circle progress on the right side -->
                         <div>
                             <circle-progress [title]="percentageTitleBurnedCalories"
@@ -234,11 +220,8 @@
                         </div>
                     </div>
                 </mat-card-content>
-
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
-
             </mat-card>
         </mat-grid-tile>
     </mat-grid-list>
-
 </div>
