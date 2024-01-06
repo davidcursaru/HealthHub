@@ -7,7 +7,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
-import { interval } from 'rxjs';
+import { interval} from 'rxjs';
 
 
 @Component({
@@ -208,6 +208,7 @@ export class DashboardComponent implements OnInit {
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
     this.ActiveMinutesCurrentDay = localStorage.getItem("ActiveMinutesCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+    localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString());
 
     interval(100).subscribe(() => {
 
@@ -230,7 +231,7 @@ export class DashboardComponent implements OnInit {
       this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
     })
-    localStorage.setItem("TotalBurnedCaloriesCurrentDay", (Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises)).toString())
+    
 
   }
 
@@ -365,7 +366,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(
         (data) => {
 
-          this.CaloriesIntakeCurrentDay = data.CaloriesSum;
+          this.CaloriesIntakeCurrentDay = data;
           if (this.CaloriesIntakeCurrentDay === undefined) {
             this.CaloriesIntakeCurrentDay = 0;
           }
