@@ -10,7 +10,7 @@
     justify-content: space-between;
 }
 
-.create-goal-btn{
+.create-goal-btn {
     margin-right: 30px;
 }
 
@@ -51,4 +51,89 @@
     height: 40px;
     border-radius: 10px;
     background-color: #2cb9a2b4;
+}
+
+.mat-grid-list-exercise-data {
+    margin-top: 30px;
+}
+
+.exercise-data-mat-grid {
+    height: 40px;
+    border-right: 2px solid #0e0d0d;
+
+    .exercise-data-div1 {
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        opacity: .6;
+    }
+
+    .exercise-data-div2 {
+        margin-top: 10px;
+        font-weight: bold;
+        font-size: large;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+    }
+}
+
+.exercise-data-mat-grid:last-child {
+    border-right: none;
+}
+
+.exercise-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.progress-exercise-tracker .progress-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.bold {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.grey-text {
+    color: rgba(0, 0, 0, 0.43);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.calculator-card-content {
+    margin-top: 30px;
+}
+
+.calculator-info-container {
+    display: flex;
+}
+
+.mat-form-field {
+    margin-right: 20px;
+}
+
+.button-container {
+
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.custom-autocomplete-panel {
+    top: unset !important;
+    bottom: initial !important;
+    transform-origin: top;
+}
+
+.snackbar-success {
+    background-color: green;
+    color: white;
 }

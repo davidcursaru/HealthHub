@@ -37,6 +37,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { DeleteAccountConfirmationDialogComponent } from './components/settings/settings.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     MatGridListModule,
     MatCardModule,
     MatCheckboxModule,
+    MatAutocompleteModule,
+    MatInputModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,
