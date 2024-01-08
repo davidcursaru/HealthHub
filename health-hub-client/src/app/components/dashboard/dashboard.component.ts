@@ -153,7 +153,7 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem("StepsGoalsCurrentDay", this.goalsCurrentDaySteps);
     });
 
-    this.userService.getGoalsTotalValueForCurrentDay("Exercise", this.userId).subscribe(res => {
+    this.userService.getGoalsTotalValueForCurrentDay("Exercise duration(min)", this.userId).subscribe(res => {
       this.goalsCurrentDayExerciseDuration = res.toString();
       if (this.goalsCurrentDayExerciseDuration === undefined) {
         this.goalsCurrentDayExerciseDuration = 0;
@@ -161,7 +161,7 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem("ExerciseDurationGoalsCurrentDay", this.goalsCurrentDayExerciseDuration);
     });
 
-    this.userService.getGoalsTotalValueForCurrentDay("Active minutes", this.userId).subscribe(res => {
+    this.userService.getGoalsTotalValueForCurrentDay("Active minutes(min)", this.userId).subscribe(res => {
       this.goalsCurrentDayActiveMinutes = res.toString();
       if (this.goalsCurrentDayActiveMinutes === undefined) {
         this.goalsCurrentDayActiveMinutes = 0;
@@ -169,7 +169,7 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem("ActiveMinutesGoalsCurrentDay", this.goalsCurrentDayActiveMinutes);
     });
 
-    this.userService.getGoalsTotalValueForCurrentDay("Burned calories", this.userId).subscribe(res => {
+    this.userService.getGoalsTotalValueForCurrentDay("Burned calories(kcal)", this.userId).subscribe(res => {
       this.goalsCurrentDayBurnedCalories = res.toString();
       if (this.goalsCurrentDayBurnedCalories === undefined) {
         this.goalsCurrentDayBurnedCalories = 0;
@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem("BurnedCaloriesGoalsCurrentDay", this.goalsCurrentDayBurnedCalories);
     });
 
-    this.userService.getGoalsTotalValueForCurrentDay("Calories intake", this.userId).subscribe(res => {
+    this.userService.getGoalsTotalValueForCurrentDay("Calories intake(kcal)", this.userId).subscribe(res => {
       this.goalsCurrentDayCaloriesIntake = res.toString();
       if (this.goalsCurrentDayCaloriesIntake === undefined) {
         this.goalsCurrentDayCaloriesIntake = 0;
@@ -185,7 +185,7 @@ export class DashboardComponent implements OnInit {
       localStorage.setItem("CaloriesIntakeGoalsCurrentDay", this.goalsCurrentDayCaloriesIntake);
     });
 
-    this.userService.getGoalsTotalValueForCurrentDay("Hydration", this.userId).subscribe(res => {
+    this.userService.getGoalsTotalValueForCurrentDay("Hydration(ml)", this.userId).subscribe(res => {
       this.goalsCurrentDayHydration = res;
       if (this.goalsCurrentDayHydration === undefined) {
         this.goalsCurrentDayHydration = 0;

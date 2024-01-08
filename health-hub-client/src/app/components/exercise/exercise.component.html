@@ -1,1 +1,64 @@
-<h1>Exercise</h1>
+<div class="grid-container">
+
+    <div class="exercise-header">
+        <h1 class="mat-h1">Exercise tracker</h1>
+
+        <button mat-raised-button color="primary" type="button" class="create-goal-btn"
+        (click)="openCreateGoalsDialog()">Create
+        Goal</button>
+    </div>
+
+    <mat-grid-list cols="3" rowHeight="80px">
+        <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
+            <mat-card class="exercise-card"
+                [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3, 'fifth-card': i === 4 }">
+
+                <!----------HEADERS OF THE MAT-CARDS ------------>
+                <mat-card-header>
+                    <mat-card-title *ngIf="i === 0">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 1">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">hourglass_top</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 2">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">directions_run</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 3">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">fact_check</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 4">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">directions_bike</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+    
+                </mat-card-header>
+                <!----------END OF HEADERS OF THE MAT-CARDS ------------>
+
+
+                <!----------CONTENT OF THE MAT-CARDS ------------>
+                
+                <!----------END OF CONTENT OF THE MAT-CARDS ------------>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

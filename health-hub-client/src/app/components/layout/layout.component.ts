@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit {
 
   collapsed = signal(false);
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
-  showCheckMark: boolean = false;
+ 
 
   ngOnInit(): void {
     this.userService.showLoader();
@@ -55,10 +55,6 @@ export class LayoutComponent implements OnInit {
     const names = name.split(' ');
     const initials = names.map(name => name.charAt(0)).join('');
     return initials.toUpperCase();
-  }
-
-  toggleNotification(): void {
-    this.showCheckMark = !this.showCheckMark;
   }
 
   logout(): void {

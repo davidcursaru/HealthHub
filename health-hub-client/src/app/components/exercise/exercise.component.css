@@ -1,0 +1,54 @@
+.grid-container {
+    margin-bottom: 30px;
+    margin-left: auto;
+
+}
+
+.mat-h1 {
+    font-size: x-large;
+    display: flex;
+    justify-content: space-between;
+}
+
+.create-goal-btn{
+    margin-right: 30px;
+}
+
+.exercise-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.exercise-card {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 20px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+}
+
+.card-title {
+    margin-left: 8px;
+    font-size: 18px;
+}
+
+.card-icon {
+    font-size: x-large !important;
+    color: rgb(34, 43, 107);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #2cb9a2b4;
+}

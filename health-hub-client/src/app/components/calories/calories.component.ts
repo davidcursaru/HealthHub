@@ -5,6 +5,8 @@ import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { NutrientValues } from 'src/app/interfaces/nutrients.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GoalsComponent } from '../goals/goals.component';
+import { MatDialog} from '@angular/material/dialog';
 @Component({
 
   selector: 'app-calories',
@@ -100,8 +102,13 @@ export class CaloriesComponent implements OnInit {
       ];
     })
   );
+ 
 
-  constructor(private userService: UserService, private snackBar: MatSnackBar) { }
+  constructor(
+    private userService: UserService, 
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    ) { }
 
   ngOnInit(): void {
 
@@ -355,6 +362,16 @@ export class CaloriesComponent implements OnInit {
     }
     const p = (part / whole) * 100;
     return Math.floor(p);
+  }
+
+  openCreateGoalsDialog() {
+    const dialogRef = this.dialog.open(GoalsComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Handle any actions after the dialog is closed
+    });
   }
 
 }

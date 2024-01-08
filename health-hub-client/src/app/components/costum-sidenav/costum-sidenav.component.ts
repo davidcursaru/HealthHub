@@ -36,25 +36,21 @@ export class CostumSidenavComponent {
       label: 'Dashboard',
       route: '/layout/dashboard',
     },
-    {
-      icon: 'flag',
-      label: 'Goals',
-      route: '/layout/goals',
-    },
+
     {
       icon: 'fastfood',
       label: 'Calories tracker',
       route: '/layout/calories',
     },
     {
-      icon: 'bed',
-      label: 'Sleep tracker',
-      route: '/layout/dashboard',
-    },
-    {
       icon: 'fitness_center',
       label: 'Exercise tracker',
       route: '/layout/exercise',
+    },
+    {
+      icon: 'bed',
+      label: 'Sleep tracker',
+      route: '/layout/dashboard',
     },
     {
       icon: 'event',

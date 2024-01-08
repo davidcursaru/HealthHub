@@ -1,1 +1,38 @@
-<h1>Goals</h1>
+<h2 mat-dialog-title>Create Goal</h2>
+<mat-dialog-content>
+    <form [formGroup]="GoalForm">
+        <mat-form-field appearance="fill">
+            <mat-label>Goal type</mat-label>
+            <mat-select formControlName="goalType" (selectionChange)="onGoalTypeChange($event.value)" required>
+                <mat-option *ngFor="let goal of goalTypes" [value]="goal">{{ goal }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="GoalForm.controls['goalType'].hasError('required')">Goal type is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Target value</mat-label>
+            <input matInput formControlName="targetValue" type="number" required>
+            <mat-error *ngIf="GoalForm.controls['targetValue'].hasError('required')">Target value is
+                required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Start date</mat-label>
+            <input matInput formControlName="startDate" type="datetime-local" required>
+            <mat-error *ngIf="GoalForm.controls['startDate'].hasError('required')">Start date is
+                required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Deadline</mat-label>
+            <input matInput formControlName="deadline" type="datetime-local" required>
+            <mat-error *ngIf="GoalForm.controls['deadline'].hasError('required')">Deadline is
+                required.</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="createGoal(GoalForm.value)" [disabled]="GoalForm.invalid">Create
+        Goal</button>
+</mat-dialog-actions>

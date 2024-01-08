@@ -114,6 +114,19 @@ export class UserService {
     return this.http.post<any>(endpoint, body);
   }
 
+  createGoalLog(userId: number, goalType: string, targetValue: number, startDate: string, deadline: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'goals';
+    const body = {
+      userId: userId,
+      goalType: goalType,
+      targetValue: targetValue,
+      startGoalDate: startDate, 
+      deadline: deadline
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
+
   createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {
