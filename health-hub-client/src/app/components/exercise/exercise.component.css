@@ -127,10 +127,11 @@
     margin-right: 20px;
 }
 
-.custom-autocomplete-panel {
-    top: unset !important;
-    bottom: initial !important;
-    transform-origin: top;
+.custom-autocomplete-panel .auto {
+    max-height: 120px;
+    /* Set a maximum height for the panel */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
 }
 
 .snackbar-success {

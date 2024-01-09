@@ -7,7 +7,8 @@ import { GoalsComponent } from '../goals/goals.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Exercise } from 'src/app/interfaces/exerciseResponse.interface';
 import { FormControl } from '@angular/forms';
-
+import { NgForm } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-exercise',
@@ -23,7 +24,8 @@ export class ExerciseComponent implements OnInit {
   exerciseTypeControl = new FormControl();
   exerciseSuggestions: string[] = [];
   userId: any;
- 
+  exerciseFormGroup: any = FormGroup;
+
 
   private breakpointObserver = inject(BreakpointObserver);
   /** Based on the screen size, switch from standard to one column per row */
@@ -54,6 +56,7 @@ export class ExerciseComponent implements OnInit {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -63,9 +66,15 @@ export class ExerciseComponent implements OnInit {
     this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
     this.percentageTitleExercise = this.percentageExercise.toString() + "%";
 
-    this.exerciseTypeControl.valueChanges.subscribe((value: string) => {
-      if (value && value.trim().length > 0) {
-        this.getExerciseList({ exerciseType: value, exerciseDuration: null }); // Call getExerciseList
+    this.exerciseFormGroup = this.formBuilder.group({
+      exerciseType: ['', Validators.required], // Add validators if needed
+      exerciseDuration: ['', Validators.required] // Add validators if needed
+    });
+
+    // Subscribe to value changes of the exerciseType control
+    this.exerciseFormGroup.valueChanges.subscribe((value: string) => {
+      if (value) {
+        this.getExerciseList(this.exerciseFormGroup.value); // Call getExerciseList with the entire form value
       }
     });
 
@@ -91,12 +100,11 @@ export class ExerciseComponent implements OnInit {
 
   getExerciseList(formValue: any) {
     const exerciseType = formValue.exerciseType;
-    const exerciseDuration = formValue.exerciseDuration;
-
+    console.log("getExerciseList exerciseType: ", exerciseType);
 
     this.userService.getCaloriesBurned(exerciseType).subscribe(
       (res: Exercise[]) => {
-
+        console.log(res);
         this.exerciseSuggestions = res.map((exercise: Exercise) => exercise.name);
 
       },
@@ -106,14 +114,18 @@ export class ExerciseComponent implements OnInit {
     );
   }
 
-  getExerciseBurnedCalories(formValue: any) {
+  getExerciseBurnedCalories(exerciseForm: NgForm) {
+    const formValue = this.exerciseFormGroup.value;
     const exerciseType = formValue.exerciseType;
-    
+    console.log("ExerciseTType in burnedCalories function:", exerciseType);
     const exerciseDuration = formValue.exerciseDuration;
+    console.log("ExerciseDuration in burnedCalories function: ", exerciseDuration);
+
     this.userService.getCaloriesBurned(exerciseType).subscribe(
       (res: Exercise[]) => {
         if (res && res.length > 0) {
-          const caloriesBurned = (res[0].calories_per_hour / 60) * exerciseDuration;
+          const caloriesBurned = Math.round((res[0].calories_per_hour / 60) * exerciseDuration);
+          console.log("calorii arse resultate in functiea de burnedCalories: ", caloriesBurned);
           localStorage.setItem("caloriesExercise", caloriesBurned.toString());
         }
 
@@ -124,25 +136,27 @@ export class ExerciseComponent implements OnInit {
     );
   }
 
-  createExerciseLog(formValue: any) {
+  createExerciseLog(exerciseForm: NgForm) {
+    const formValue = this.exerciseFormGroup.value;
     const exerciseType = formValue.exerciseType;
     const exerciseDuration = formValue.exerciseDuration;
-    this.getExerciseBurnedCalories(formValue);
-    const caloriesBurned = localStorage.getItem("caloriesExercise");
-    console.log("calories burned from exercise: ", caloriesBurned)
+    this.getExerciseBurnedCalories(exerciseForm);
 
 
-    this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned)).subscribe((res: any) => {
-      this.snackBar.open('Exercise log created successfully', 'Close', {
-        duration: 4000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['snackbar-success'],
+    setTimeout(() => {
+      const caloriesBurned = localStorage.getItem("caloriesExercise");
+      console.log("calories burned from exercise in functia createLog: ", caloriesBurned)
+      this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned)).subscribe((res: any) => {
+        this.snackBar.open('Exercise log created successfully', 'Close', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'],
+        });
+
       });
+    }, 1000);
 
-    });
-
-
-}
+  }
 
 }

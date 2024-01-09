@@ -101,42 +101,44 @@
                     </div>
                 </mat-card-content>
 
-
                 <mat-card-content class="calculator-card-content" *ngIf="i === 3">
                     <ng-container>
-                        <form #exerciseForm="ngForm" (ngSubmit)="getExerciseBurnedCalories(exerciseForm.value)" >
+                        <form [formGroup]="exerciseFormGroup"
+                            (ngSubmit)="getExerciseBurnedCalories(exerciseFormGroup.value)">
                             <div class="calculator-info-container">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Exercise type</mat-label>
-                                    <input matInput [formControl]="exerciseTypeControl" [matAutocomplete]="auto" panelClass="custom-autocomplete-panel" placeholder="Enter exercise type" ngModel required>
-                                    <mat-autocomplete #auto="matAutocomplete">
+                                    <input matInput formControlName="exerciseType" [matAutocomplete]="auto"
+                                        panelClass="custom-autocomplete-panel" placeholder="Enter exercise type">
+                                    <mat-autocomplete class="auto" #auto="matAutocomplete">
                                         <mat-option *ngFor="let exercise of exerciseSuggestions" [value]="exercise">
                                             {{ exercise }}
                                         </mat-option>
                                     </mat-autocomplete>
+
                                 </mat-form-field>
-                        
-                                <mat-form-field appearance="fill">
+
+                                <mat-form-field appearance="fill" style="margin-left:20px;">
                                     <mat-label>Duration(min)</mat-label>
-                                    <input matInput type="number" name="exerciseDuration" placeholder="Enter exercise duration" ngModel required>
+                                    <input matInput type="number" formControlName="exerciseDuration"
+                                        placeholder="Enter exercise duration">
                                 </mat-form-field>
-                        
                                 <div class="button-container">
-                                    <button mat-raised-button color="primary" type="submit" [disabled]="!exerciseForm.valid"
-                                        style="margin-right: 10px;">
+                                    <button mat-raised-button color="primary" type="submit"
+                                        [disabled]="!exerciseFormGroup.valid" style="margin-right: 10px;">
                                         Calculate
                                     </button>
                                     <button mat-raised-button color="primary" type="submit"
-                                        (click)="createExerciseLog(exerciseForm.value)" [disabled]="!exerciseForm.valid">
+                                        [disabled]="!exerciseFormGroup.valid"
+                                        (click)="createExerciseLog(exerciseFormGroup.value)">
                                         Create Log
                                     </button>
                                 </div>
                             </div>
-                        
-                        
                         </form>
                     </ng-container>
                 </mat-card-content>
+
 
 
 
