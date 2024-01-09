@@ -8,7 +8,7 @@
             Goal</button>
     </div>
 
-    <mat-grid-list cols="3" rowHeight="80px">
+    <mat-grid-list [cols]="(cards | async)?.[4]?.columns || (cards | async)?.[3]?.columns" rowHeight="80px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="exercise-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3, 'fifth-card': i === 4 }">
@@ -54,7 +54,6 @@
                 </mat-card-header>
                 <!----------END OF HEADERS OF THE MAT-CARDS ------------>
 
-
                 <!----------CONTENT OF THE MAT-CARDS ------------>
                 <mat-card-content class="card-content" *ngIf="i === 0">
                     <mat-grid-list class="mat-grid-list-exercise-data" cols="3" rowHeight="3:1">
@@ -62,7 +61,7 @@
                         <mat-grid-tile class="exercise-data-mat-grid">
                             <div class="exercise-data-container">
                                 <div class="exercise-data-div1">Excersie duration</div>
-                                <div class="exercise-data-div2"> 30 min</div>
+                                <div class="exercise-data-div2"> {{ExerciseDurationCurrentDay}} min</div>
                             </div>
                         </mat-grid-tile>
 
@@ -75,7 +74,7 @@
                         <mat-grid-tile class="exercise-data-mat-grid">
                             <div class="exercise-data-container">
                                 <div class="exercise-data-div1">Burned calories</div>
-                                <div class="exercise-data-div2">1200 kcal</div>
+                                <div class="exercise-data-div2">{{BurnedCaloriesFromExercises}} kcal</div>
                             </div>
                         </mat-grid-tile>
 
@@ -121,7 +120,7 @@
                                 <mat-form-field appearance="fill" style="margin-left:20px;">
                                     <mat-label>Duration(min)</mat-label>
                                     <input matInput type="number" formControlName="exerciseDuration"
-                                        placeholder="Enter exercise duration">
+                                        placeholder="Enter duration">
                                 </mat-form-field>
                                 <div class="button-container">
                                     <button mat-raised-button color="primary" type="submit"

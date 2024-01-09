@@ -1,6 +1,7 @@
-import { Component, Input, signal, computed } from '@angular/core';
+import { Component, Input, signal, computed,inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+
 
 export type MenuItem = {
 
@@ -52,11 +53,7 @@ export class CostumSidenavComponent {
       label: 'Sleep tracker',
       route: '/layout/dashboard',
     },
-    {
-      icon: 'event',
-      label: 'Scheduling and Reminders',
-      route: '/layout/scheduling',
-    },
+
     {
       icon: 'bar_chart',
       label: 'Reports',

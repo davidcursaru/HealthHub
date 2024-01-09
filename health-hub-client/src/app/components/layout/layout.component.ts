@@ -1,7 +1,8 @@
-import { Component, OnInit, computed, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-layout',
@@ -21,11 +22,24 @@ export class LayoutComponent implements OnInit {
 
   collapsed = signal(false);
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
- 
+
+  private breakpointObserver = inject(BreakpointObserver);
+  /** Based on the screen size, switch from standard to one column per row */
+  cards = this.breakpointObserver.observe([
+    Breakpoints.Small,
+    Breakpoints.Handset
+  ]).subscribe(result => {
+    if (result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
+      this.collapsed.set(true);
+    }
+
+    this.collapsed.set(true);
+
+  });
 
   ngOnInit(): void {
     this.userService.showLoader();
-    this.userInitial= localStorage.getItem("username");
+    this.userInitial = localStorage.getItem("username");
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
       this.user = JSON.parse(userInfo);
