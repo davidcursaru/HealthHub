@@ -7,7 +7,7 @@ import { User } from 'src/app/interfaces/user.interface';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
-import { interval} from 'rxjs';
+import { interval } from 'rxjs';
 
 
 @Component({
@@ -233,7 +233,7 @@ export class DashboardComponent implements OnInit {
 
 
     })
-    
+
 
   }
 
@@ -342,7 +342,7 @@ export class DashboardComponent implements OnInit {
       .subscribe(
         (data) => {
 
-          this.BurnedCaloriesFromExercises = data.CaloriesSum;
+          this.BurnedCaloriesFromExercises = Math.round(data);
           if (this.BurnedCaloriesFromExercises === undefined) {
             this.BurnedCaloriesFromExercises = 0;
           }

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using System.Text.Json;
 
 namespace NutritionManager.Repositories
 {
@@ -55,6 +57,56 @@ namespace NutritionManager.Repositories
         {
             return await _context.ExerciseLogs.FindAsync(id);
         }
+
+        public async Task<double> GetTotalBurnedCaloriesSum(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var calories = await _context.ExerciseLogs
+                .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId)
+                .Select(r => r.BurnedCalories)
+                .SumAsync();
+
+            return calories;
+        }
+
+        public async Task<string> GetExerciseData(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            IEnumerable<ExerciseLogs> exerciseLogs = await GetExerciseLogsInterval(userId, startDate, endDate);
+
+            List<object> exerciseDataList = new List<object>();
+
+            foreach (var exercise in exerciseLogs)
+            {
+                var exerciseData = new
+                {
+                    name = exercise.ExerciseType,
+                    duration = exercise.ExerciseDuration,
+                    burned_calories = exercise.BurnedCalories
+                };
+
+                exerciseDataList.Add(exerciseData);
+            }
+
+            return JsonSerializer.Serialize(exerciseDataList);
+        }
+
 
         public async Task<IEnumerable<ExerciseLogs>> GetAllExercisesByUserId(int userId)
         {

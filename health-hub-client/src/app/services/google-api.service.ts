@@ -11,7 +11,7 @@ export class GoogleAPIService {
   constructor(private http: HttpClient) { }
 
   getStepCount(userId: number, startTimeMillis: number, endTimeMillis: number): Observable<any> {
-    const endpoint= environment.userManagement.baseUrl + 'GoogleFit/StepsCount/' + userId;
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/StepsCount/' + userId;
     const body = {
       StartTimeMillis: startTimeMillis,
       EndTimeMillis: endTimeMillis
@@ -21,7 +21,7 @@ export class GoogleAPIService {
   }
 
   getBMRCalories(userId: number, startTimeMillis: number, endTimeMillis: number): Observable<any> {
-    const endpoint= environment.userManagement.baseUrl + 'GoogleFit/BMRCalories/' + userId;
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/BMRCalories/' + userId;
     const body = {
       StartTimeMillis: startTimeMillis,
       EndTimeMillis: endTimeMillis
@@ -31,7 +31,7 @@ export class GoogleAPIService {
   }
 
   getHeartMinutes(userId: number, startTimeMillis: number, endTimeMillis: number): Observable<any> {
-    const endpoint= environment.userManagement.baseUrl + 'GoogleFit/HeartMinutes/' + userId;
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/HeartMinutes/' + userId;
     const body = {
       StartTimeMillis: startTimeMillis,
       EndTimeMillis: endTimeMillis
@@ -41,7 +41,7 @@ export class GoogleAPIService {
   }
 
   getActiveMinutes(userId: number, startTimeMillis: number, endTimeMillis: number): Observable<any> {
-    const endpoint= environment.userManagement.baseUrl + 'GoogleFit/ActiveMinutes/' + userId;
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/ActiveMinutes/' + userId;
     const body = {
       StartTimeMillis: startTimeMillis,
       EndTimeMillis: endTimeMillis

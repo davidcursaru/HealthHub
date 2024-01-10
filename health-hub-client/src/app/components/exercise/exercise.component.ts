@@ -32,7 +32,8 @@ export class ExerciseComponent implements OnInit {
     Breakpoints.Small,
     Breakpoints.Handset,
     Breakpoints.Medium,
-    Breakpoints.Large
+    Breakpoints.Large,
+    Breakpoints.XLarge
   ]).pipe(
     map(({ breakpoints }) => {
       if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.Handset]) {
@@ -53,7 +54,7 @@ export class ExerciseComponent implements OnInit {
           { columns: 2 }
         ];
       }
-      else if (breakpoints[Breakpoints.Large]) {
+      else if (breakpoints[Breakpoints.Large] || breakpoints[Breakpoints.XLarge]) {
         return [
           { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
           { title: 'Progress', cols: 1, rows: 3, route: '' },
@@ -97,7 +98,7 @@ export class ExerciseComponent implements OnInit {
     // Subscribe to value changes of the exerciseType control
     this.exerciseFormGroup.valueChanges.subscribe((value: string) => {
       if (value) {
-        this.getExerciseList(this.exerciseFormGroup.value); // Call getExerciseList with the entire form value
+        this.getExerciseList(this.exerciseFormGroup.value);
       }
     });
 

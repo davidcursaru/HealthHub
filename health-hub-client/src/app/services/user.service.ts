@@ -14,40 +14,32 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  //Other related
   private loadingSubject = new BehaviorSubject<boolean>(false);
-
   isLoading$ = this.loadingSubject.asObservable();
-
   showLoader() {
     this.loadingSubject.next(true);
   }
-
   hideLoader() {
     this.loadingSubject.next(false);
   }
 
+  //User related
   updateUserName(updatedUserName: string) {
-    // Update the userName
     localStorage.setItem('username', updatedUserName);
-
-    // Emit the userNameUpdated event
     this.userNameUpdated.emit(updatedUserName);
   }
-
   updateUser(user: User) {
     return this.http.put<User>(environment.userManagement.baseUrl + 'users/update', user);
   }
-
   getUser(userName: string) {
     const endpoint = environment.userManagement.baseUrl + 'users/username/' + userName;
     return this.http.get<User>(endpoint);
   }
-
   getUserByUsername(username: string): Observable<User> {
     const endpoint = environment.userManagement.baseUrl + 'users/username/' + username;
     return this.http.get<any>(endpoint);
   }
-
   getLoggedUsername(): User {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -55,43 +47,64 @@ export class UserService {
     }
     return this.user;
   }
-
   getLoggedUserId(): number {
     const userId: any = localStorage.getItem("userId");
     return userId;
   }
+  changePassword(oldPassword: string, newPassword: string): Observable<void> {
+    const idLS = localStorage.getItem("userId");
+    const url = `${environment.userManagement.baseUrl}users/change-password`;
+    const requestBody = {
+      id: idLS,
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    };
+    return this.http.put<void>(url, requestBody);
+  }
+  deleteAccount(): Observable<void> {
+    const idLS = Number(localStorage.getItem("userId"));
 
-  getFoodCalories(foodInput: string): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
-    return this.http.get<any>(endpoint);
+    const url = `${environment.userManagement.baseUrl}users/delete/${idLS}`;
+
+    return this.http.delete<void>(url).pipe(
+      tap(() => {
+        console.log("User deleted successfully");
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error deleting user:", error);
+        throw error;
+      })
+    );
   }
 
+  //Schedule and reminders
   getCurrentDaySchedule(loggedUserId: any): Observable<Reminders[]> {
     const endpoint = environment.userManagement.baseUrl + 'reminders/schedulling/' + loggedUserId;
 
     return this.http.get<Reminders[]>(endpoint);
   }
 
-  getWaterQuantity(loggedUserId: any, startDate: string, endDate: string) {
-    const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
-    return this.http.get(endpoint);
-  }
-
-  getCaloriesBurned(activity: string): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
+  //Food API
+  getFoodCalories(foodInput: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
     return this.http.get<any>(endpoint);
   }
-
-  getCaloriesBurnedInterval(userId: number, startDate: string, endDate: string): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'exercisesapi/intervalCalories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
-    return this.http.get<any>(endpoint);
-  }
-
   getCaloriesIntakeInterval(userId: number, startDate: string, endDate: string): Observable<number> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs/total-calories-intake?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<number>(endpoint);
   }
 
+  //Exercise API
+  getCaloriesBurned(activity: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
+    return this.http.get<any>(endpoint);
+  }
+  getCaloriesBurnedInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/total-burned-calories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
+
+  //Hydration Logs
   createHydrationLog(userId: number, liters: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs';
     const body = {
@@ -101,7 +114,12 @@ export class UserService {
 
     return this.http.post<any>(endpoint, body);
   }
+  getWaterQuantity(loggedUserId: any, startDate: string, endDate: string) {
+    const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
+    return this.http.get(endpoint);
+  }
 
+  //Nutrition Logs
   createNutritionLog(userId: number, foodInput: string, foodGrams: number, calories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs';
     const body = {
@@ -114,19 +132,7 @@ export class UserService {
     return this.http.post<any>(endpoint, body);
   }
 
-  createGoalLog(userId: number, goalType: string, targetValue: number, startDate: string, deadline: string): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'goals';
-    const body = {
-      userId: userId,
-      goalType: goalType,
-      targetValue: targetValue,
-      startGoalDate: startDate, 
-      deadline: deadline
-    };
-
-    return this.http.post<any>(endpoint, body);
-  }
-
+  //Exercise logs
   createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {
@@ -139,42 +145,22 @@ export class UserService {
     return this.http.post<any>(endpoint, body);
   }
 
+  // Goal logs
+  createGoalLog(userId: number, goalType: string, targetValue: number, startDate: string, deadline: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'goals';
+    const body = {
+      userId: userId,
+      goalType: goalType,
+      targetValue: targetValue,
+      startGoalDate: startDate,
+      deadline: deadline
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
   getGoalsTotalValueForCurrentDay(goalType: string, userId: number) {
     const endpoint = environment.userManagement.baseUrl + 'goals/currentDayValue?goalType=' + goalType + "&userId=" + userId;
     return this.http.get(endpoint);
-  }
-
-  changePassword(oldPassword: string, newPassword: string): Observable<void> {
-    const idLS = localStorage.getItem("userId");
-    const url = `${environment.userManagement.baseUrl}users/change-password`;
-    const requestBody = {
-      id: idLS,
-      oldPassword: oldPassword,
-      newPassword: newPassword
-    };
-    return this.http.put<void>(url, requestBody);
-  }
-
-  deleteAccount(): Observable<void> {
-    const idLS = Number(localStorage.getItem("userId"));
-
-    const url = `${environment.userManagement.baseUrl}users/delete/${idLS}`;
-
-    return this.http.delete<void>(url).pipe(
-      tap(() => {
-        // User deleted successfully
-        // You can perform additional actions here, such as displaying a success message
-        console.log("User deleted successfully");
-      }),
-      catchError((error: HttpErrorResponse) => {
-        // Handle the error appropriately
-        console.error("Error deleting user:", error);
-        // You can display an error message or perform any necessary actions
-
-        // Throw the error again to propagate it to the component
-        throw error;
-      })
-    );
   }
 
   logout(): void {
@@ -200,7 +186,6 @@ export class UserService {
     localStorage.removeItem('HeartMinutesCurrentDay');
     localStorage.removeItem('TotalBurnedCaloriesCurrentDay');
     localStorage.removeItem('CaloriesDb');
-
   }
 
 }

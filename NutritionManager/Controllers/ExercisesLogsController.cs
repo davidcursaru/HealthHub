@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using NutritionManager.Data;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+
 
 namespace NutritionManager.Controllers
 {
@@ -39,6 +38,18 @@ namespace NutritionManager.Controllers
         public async Task<IEnumerable<ExerciseLogs>> GetExerciseLogsIntervalAsync(int userId, DateTime startDate, DateTime endDate)
         {
             return await _exerciseLogsRepository.GetExerciseLogsInterval(userId, startDate, endDate);
+        }
+
+        [HttpGet("total-burned-calories")]
+        public async Task<double> GetTotalBurnedCaloriesSumAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            return await _exerciseLogsRepository.GetTotalBurnedCaloriesSum(userId, startDate, endDate);
+        }
+
+        [HttpGet("exercise-data-interval")]
+        public async Task<string> GetExerciseDataAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            return await _exerciseLogsRepository.GetExerciseData(userId, startDate, endDate);
         }
 
         [HttpPost]

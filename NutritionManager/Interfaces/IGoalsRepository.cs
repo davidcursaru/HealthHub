@@ -1,5 +1,4 @@
-﻿using NutritionManager.DTO;
-using NutritionManager.Entities;
+﻿using NutritionManager.Entities;
 
 namespace NutritionManager.Interfaces
 {
