@@ -342,12 +342,12 @@ export class DashboardComponent implements OnInit {
       .subscribe(
         (data) => {
 
-          this.BurnedCaloriesFromExercises = Math.round(data);
+          this.BurnedCaloriesFromExercises = Math.round(data.Burned_calories);
           if (this.BurnedCaloriesFromExercises === undefined) {
             this.BurnedCaloriesFromExercises = 0;
           }
 
-          this.ExerciseDurationCurrentDay = data.TotalMinutes;
+          this.ExerciseDurationCurrentDay = data.Duration;
           if (this.ExerciseDurationCurrentDay === undefined) {
             this.ExerciseDurationCurrentDay = 0;
           }

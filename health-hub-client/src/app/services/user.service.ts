@@ -89,18 +89,10 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
     return this.http.get<any>(endpoint);
   }
-  getCaloriesIntakeInterval(userId: number, startDate: string, endDate: string): Observable<number> {
-    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs/total-calories-intake?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
-    return this.http.get<number>(endpoint);
-  }
-
+ 
   //Exercise API
   getCaloriesBurned(activity: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
-    return this.http.get<any>(endpoint);
-  }
-  getCaloriesBurnedInterval(userId: number, startDate: string, endDate: string): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/total-burned-calories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<any>(endpoint);
   }
 
@@ -131,6 +123,10 @@ export class UserService {
 
     return this.http.post<any>(endpoint, body);
   }
+  getCaloriesIntakeInterval(userId: number, startDate: string, endDate: string): Observable<number> {
+    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs/total-calories-intake?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<number>(endpoint);
+  }
 
   //Exercise logs
   createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number): Observable<any> {
@@ -143,6 +139,10 @@ export class UserService {
     };
 
     return this.http.post<any>(endpoint, body);
+  }
+  getCaloriesBurnedInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/total-burned-calories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
   }
 
   // Goal logs

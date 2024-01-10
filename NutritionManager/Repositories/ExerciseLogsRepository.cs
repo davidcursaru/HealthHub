@@ -58,7 +58,7 @@ namespace NutritionManager.Repositories
             return await _context.ExerciseLogs.FindAsync(id);
         }
 
-        public async Task<double> GetTotalBurnedCaloriesSum(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        public async Task<string> GetTotalBurnedCaloriesSum(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
             if (startDate.Date == endDate.Date)
             {
@@ -69,12 +69,25 @@ namespace NutritionManager.Repositories
                 endDate = endDate.AddDays(1);
             }
 
+
             var calories = await _context.ExerciseLogs
                 .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId)
                 .Select(r => r.BurnedCalories)
                 .SumAsync();
+            var duration = await _context.ExerciseLogs
+               .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId)
+               .Select(r => r.ExerciseDuration)
+               .SumAsync();
 
-            return calories;
+            var exerciseData = new
+            {
+                
+                Duration = duration,
+                Burned_calories = calories
+            };
+
+
+            return JsonSerializer.Serialize(exerciseData);
         }
 
         public async Task<string> GetExerciseData(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
@@ -119,5 +132,7 @@ namespace NutritionManager.Repositories
             _context.Update(exercise);
             await _context.SaveChangesAsync();
         }
+
+     
     }
 }

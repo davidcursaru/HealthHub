@@ -41,7 +41,7 @@ namespace NutritionManager.Controllers
         }
 
         [HttpGet("total-burned-calories")]
-        public async Task<double> GetTotalBurnedCaloriesSumAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        public async Task<string> GetTotalBurnedCaloriesSumAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
             return await _exerciseLogsRepository.GetTotalBurnedCaloriesSum(userId, startDate, endDate);
         }
