@@ -138,8 +138,22 @@
                     </ng-container>
                 </mat-card-content>
 
-
-
+                <mat-card-content class="activities-card-content" *ngIf="i === 2">
+                    <ng-container>
+                        <div class="mat-card-container">
+                            <mat-card *ngFor="let exercise of exercises">
+                                <mat-card-header>
+                                    <div mat-card-avatar class="example-header-image"></div>
+                                    <mat-card-title>{{ exercise.name }}</mat-card-title>
+                                    <mat-card-subtitle>Duration: {{ exercise.duration }} min</mat-card-subtitle>
+                                </mat-card-header>
+                                <mat-card-content>
+                                    <p>Burned Calories: {{ exercise.burned_calories }}</p>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                    </ng-container>
+                </mat-card-content>
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
             </mat-card>

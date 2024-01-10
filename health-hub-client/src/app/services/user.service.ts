@@ -144,6 +144,10 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/total-burned-calories?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<any>(endpoint);
   }
+  getExerciseDataInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/exercise-data-interval?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
 
   // Goal logs
   createGoalLog(userId: number, goalType: string, targetValue: number, startDate: string, deadline: string): Observable<any> {

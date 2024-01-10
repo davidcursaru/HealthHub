@@ -17,6 +17,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class ExerciseComponent implements OnInit {
+    // Get the user's local timezone offset in minutes
+    timezoneOffset = new Date().getTimezoneOffset();
+    currentDate = new Date();
+    // Adjust startDate and endDate using the timezone offset
+    startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+    endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+    isoDateString1 = this.startDate.toISOString();
+    isoDateString2 = this.endDate.toISOString();
+  exercises: any[] = [];
   BurnedCaloriesFromExercises: any;
   ExerciseDurationCurrentDay: any;
   goalsCurrentDayExerciseDuration: any;
@@ -102,6 +111,9 @@ export class ExerciseComponent implements OnInit {
       }
     });
 
+    this.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2);
+
+
   }
 
   calculatePercentage(part: number, whole: number): number {
@@ -132,6 +144,20 @@ export class ExerciseComponent implements OnInit {
         console.error("Error fetching data:", error);
       }
     );
+  }
+
+  getExerciseDataInterval(userId: number, startDate: string, endDate: string)
+  {
+
+      this.userService.getExerciseDataInterval(userId,startDate,endDate).subscribe(
+        (data: any[]) => {
+          this.exercises = data;
+        },
+        (error) => {
+          console.error('Error fetching exercise data:', error);
+        }
+      );
+  
   }
 
   getExerciseBurnedCalories(exerciseForm: NgForm) {
