@@ -39,6 +39,9 @@ import { DeleteAccountConfirmationDialogComponent } from './components/settings/
 import { LoadingComponent } from './components/loading/loading.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
+import { IntensityBarComponent } from './components/intensity-bar/intensity-bar.component';
+import { MatSliderModule } from '@angular/material/slider';
+
 
 @NgModule({
   declarations: [
@@ -58,7 +61,8 @@ import { MatInputModule } from '@angular/material/input';
     LiveClockComponent,
     ChangePasswordComponent,
     DeleteAccountConfirmationDialogComponent,
-    LoadingComponent
+    LoadingComponent,
+    IntensityBarComponent
   ],
 
   imports: [
@@ -83,6 +87,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCheckboxModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatSliderModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,

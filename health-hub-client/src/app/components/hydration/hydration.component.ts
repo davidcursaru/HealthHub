@@ -14,7 +14,7 @@ export class HydrationComponent implements OnInit {
   currentDate = new Date();
 
   water: any;
-  userWaterIntake: number = 0;
+  userWaterIntake: any;
   userId: any = localStorage.getItem('userId');
   weight: any;
   user: User = {};

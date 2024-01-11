@@ -1,0 +1,37 @@
+.popup-container {
+    text-align: center;
+    width: 400px; /* Set the desired width */
+    padding: 20px; /* Add padding for better appearance */
+  }
+  
+  .duration-value {
+    margin-top: 10px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .mat-slider {
+    width: 80%;
+    margin: 20px auto;
+    pointer-events: auto; /* Ensure that the slider is interactive */
+  }
+  
+  .intensity-labels {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  mat-slider {
+    width: 700px;
+  }
+
+  .icon {
+    font-size: 1.3em;
+    /* Larger font size for the icon */
+   
+    /* Adjust icon spacing */
+    color: #0992B8;
+  }

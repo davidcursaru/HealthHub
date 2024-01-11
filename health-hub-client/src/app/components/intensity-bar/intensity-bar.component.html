@@ -1,0 +1,21 @@
+<h3 style="margin-left: 10px;">Intensity</h3>
+<div class="popup-container">
+    
+    <div class="duration-value">
+        <mat-icon class="icon">favorite_border</mat-icon>
+        <p style="margin-left: 5px;font-weight: bold;"> Cardio points</p>
+    </div>
+    <mat-slider min="0" [max]="data.duration * 2" step="1" style="width: 80%;" showTickMarks discrete [displayWith]="formatLabel" >
+        <input matSliderThumb [(ngModel)]="selectedValue" />
+    </mat-slider>
+    <div class="intensity-labels">
+        <span>Low intensity</span>
+        <span>High intensity</span>
+    </div>
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onOkClick()" >OK
+        </button>
+</mat-dialog-actions>

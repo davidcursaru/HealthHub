@@ -5,13 +5,15 @@
                 <span style="font-weight: normal;">{{ water }} ml</span>
             </span>
         </p>
-        <p>
+        
+            <form #hydrationForm="ngForm" (ngSubmit)="createLog()">
             <mat-form-field appearance="fill">
                 <mat-label>Water input</mat-label>
-                <input matInput type="number" [(ngModel)]="userWaterIntake" placeholder="Enter liters">
+                <input matInput type="number" [(ngModel)]="userWaterIntake" name="waterInput" required placeholder="Enter liters">
             </mat-form-field>
-            <button mat-raised-button color="primary" (click)="createLog()" style="margin-left: 10px;">Create Log</button>
-        </p>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!hydrationForm.valid" style="margin-left: 10px;">Create Log</button>
+            </form>
+        
     </div>
     <p>
         <span style="font-weight: bold; font-size: 1em;">Recommendation:</span>

@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit {
   BMRCaloriesCurrentDay: any;
   BurnedCaloriesFromExercises: any;
   HeartMinutesCurrentDay: any;
+  HeartMinutesHealthHub: any;
   ActiveMinutesCurrentDay: any;
   ExerciseDurationCurrentDay: any;
 
@@ -208,6 +209,7 @@ export class DashboardComponent implements OnInit {
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
     this.ActiveMinutesCurrentDay = localStorage.getItem("ActiveMinutesCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+    this.HeartMinutesHealthHub = localStorage.getItem("HeartMinutesHealthHub");
 
     interval(100).subscribe(() => {
 

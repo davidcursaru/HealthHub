@@ -6,10 +6,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoalsComponent } from '../goals/goals.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Exercise } from 'src/app/interfaces/exerciseResponse.interface';
-import { FormControl, NonNullableFormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
+import { IntensityBarComponent } from '../intensity-bar/intensity-bar.component';
 
 @Component({
   selector: 'app-exercise',
@@ -37,6 +38,7 @@ export class ExerciseComponent implements OnInit {
   userId: any;
   exerciseFormGroup: any = FormGroup;
   exerciseCounter: any;
+  burnedCalories: any;
 
   private breakpointObserver = inject(BreakpointObserver);
   cards = this.breakpointObserver.observe([
@@ -85,6 +87,7 @@ export class ExerciseComponent implements OnInit {
 
     })
   );
+  cardioPointsToAdd: any;
 
   constructor(
     private userService: UserService,
@@ -181,8 +184,8 @@ export class ExerciseComponent implements OnInit {
     this.userService.getCaloriesBurned(exerciseType).subscribe(
       (res: Exercise[]) => {
         if (res && res.length > 0) {
-          const caloriesBurned = Math.round((res[0].calories_per_hour / 60) * exerciseDuration);
-          localStorage.setItem("caloriesExercise", caloriesBurned.toString());
+          this.burnedCalories = Math.round((res[0].calories_per_hour / 60) * exerciseDuration);
+          localStorage.setItem("caloriesExercise", this.burnedCalories.toString());
 
         }
 
@@ -201,11 +204,14 @@ export class ExerciseComponent implements OnInit {
 
     setTimeout(() => {
       const caloriesBurned = localStorage.getItem("caloriesExercise");
+      const currentHeartPoints = localStorage.getItem("HeartPointsCurrentDay");
       this.BurnedCaloriesFromExercises = Number(this.BurnedCaloriesFromExercises) + Number(caloriesBurned);
       this.ExerciseDurationCurrentDay = Number(this.ExerciseDurationCurrentDay) + exerciseDuration;
       this.exerciseCounter += 1;
       localStorage.setItem("BurnedCaloriesFromExercises", this.BurnedCaloriesFromExercises.toString());
       localStorage.setItem("ExerciseDurationCurrentDay", this.ExerciseDurationCurrentDay.toString());
+      localStorage.setItem("HeartMinutesHealthHub", (this.cardioPointsToAdd + Number(currentHeartPoints)).toString());
+      
       this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
       this.percentageTitleExercise = this.percentageExercise.toString() + "%";
 
@@ -222,4 +228,22 @@ export class ExerciseComponent implements OnInit {
 
   }
 
+  openIntensityPopup(): void {
+    const dialogRef = this.dialog.open(IntensityBarComponent, {
+      data: {
+        duration: this.exerciseFormGroup.get('exerciseDuration').value,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.cardioPoints !== undefined) {
+        // Use the cardioPoints value in your exercise component
+        console.log('Received cardioPoints:', result.cardioPoints);
+        // Now you can assign it to a property or use it as needed
+        this.cardioPointsToAdd = result.cardioPoints;
+        
+      }
+    });
+
+}
 }
