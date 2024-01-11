@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoalsComponent } from '../goals/goals.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Exercise } from 'src/app/interfaces/exerciseResponse.interface';
-import { FormControl } from '@angular/forms';
+import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -17,14 +17,14 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 
 export class ExerciseComponent implements OnInit {
-    // Get the user's local timezone offset in minutes
-    timezoneOffset = new Date().getTimezoneOffset();
-    currentDate = new Date();
-    // Adjust startDate and endDate using the timezone offset
-    startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
-    endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
-    isoDateString1 = this.startDate.toISOString();
-    isoDateString2 = this.endDate.toISOString();
+  // Get the user's local timezone offset in minutes
+  timezoneOffset = new Date().getTimezoneOffset();
+  currentDate = new Date();
+  // Adjust startDate and endDate using the timezone offset
+  startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+  endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+  isoDateString1 = this.startDate.toISOString();
+  isoDateString2 = this.endDate.toISOString();
   exercises: any[] = [];
   BurnedCaloriesFromExercises: any;
   ExerciseDurationCurrentDay: any;
@@ -35,6 +35,7 @@ export class ExerciseComponent implements OnInit {
   exerciseSuggestions: string[] = [];
   userId: any;
   exerciseFormGroup: any = FormGroup;
+  exerciseCounter: any;
 
   private breakpointObserver = inject(BreakpointObserver);
   cards = this.breakpointObserver.observe([
@@ -114,6 +115,7 @@ export class ExerciseComponent implements OnInit {
     this.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2);
 
 
+
   }
 
   calculatePercentage(part: number, whole: number): number {
@@ -146,18 +148,18 @@ export class ExerciseComponent implements OnInit {
     );
   }
 
-  getExerciseDataInterval(userId: number, startDate: string, endDate: string)
-  {
+  getExerciseDataInterval(userId: number, startDate: string, endDate: string) {
 
-      this.userService.getExerciseDataInterval(userId,startDate,endDate).subscribe(
-        (data: any[]) => {
-          this.exercises = data;
-        },
-        (error) => {
-          console.error('Error fetching exercise data:', error);
-        }
-      );
-  
+    this.userService.getExerciseDataInterval(userId, startDate, endDate).subscribe(
+      (data: any[]) => {
+        this.exercises = data;
+        this.exerciseCounter = data.length;
+      },
+      (error) => {
+        console.error('Error fetching exercise data:', error);
+      }
+    );
+
   }
 
   getExerciseBurnedCalories(exerciseForm: NgForm) {
@@ -170,6 +172,7 @@ export class ExerciseComponent implements OnInit {
         if (res && res.length > 0) {
           const caloriesBurned = Math.round((res[0].calories_per_hour / 60) * exerciseDuration);
           localStorage.setItem("caloriesExercise", caloriesBurned.toString());
+
         }
 
       },
@@ -187,6 +190,14 @@ export class ExerciseComponent implements OnInit {
 
     setTimeout(() => {
       const caloriesBurned = localStorage.getItem("caloriesExercise");
+      this.BurnedCaloriesFromExercises = Number(this.BurnedCaloriesFromExercises) + Number(caloriesBurned);
+      this.ExerciseDurationCurrentDay = Number(this.ExerciseDurationCurrentDay) + exerciseDuration;
+      this.exerciseCounter += 1;
+      localStorage.setItem("BurnedCaloriesFromExercises", this.BurnedCaloriesFromExercises.toString());
+      localStorage.setItem("ExerciseDurationCurrentDay", this.ExerciseDurationCurrentDay.toString());
+      this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
+      this.percentageTitleExercise = this.percentageExercise.toString() + "%";
+
       this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned)).subscribe((res: any) => {
         this.snackBar.open('Exercise log created successfully', 'Close', {
           duration: 4000,

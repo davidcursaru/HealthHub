@@ -134,6 +134,10 @@
     /* Enable vertical scrolling */
 }
 
+.third-card{
+    overflow: scroll;
+}
+
 .snackbar-success {
     background-color: green;
     color: white;
