@@ -7,6 +7,7 @@ import { NutrientValues } from 'src/app/interfaces/nutrients.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoalsComponent } from '../goals/goals.component';
 import { MatDialog} from '@angular/material/dialog';
+import { interval } from 'rxjs';
 @Component({
 
   selector: 'app-calories',
@@ -16,6 +17,7 @@ import { MatDialog} from '@angular/material/dialog';
 })
 export class CaloriesComponent implements OnInit {
   user: User | null = null;
+  userId: any;
   gender: any;
   weight: any;
   height: any;
@@ -24,6 +26,8 @@ export class CaloriesComponent implements OnInit {
   Recommendation: any;
   WaterConsumptionCurrentDay: any;
   CaloriesIntakeCurrentDay: any;
+  BMRCaloriesCurrentDay: any;
+  BurnedCaloriesFromExercises: any;
   TotalBurnedCaloriesCurrentDay: any;
   goalsCurrentDayCaloriesIntake: any;
   goalsCurrentDayBurnedCalories: any;
@@ -102,6 +106,7 @@ export class CaloriesComponent implements OnInit {
       ];
     })
   );
+
  
 
   constructor(
@@ -119,22 +124,43 @@ export class CaloriesComponent implements OnInit {
     this.weight = this.user?.weight;
     this.height = this.user?.height;
     this.gender = this.user?.gender;
+    this.userId = this.user?.id;
 
     this.BMI = this.calculateBMI(Number(this.weight), Number(this.height));
     this.BMIClassification = this.getBMIClassification(this.BMI);
     this.Recommendation = this.getRecommendation(this.BMIClassification);
 
-    this.TotalBurnedCaloriesCurrentDay = localStorage.getItem("TotalBurnedCaloriesCurrentDay");
+    this.userService.getGoalsTotalValueForCurrentDay("Burned calories(kcal)", this.userId).subscribe(res => {
+      this.goalsCurrentDayBurnedCalories = res.toString();
+      if (this.goalsCurrentDayBurnedCalories === undefined) {
+        this.goalsCurrentDayBurnedCalories = 0;
+      }
+      localStorage.setItem("BurnedCaloriesGoalsCurrentDay", this.goalsCurrentDayBurnedCalories);
+    });
+
+    this.userService.getGoalsTotalValueForCurrentDay("Calories intake(kcal)", this.userId).subscribe(res => {
+      this.goalsCurrentDayCaloriesIntake = res.toString();
+      if (this.goalsCurrentDayCaloriesIntake === undefined) {
+        this.goalsCurrentDayCaloriesIntake = 0;
+      }
+      localStorage.setItem("CaloriesIntakeGoalsCurrentDay", this.goalsCurrentDayCaloriesIntake);
+    });
+
+    this.BMRCaloriesCurrentDay = localStorage.getItem("BMRCaloriesCurrentDay");
+    this.BurnedCaloriesFromExercises = localStorage.getItem("BurnedCaloriesFromExercises");
+    this.TotalBurnedCaloriesCurrentDay = Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises);
     this.goalsCurrentDayBurnedCalories = localStorage.getItem("BurnedCaloriesGoalsCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
     this.goalsCurrentDayCaloriesIntake = localStorage.getItem("CaloriesIntakeGoalsCurrentDay");
     this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
 
+    interval(100).subscribe(() => {
     this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
     this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
     this.percentageBurnedCalories = this.calculatePercentage(Number(this.TotalBurnedCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
     this.percentageTitleBurnedCalories = this.percentageBurnedCalories.toString() + "%";
+    })
 
   }
 

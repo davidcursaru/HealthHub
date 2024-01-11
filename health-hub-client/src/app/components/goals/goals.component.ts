@@ -45,14 +45,15 @@ export class GoalsComponent {
     const deadline = formValue.deadline;
 
     this.userService.createGoalLog(this.userId, goalType, targetValue, startDate, deadline).subscribe((res: any) => {
-
       this.snackBar.open(goalType + ' was created created successfully', 'Close', {
         duration: 4000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
         panelClass: ['snackbar-success'],
       });
-
+      setTimeout(() => {
+      }, 4000);
+      window.location.reload();
 
     });
 

@@ -9,6 +9,7 @@ import { Exercise } from 'src/app/interfaces/exerciseResponse.interface';
 import { FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { NgForm } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-exercise',
@@ -94,11 +95,21 @@ export class ExerciseComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = localStorage.getItem("userId");
+    this.userService.getGoalsTotalValueForCurrentDay("Exercise duration(min)", this.userId).subscribe(res => {
+      this.goalsCurrentDayExerciseDuration = res.toString();
+      if (this.goalsCurrentDayExerciseDuration === undefined) {
+        this.goalsCurrentDayExerciseDuration = 0;
+      }
+      localStorage.setItem("ExerciseDurationGoalsCurrentDay", this.goalsCurrentDayExerciseDuration);
+    });
+
     this.BurnedCaloriesFromExercises = localStorage.getItem("BurnedCaloriesFromExercises");
     this.goalsCurrentDayExerciseDuration = localStorage.getItem("ExerciseDurationGoalsCurrentDay");
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
+    interval(100).subscribe(() => {
     this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
-    this.percentageTitleExercise = this.percentageExercise.toString() + "%";
+    this.percentageTitleExercise = this.percentageExercise.toString() + "%"; 
+    })
 
     this.exerciseFormGroup = this.formBuilder.group({
       exerciseType: ['', Validators.required],
