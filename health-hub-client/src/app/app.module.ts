@@ -99,7 +99,7 @@ import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.
       "outerStrokeGradientStopColor": "#53a9ff",
       "innerStrokeColor": "#e7e8ea",
       "innerStrokeWidth": 10,
-      "title": "%",
+      "title": "",
       "animateTitle": false,
       "animationDuration": 1000,
       "showUnits": false,
@@ -107,7 +107,9 @@ import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.
       "clockwise": true,
       "startFromZero": false,
       "lazy": false
-    })
+    },
+    )
+  
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }, AuthService],
   bootstrap: [AppComponent]

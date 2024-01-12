@@ -1,3 +1,18 @@
+button {
+    transition: transform 0.12s cubic-bezier(0.47, 2.02, 0.31, -0.36),
+                box-shadow 0.3s ease,
+                background-color 0.3s ease; /* Add background-color to the transition */
+  }
+  
+  /* Add hover effect for buttons */
+  button:hover {
+    transform: scale(1.05); /* Adjust the scale value for a smaller size increase */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase the shadow intensity */
+    background-color: #055d83 ; /* Change to your desired background color on hover */
+  }
+
+
+
 .grid-container {
     margin-bottom: 30px;
     margin-left: auto;

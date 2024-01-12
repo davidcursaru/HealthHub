@@ -4,7 +4,7 @@
         <h1 class="mat-h1">Sleep tracker</h1>
     </div>
 
-  <mat-grid-list [cols]="(cards | async)?.[7]?.columns || (cards | async)?.[6]?.columns" rowHeight="10px">
+    <mat-grid-list [cols]="(cards | async)?.[7]?.columns || (cards | async)?.[6]?.columns" rowHeight="12px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="sleep-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3}">
@@ -57,15 +57,43 @@
                 <!----------END OF HEADERS OF THE MAT-CARDS ------------>
 
                 <!----------CONTENT OF THE MAT-CARDS ------------>
+
                 <mat-card-content class="schedule-sleep-content" *ngIf="i === 0">
                     <ng-container>
-                 
+                        <form [formGroup]="sleepForm">
+                            <mat-form-field>
+                                <mat-label>Sleep Start Time</mat-label>
+                                <input matInput type="time" formControlName="sleepStartTime">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Wake Up Time</mat-label>
+                                <input matInput type="time" formControlName="wakeUpTime">
+                            </mat-form-field>
+
+                            <button style="margin-left: 10px;" mat-raised-button color="primary"
+                                (click)="saveSleepTimes()">Save</button>
+                        </form>
                     </ng-container>
-                  </mat-card-content>
-                  
-                  
-                  
-                     
+                </mat-card-content>
+
+                <mat-card-content class="sleep-score-content" *ngIf="i === 1">
+                    <ng-container>
+                        <div style="margin-top: 20px;margin-left: 30px;">
+                            <circle-progress [title]="'40'" [percent]="40" 
+                                [space]="-10" [radius]="45" [outerStrokeWidth]="11" [innerStrokeWidth]="11"
+                                [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
+                                [animationDuration]="1000" [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
+                                [titleFontWeight]="'600'" [radius]="52"></circle-progress>
+                        </div>
+                    </ng-container>
+                </mat-card-content>
+
+
+
+
+
+
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
             </mat-card>
