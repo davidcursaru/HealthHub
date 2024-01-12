@@ -1,45 +1,56 @@
 .popup-container {
     text-align: center;
-    width: 400px; /* Set the desired width */
-    padding: 20px; /* Add padding for better appearance */
-  }
-  
-  .duration-value {
+    width: 400px;
+    /* Set the desired width */
+    padding: 20px;
+    /* Add padding for better appearance */
+    border-radius: 40px;
+}
+
+.duration-value {
     margin-top: 10px;
     font-size: 18px;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: 30px;
-  }
-  
-  .mat-slider {
+}
+
+.mat-slider {
     width: 80%;
     margin: 20px auto;
-    pointer-events: auto; /* Ensure that the slider is interactive */
-  }
-  
-  .intensity-labels {
+    pointer-events: auto;
+    /* Ensure that the slider is interactive */
+}
+
+.intensity-labels {
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
     font-weight: bold;
-  }
+}
 
-  .intensity-message{
+.intensity-message {
     margin-top: 15px;
     font-weight: bold;
     color: rgba(0, 0, 0, 0.567);
-  }
-  
-  mat-slider {
-    width: 700px;
-  }
+}
 
-  .icon {
+mat-slider {
+    width: 700px;
+}
+
+.icon {
     font-size: 1.3em;
-    /* Larger font size for the icon */
-   
-    /* Adjust icon spacing */
     color: #0992B8;
-  }
+}
+
+@media screen and (min-width: 400px) and (max-width: 650px) {
+
+    /*For small to < medium breakpoints */
+    .popup-container {
+        width: 300px;
+        /* Set the desired width */
+    }
+
+}

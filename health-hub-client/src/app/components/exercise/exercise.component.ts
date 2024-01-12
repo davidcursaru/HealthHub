@@ -15,7 +15,7 @@ import { IntensityBarComponent } from '../intensity-bar/intensity-bar.component'
 @Component({
   selector: 'app-exercise',
   templateUrl: './exercise.component.html',
-  styleUrls: ['./exercise.component.css']
+  styleUrls: ['./exercise.component.css'],
 })
 
 export class ExerciseComponent implements OnInit {
@@ -54,7 +54,7 @@ export class ExerciseComponent implements OnInit {
         return [
           { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
           { title: 'Progress', cols: 1, rows: 3, route: '' },
-          { title: 'Exercises/activities', cols: 1, rows: 8, route: '' },
+          { title: 'Exercises/activities journal', cols: 1, rows: 8, route: '' },
           { title: 'Burned calories from exercises calculator', cols: 1, rows: 6, route: '' },
           { columns: 1 }
         ];
@@ -63,8 +63,8 @@ export class ExerciseComponent implements OnInit {
         return [
           { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
           { title: 'Progress', cols: 1, rows: 3, route: '' },
-          { title: 'Exercises/activities', cols: 1, rows: 8, route: '' },
-          { title: 'Burned calories from exercises calculator', cols: 1, rows: 6, route: '' },
+          { title: 'Exercises/activities journal', cols: 1, rows: 8, route: '' },
+          { title: 'Burned calories from exercises calculator', cols: 1, rows: 8, route: '' },
           { columns: 2 }
         ];
       }
@@ -72,7 +72,7 @@ export class ExerciseComponent implements OnInit {
         return [
           { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
           { title: 'Progress', cols: 1, rows: 3, route: '' },
-          { title: 'Exercises/activities', cols: 1, rows: 8, route: '' },
+          { title: 'Exercises/activities journal', cols: 1, rows: 8, route: '' },
           { title: 'Burned calories from exercises calculator', cols: 2, rows: 5, route: '' },
           { columns: 3 }
         ];
@@ -81,8 +81,8 @@ export class ExerciseComponent implements OnInit {
       return [
         { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
         { title: 'Progress', cols: 1, rows: 3, route: '' },
-        { title: 'Exercises/activities', cols: 1, rows: 8, route: '' },
-        { title: 'Burned calories from exercises calculator', cols: 1, rows: 6, route: '' },
+        { title: 'Exercises/activities journal', cols: 1, rows: 8, route: '' },
+        { title: 'Burned calories from exercises calculator', cols: 1, rows: 7, route: '' },
         { columns: 1 }
       ];
 
@@ -130,7 +130,6 @@ export class ExerciseComponent implements OnInit {
     this.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2);
 
 
-
   }
 
   calculatePercentage(part: number, whole: number): number {
@@ -167,6 +166,9 @@ export class ExerciseComponent implements OnInit {
 
     this.userService.getExerciseDataInterval(userId, startDate, endDate).subscribe(
       (data: any[]) => {
+        data.reverse();
+        Array.prototype.unshift.apply(this.exercises, data);
+
         this.exercises = data;
         this.exerciseCounter = data.length;
       },
@@ -207,6 +209,15 @@ export class ExerciseComponent implements OnInit {
     setTimeout(() => {
       const caloriesBurned = localStorage.getItem("caloriesExercise");
       const currentHeartPoints = localStorage.getItem("HeartMinutesHealthHub");
+      const newExerciseEntry = {
+        name: exerciseType,
+        burned_calories: Number(caloriesBurned),
+        duration: exerciseDuration,
+        heart_minutes: this.cardioPointsToAdd
+      };
+  
+      // Add the new entry to the beginning of the 'exercises' array
+      this.exercises.unshift(newExerciseEntry);
       this.BurnedCaloriesFromExercises = Number(this.BurnedCaloriesFromExercises) + Number(caloriesBurned);
       this.ExerciseDurationCurrentDay = Number(this.ExerciseDurationCurrentDay) + exerciseDuration;
       this.exerciseCounter += 1;
@@ -245,4 +256,5 @@ export class ExerciseComponent implements OnInit {
     });
 
   }
+
 }

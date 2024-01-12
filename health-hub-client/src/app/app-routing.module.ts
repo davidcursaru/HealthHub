@@ -14,6 +14,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { authGuard } from './guards/auth.guard';
 import { LoadingComponent } from './components/loading/loading.component';
+import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
@@ -26,7 +27,7 @@ const routes: Routes = [
       { path: 'goals', component: GoalsComponent },
       { path: 'calories', component: CaloriesComponent },
       { path: 'exercise', component: ExerciseComponent },
-      { path: 'hydration', component: HydrationComponent },
+      { path: 'sleep-tracker', component: SleepTrackerComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'scheduling', component: SchedulingComponent },
       { path: 'settings', component: SettingsComponent }]

@@ -41,6 +41,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { IntensityBarComponent } from './components/intensity-bar/intensity-bar.component';
 import { MatSliderModule } from '@angular/material/slider';
+import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { MatSliderModule } from '@angular/material/slider';
     ChangePasswordComponent,
     DeleteAccountConfirmationDialogComponent,
     LoadingComponent,
-    IntensityBarComponent
+    IntensityBarComponent,
+    SleepTrackerComponent
   ],
 
   imports: [

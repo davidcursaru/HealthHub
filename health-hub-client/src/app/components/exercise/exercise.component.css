@@ -6,10 +6,8 @@
 
 .icon {
     font-size: 1.3em;
-    /* Larger font size for the icon */
-
-    /* Adjust icon spacing */
     color: #0992B8;
+    margin-left: auto;
 }
 
 .mat-h1 {
@@ -124,7 +122,7 @@
     display: flex;
 }
 
-.burned-calories-container{
+.burned-calories-container {
     margin-top: 20px;
     font-size: 17px;
     font-weight: bold;
@@ -143,18 +141,43 @@
 
 .custom-autocomplete-panel .auto {
     max-height: 120px;
-    /* Set a maximum height for the panel */
     overflow-y: auto;
-    /* Enable vertical scrolling */
 }
 
 .third-card {
     overflow: scroll;
+    background: rgba(221, 216, 216, 0);
+    border-color: rgba(221, 216, 216, 0);
+
 }
 
 .snackbar-success {
     background-color: green;
     color: white;
+}
+
+.journal-mat-card {
+    border-radius: 12px;
+    border-width: 1px;
+    margin: 10px;
+    width: 95%;
+    height: 200px;
+}
+
+.journal-mat-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+
+.cardio-icon-journal {
+    display: flex;
+    align-items: center;
+}
+
+.cardio-icon-journal mat-icon {
+    margin-right: 5px;
 }
 
 /* Media for different screen sizes */
@@ -177,6 +200,10 @@
     .button-container {
         margin-left: 0;
         display: flex;
+    }
+
+    .intensity-button {
+        margin-top: 5px;
     }
 }
 
@@ -205,6 +232,11 @@
         margin-left: 0 !important;
         margin-bottom: 0px;
     }
+
+    .intensity-button {
+        margin-left: 10px;
+        margin-top: 5px;
+    }
 }
 
 @media screen and (min-width: 960px) and (max-width: 1280px) {
@@ -224,8 +256,11 @@
 
     .button-container {
         margin-left: 0;
-
         display: flex;
 
+    }
+
+    .intensity-button {
+        margin-top: 5px;
     }
 }

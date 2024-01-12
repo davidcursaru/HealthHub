@@ -128,13 +128,18 @@
                             </div>
                         </form>
 
-                        <button mat-raised-button color="primary" (click)="openIntensityPopup()">
+                        <button class="intensity-button" mat-raised-button color="primary"
+                            (click)="openIntensityPopup()">
                             Choose Intensity
                         </button>
                         <div *ngIf="displayBurnedCalories" class="burned-calories-container">
-                            <p>Exercise/Activity: <span style="font-weight: normal; font-size: 1em;">{{exerciseFormGroup.value.exerciseType}}</span></p>
-                            <p>Burned calories: <span style="font-weight: normal; font-size: 1em;">{{burnedCalories}} kcal</span></p>
-                            <p>Cardio points achevied: <span style="font-weight: normal; font-size: 1em;">{{cardioPointsToAdd}}</span> </p>
+                            <p>Exercise/Activity: <span
+                                    style="font-weight: normal; font-size: 1em;">{{exerciseFormGroup.value.exerciseType}}</span>
+                            </p>
+                            <p>Burned calories: <span style="font-weight: normal; font-size: 1em;">{{burnedCalories}}
+                                    kcal</span></p>
+                            <p>Cardio points achevied: <span
+                                    style="font-weight: normal; font-size: 1em;">{{cardioPointsToAdd}}</span> </p>
                         </div>
                     </ng-container>
                 </mat-card-content>
@@ -142,16 +147,17 @@
                 <mat-card-content class="activities-card-content" *ngIf="i === 2">
                     <ng-container>
                         <div class="mat-card-container">
-                            <mat-card *ngFor="let exercise of exercises">
-                                <mat-card-header>
-                                    <div mat-card-avatar class="example-header-image"></div>
-                                    <mat-card-title>{{ exercise.name }}</mat-card-title>
-                                    <mat-card-subtitle><mat-icon class="icon">favorite_border</mat-icon> {{
-                                        exercise.heart_minutes }}</mat-card-subtitle>
+                            <mat-card class="journal-mat-card" *ngFor="let exercise of exercises;">
+                                <mat-card-header clas="journal-mat-card-header">
+                                    <div mat-card-avatar class="example-header-image">
+                                        <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon></div>
+                                    <mat-card-title style="font-size: large;">{{ exercise.name }}</mat-card-title>
+
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <p>Burned Calories: {{ exercise.burned_calories }}</p>
-                                    <p>Duration: {{ exercise.duration }} min</p>
+                                    <p class="cardio-icon-journal"><mat-icon style="color: #0992B8;">favorite_border</mat-icon>  <span  style="font-weight: bold;">{{exercise.heart_minutes }} pct</span></p>
+                                    <p><span style="font-weight: bold;">Burned Calories:</span> {{ exercise.burned_calories }} kcal</p>
+                                    <p><span style="font-weight: bold;">Duration: </span> {{ exercise.duration }} min</p>
                                 </mat-card-content>
                             </mat-card>
                         </div>

@@ -51,7 +51,7 @@ export class CostumSidenavComponent {
     {
       icon: 'bed',
       label: 'Sleep tracker',
-      route: '/layout/dashboard',
+      route: '/layout/sleep-tracker',
     },
 
     {
