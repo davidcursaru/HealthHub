@@ -1,1 +1,74 @@
-<p>sleep-tracker works!</p>
+<div class="grid-container">
+
+    <div>
+        <h1 class="mat-h1">Sleep tracker</h1>
+    </div>
+
+  <mat-grid-list [cols]="(cards | async)?.[7]?.columns || (cards | async)?.[6]?.columns" rowHeight="10px">
+        <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
+            <mat-card class="sleep-card"
+                [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 3}">
+
+                <!----------HEADERS OF THE MAT-CARDS ------------>
+                <mat-card-header>
+                    <mat-card-title *ngIf="i === 0">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 1">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 2">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 3">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 4">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 5">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-title *ngIf="i === 6">
+                        <div class="card-header">
+                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <span class="card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+                </mat-card-header>
+                <!----------END OF HEADERS OF THE MAT-CARDS ------------>
+
+                <!----------CONTENT OF THE MAT-CARDS ------------>
+                <mat-card-content class="schedule-sleep-content" *ngIf="i === 0">
+                    <ng-container>
+                 
+                    </ng-container>
+                  </mat-card-content>
+                  
+                  
+                  
+                     
+
+                <!----------END OF CONTENT OF THE MAT-CARDS ------------>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>
