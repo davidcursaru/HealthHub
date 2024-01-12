@@ -3,15 +3,18 @@
     
     <div class="duration-value">
         <mat-icon class="icon">favorite_border</mat-icon>
-        <p style="margin-left: 5px;font-weight: bold;"> Cardio points</p>
+        <p style="margin-left: 5px;font-weight: bold;">Cardio points: {{selectedValue}}</p>
     </div>
-    <mat-slider min="0" [max]="data.duration * 2" step="1" style="width: 80%;" showTickMarks discrete [displayWith]="formatLabel" >
+    <mat-slider min="0" [max]="data.duration * 2" step="1" style="width: 80%;"  (change)="onIntensityChange()">
         <input matSliderThumb [(ngModel)]="selectedValue" />
     </mat-slider>
     <div class="intensity-labels">
         <span>Low intensity</span>
         <span>High intensity</span>
     </div>
+    <div class="intensity-message">
+        {{ intensityMessage }}
+      </div>
 </div>
 
 <mat-dialog-actions align="end">

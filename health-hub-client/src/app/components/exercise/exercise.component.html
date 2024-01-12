@@ -130,7 +130,12 @@
 
                         <button mat-raised-button color="primary" (click)="openIntensityPopup()">
                             Choose Intensity
-                          </button>
+                        </button>
+                        <div *ngIf="displayBurnedCalories" class="burned-calories-container">
+                            <p>Exercise/Activity: <span style="font-weight: normal; font-size: 1em;">{{exerciseFormGroup.value.exerciseType}}</span></p>
+                            <p>Burned calories: <span style="font-weight: normal; font-size: 1em;">{{burnedCalories}} kcal</span></p>
+                            <p>Cardio points achevied: <span style="font-weight: normal; font-size: 1em;">{{cardioPointsToAdd}}</span> </p>
+                        </div>
                     </ng-container>
                 </mat-card-content>
 
@@ -141,10 +146,12 @@
                                 <mat-card-header>
                                     <div mat-card-avatar class="example-header-image"></div>
                                     <mat-card-title>{{ exercise.name }}</mat-card-title>
-                                    <mat-card-subtitle>Duration: {{ exercise.duration }} min</mat-card-subtitle>
+                                    <mat-card-subtitle><mat-icon class="icon">favorite_border</mat-icon> {{
+                                        exercise.heart_minutes }}</mat-card-subtitle>
                                 </mat-card-header>
                                 <mat-card-content>
                                     <p>Burned Calories: {{ exercise.burned_calories }}</p>
+                                    <p>Duration: {{ exercise.duration }} min</p>
                                 </mat-card-content>
                             </mat-card>
                         </div>

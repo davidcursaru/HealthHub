@@ -4,6 +4,14 @@
 
 }
 
+.icon {
+    font-size: 1.3em;
+    /* Larger font size for the icon */
+
+    /* Adjust icon spacing */
+    color: #0992B8;
+}
+
 .mat-h1 {
     font-size: x-large;
     display: flex;
@@ -116,6 +124,12 @@
     display: flex;
 }
 
+.burned-calories-container{
+    margin-top: 20px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
 .mat-form-field {
     margin-right: 20px;
 }
@@ -134,7 +148,7 @@
     /* Enable vertical scrolling */
 }
 
-.third-card{
+.third-card {
     overflow: scroll;
 }
 
@@ -146,7 +160,8 @@
 /* Media for different screen sizes */
 
 @media screen and (max-width: 600px) {
-/* Styles for Small and Handset breakpoints */
+
+    /* Styles for Small and Handset breakpoints */
     .calculator-info-container {
         display: block;
         align-items: center;
@@ -166,6 +181,7 @@
 }
 
 @media screen and (min-width: 601px) and (max-width: 960px) {
+
     /* Styles for Medium breakpoints */
     .button-container {
         margin-left: 10px;
@@ -192,6 +208,7 @@
 }
 
 @media screen and (min-width: 960px) and (max-width: 1280px) {
+
     /* Styles for medium and larger  breakpoints */
     .calculator-info-container {
         display: block;

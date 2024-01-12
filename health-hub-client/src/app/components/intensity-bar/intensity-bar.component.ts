@@ -13,14 +13,7 @@ export class IntensityBarComponent {
 
   selectedValue: any;
   cardioPoints: any;
-
-  formatLabel(value: number): string {
-    if (value >= 1000) {
-      return Math.round(value / 1000) + 'k';
-    }
-
-    return `${value}`;
-  }
+  intensityMessage: any;
 
   constructor(
     public dialogRef: MatDialogRef<IntensityBarComponent>,
@@ -28,7 +21,8 @@ export class IntensityBarComponent {
   ) {
     // Set the initial value to half of the maximum value
     this.selectedValue = data.duration;
-    
+    this.updateIntensityMessage();
+
   }
 
   onNoClick(): void {
@@ -37,6 +31,22 @@ export class IntensityBarComponent {
 
   onOkClick(): void {
     this.dialogRef.close({ cardioPoints: this.selectedValue });
+  }
+
+  onIntensityChange(): void {
+    // Adjust the intensityMessage based on the slider change
+    this.updateIntensityMessage();
+  }
+
+  private updateIntensityMessage(): void {
+    const halfDuration = this.data.duration / 2;
+    if (this.selectedValue < halfDuration) {
+      this.intensityMessage = 'Normal breathing, you can hold a conversation or sing';
+    } else if (this.selectedValue >= halfDuration && this.selectedValue < halfDuration * 3) {
+      this.intensityMessage = 'Breathing with difficulty, you can have a short conversation, but you cannot sing.';
+    } else {
+      this.intensityMessage = 'Shortness of breath, you can only speak in short sentences.';
+    }
   }
 
 }

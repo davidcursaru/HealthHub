@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   user: User | null = null;
 
   showCaloriesBurned: boolean = true;
+  pointSum: any;
 
   WaterConsumptionCurrentDay: any;
   CaloriesIntakeCurrentDay: any;
@@ -209,6 +210,7 @@ export class DashboardComponent implements OnInit {
     this.ExerciseDurationCurrentDay = localStorage.getItem("ExerciseDurationCurrentDay");
     this.ActiveMinutesCurrentDay = localStorage.getItem("ActiveMinutesCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
+    this.HeartMinutesCurrentDay = localStorage.getItem("HeartMinutesCurrentDay");
     this.HeartMinutesHealthHub = localStorage.getItem("HeartMinutesHealthHub");
 
     interval(100).subscribe(() => {
@@ -318,6 +320,12 @@ export class DashboardComponent implements OnInit {
       );
   }
 
+  getCardioPointsSum(): number {
+    const currentDay = Number(this.HeartMinutesCurrentDay) || 0;
+    const healthHub = Number(this.HeartMinutesHealthHub) || 0;
+    return currentDay + healthHub;
+  }
+
   getActiveMinutesData(): void {
     this.googleAPIService.getActiveMinutes(this.userId, this.startTimeMillis, this.endTimeMillis)
       .subscribe(
@@ -352,8 +360,14 @@ export class DashboardComponent implements OnInit {
             this.ExerciseDurationCurrentDay = 0;
           }
 
+          this.HeartMinutesHealthHub = data.HeartMinutes;
+          if (this.HeartMinutesHealthHub === undefined) {
+            this.HeartMinutesHealthHub = 0;
+          }
+
           localStorage.setItem("BurnedCaloriesFromExercises", this.BurnedCaloriesFromExercises.toString());
           localStorage.setItem("ExerciseDurationCurrentDay", this.ExerciseDurationCurrentDay.toString());
+          localStorage.setItem("HeartMinutesHealthHub", this.HeartMinutesHealthHub.toString());
 
         },
         (error) => {

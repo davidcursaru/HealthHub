@@ -78,12 +78,17 @@ namespace NutritionManager.Repositories
                .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId)
                .Select(r => r.ExerciseDuration)
                .SumAsync();
+            var heartMinutes = await _context.ExerciseLogs
+              .Where(r => r.ExerciseDate >= startDate.Date && r.ExerciseDate <= endDate.Date && r.UserId == userId)
+              .Select(r => r.HeartMinutes)
+              .SumAsync();
 
             var exerciseData = new
             {
                 
                 Duration = duration,
-                Burned_calories = calories
+                Burned_calories = calories,
+                HeartMinutes = heartMinutes
             };
 
 
@@ -111,7 +116,8 @@ namespace NutritionManager.Repositories
                 {
                     name = exercise.ExerciseType,
                     duration = exercise.ExerciseDuration,
-                    burned_calories = exercise.BurnedCalories
+                    burned_calories = exercise.BurnedCalories,
+                    heart_minutes = exercise.HeartMinutes,
                 };
 
                 exerciseDataList.Add(exerciseData);

@@ -129,13 +129,14 @@ export class UserService {
   }
 
   //Exercise logs
-  createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number): Observable<any> {
+  createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number, heartMinutes: Number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {
       userId: userId,
       exerciseType: exerciseType,
       exerciseDuration: exerciseDuration,
-      burnedCalories: burnedCalories
+      burnedCalories: burnedCalories,
+      heartMinutes: heartMinutes
     };
 
     return this.http.post<any>(endpoint, body);
