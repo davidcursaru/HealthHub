@@ -44,6 +44,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { IntervalBarComponent } from './components/interval-bar/interval-bar.component';
+import { AwakeBarComponent } from './components/awake-bar/awake-bar.component';
 
 
 
@@ -70,6 +71,7 @@ import { IntervalBarComponent } from './components/interval-bar/interval-bar.com
     IntensityBarComponent,
     SleepTrackerComponent,
     IntervalBarComponent,
+    AwakeBarComponent,
   
   ],
 

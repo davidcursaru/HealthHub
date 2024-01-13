@@ -49,4 +49,14 @@ export class GoogleAPIService {
 
     return this.http.post<any>(endpoint, body);
   }
+
+  getSleepPhases(userId: number, startTimeMillis: number, endTimeMillis: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/SleepPhases/' + userId;
+    const body = {
+      StartTimeMillis: startTimeMillis,
+      EndTimeMillis: endTimeMillis
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
 }

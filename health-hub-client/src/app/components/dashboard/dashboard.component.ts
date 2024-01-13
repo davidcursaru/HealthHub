@@ -257,6 +257,8 @@ export class DashboardComponent implements OnInit {
     this.endTimeMillis = Date.now();
     now.setHours(0, 0, 0, 0);
     this.startTimeMillis = now.getTime();
+    console.log("start millis: ", this.startTimeMillis);
+    console.log("end Millis: ", this.endTimeMillis);
   }
 
   getStepCountData(): void {

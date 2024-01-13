@@ -23,19 +23,19 @@ export class IntervalBarComponent {
     return '#eaeaea';
   }
 
-  updateProgressMessage(value: number) {
+
+
+  updateProgressMessage(value: number):  {title: string, color: string} {
     if (value < 10) {
-        this.progressMessage = 'Accord Care';
-        this.progressMessageColor = 'red';
+      return { title: 'Accord Care', color: 'red' };
     } else if (value >= 10 && value <= 35) {
-        this.progressMessage = 'Good';
-        this.progressMessageColor = '#4cae4c'; // Lighter green
-    } else {
-        this.progressMessage = 'Accord care';
-        this.progressMessageColor = 'red'; // Darker green
+      return { title: 'Good', color: '#5CB85C' };
+    } else if (value > 35) {
+      return { title: 'Accord Care', color: 'red' };
     }
 
-    return [this.progressMessage, this.progressMessageColor];
+    return {title: 'No sleep data available', color: 'black'};
+
 }
 
 

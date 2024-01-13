@@ -168,6 +168,7 @@ export class UserService {
     return this.http.get(endpoint);
   }
 
+
   logout(): void {
     localStorage.clear();
     localStorage.removeItem('GoalsCurrentDayValue');

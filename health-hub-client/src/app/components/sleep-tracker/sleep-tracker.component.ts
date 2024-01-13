@@ -1,26 +1,44 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, inject } from '@angular/core';
-import { map } from 'rxjs';
+import { interval, map } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { GoogleAPIService } from 'src/app/services/google-api.service';
 
 
 @Component({
   selector: 'app-sleep-tracker',
   templateUrl: './sleep-tracker.component.html',
-  styleUrls: ['./sleep-tracker.component.css']
+  styleUrls: ['./sleep-tracker.component.css'],
+
 })
 export class SleepTrackerComponent {
-
+  userId: any;
   sleepForm: any;
-  deepSleepPercentage: number = 15;
-  score: number = 90;
-  percentageBar: number = 30;
+  deepSleepPercentage: any;
+  score: any;
+
+  sleepPhasesDictionary: { [key: number]: string } = {
+    1: 'Awake',
+    4: 'Light sleep',
+    5: 'Deep sleep'
+  };
+
+  startTimeMillis: number = 0;
+  endTimeMillis: number = 0;
+  sleepStartTimeNanos: any;
+  sleepEndTimeNanos: any;
+
+  //For asleep card
   sleepGoalHrs: any;
   sleepGoalMins: any;
-  progressValue: number = 40; // Example value, replace with your actual value
-  progressMessage: any;
-  progressMessageColor: any;
+  sleepHours: any;
+  asleepTimePercentage: any;
+  asleepProgressMessage: any;
+  asleepProgressMessageColor: any;
+
+  numberOfAwake: any;
+
 
   private breakpointObserver = inject(BreakpointObserver);
   cards = this.breakpointObserver.observe([
@@ -84,14 +102,28 @@ export class SleepTrackerComponent {
 
   constructor(
     private fb: FormBuilder,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private googleAPIService: GoogleAPIService
   ) { }
 
   ngOnInit(): void {
+    this.userId = localStorage.getItem("userId");
+
+    this.setTimeRangeMillis();
+
     this.initForm();
     this.loadSavedTimes();
-    this. sleepGoalHrs = localStorage.getItem("sleepGoalHrs");
-    this. sleepGoalMins = localStorage.getItem("sleepGoalMins");
+    this.sleepGoalHrs = localStorage.getItem("sleepGoalHrs");
+    this.sleepGoalMins = localStorage.getItem("sleepGoalMins");
+    this.getSleepPhases();
+
+    this.sleepStartTimeNanos = localStorage.getItem("SleepStartTimeNanos");
+    this.sleepEndTimeNanos = localStorage.getItem("SleepEndTimeNanos");
+    interval(100).subscribe(() => {
+      this.sleepHours = this.calculateSleepDuration(this.sleepStartTimeNanos, this.sleepEndTimeNanos);
+      this.asleepTimePercentage = this.calculatePercentage((this.sleepHours.hours * 60) + this.sleepHours.minutes, (Number(this.sleepGoalHrs) * 60) + Number(this.sleepGoalMins))
+    });
+
   }
 
   initForm(): void {
@@ -99,6 +131,64 @@ export class SleepTrackerComponent {
       sleepStartTime: [''],
       wakeUpTime: ['']
     });
+  }
+
+  calculatePercentage(part: number, whole: number): number {
+    if (whole === 0) {
+      return 0;
+    }
+    const p = (part / whole) * 100;
+    return Math.floor(p);
+  }
+
+  setTimeRangeMillis(): void {
+    const now = new Date();
+    this.endTimeMillis = Date.now();
+    now.setHours(0, 0, 0, 0);
+    this.startTimeMillis = now.getTime();
+  }
+
+  getSleepPhases(): void {
+    this.googleAPIService.getSleepPhases(this.userId, this.startTimeMillis, this.endTimeMillis)
+      .subscribe(
+        (data) => {
+          // Check if 'bucket' array exists and has elements
+          if (data && data.bucket && data.bucket.length > 0) {
+            const firstObject = data.bucket[0].dataset[0].point[0];
+            const lastObject = data.bucket[data.bucket.length - 1].dataset[0].point[data.bucket[data.bucket.length - 1].dataset[0].point.length - 1];
+
+            this.sleepStartTimeNanos = firstObject.startTimeNanos;
+            this.sleepEndTimeNanos = lastObject.endTimeNanos;
+            localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
+            localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
+          } else {
+            console.warn('No data available in the response.');
+            this.sleepEndTimeNanos = 0;
+            this.sleepStartTimeNanos = 0;
+            localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
+            localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
+          }
+
+        },
+        (error) => {
+          console.error('Error fetching sleep phases data:', error);
+          this.sleepEndTimeNanos = 0;
+          this.sleepStartTimeNanos = 0;
+          localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
+          localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
+        }
+      );
+  }
+
+  calculateSleepDuration(startSleepTimeNanos: number, wakeUpTimeNanos: number): { hours: number, minutes: number } {
+    const diffMillis = (wakeUpTimeNanos - startSleepTimeNanos) / 1e6; // Convert nanoseconds to milliseconds
+    const diffHours = Math.floor(diffMillis / (60 * 60 * 1000)); // Calculate hours
+    const diffMinutes = Math.floor((diffMillis % (60 * 60 * 1000)) / (60 * 1000)); // Calculate remaining minutes
+
+    return {
+      hours: diffHours,
+      minutes: diffMinutes,
+    };
   }
 
   loadSavedTimes(): void {
@@ -112,6 +202,8 @@ export class SleepTrackerComponent {
       });
     }
   }
+
+
 
   saveSleepTimes(): void {
     localStorage.setItem('sleepStartTime', this.sleepForm.value.sleepStartTime);
@@ -148,50 +240,43 @@ export class SleepTrackerComponent {
     }
   }
 
-  getCircleColor(): string {
-    if (this.score <= 60) {
+  getCircleColor(score: any): string {
+    if (score <= 60) {
       return 'red';
-    } else if (this.score > 60 && this.score <= 79) {
+    } else if (score > 60 && score <= 79) {
       return '#E5E500';
-    } else if (this.score >= 80 && this.score <= 89) {
+    } else if (score >= 80 && score <= 89) {
       return '#BBE166';
-    } else {
+    } else if (score > 89) {
       return 'green';
     }
+
+    return 'red';
   }
 
-  getMessage(): { title: string, message: string } {
+  getMessage(): { score: string, title: string, message: string } {
     if (this.score <= 60) {
-      return { title: 'Accord Care', message: 'Consider adjusting your sleep routine' };
+      return { score: this.score.toString(), title: 'Accord Care', message: 'Consider adjusting your sleep routine' };
     } else if (this.score > 60 && this.score <= 79) {
-      return { title: 'Satisfying', message: 'Congratulations! You have a satisfying sleep score' };
+      return { score: this.score.toString(), title: 'Satisfying', message: 'Congratulations! You have a satisfying sleep score' };
     } else if (this.score >= 80 && this.score <= 89) {
-      return { title: 'Good', message: 'Great job! Your sleep score reflects good sleep quality' };
+      return { score: this.score.toString(), title: 'Good', message: 'Great job! Your sleep score reflects good sleep quality' };
     }
-    else {
-      return { title: 'Optimal', message: 'Fantastic job! Your sleep score reflects excellent sleep quality' };
+    else if (this.score > 89) {
+      return { score: this.score.toString(), title: 'Optimal', message: 'Fantastic job! Your sleep score reflects excellent sleep quality' };
     }
+    return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to acces Google Fit data' };
   }
 
-  updateProgressMessage(value: number) {
+  updateAsleepProgressMessage(value: number): { title: string, color: string } {
     if (value < 70) {
-        this.progressMessage = 'Accord Care';
-        this.progressMessageColor = 'red';
+      return { title: 'Accord Care', color: 'red' };
     } else if (value >= 70 && value <= 89) {
-        this.progressMessage = 'Good';
-        this.progressMessageColor = '#5CB85C'; // Lighter green
-    } else {
-        this.progressMessage = 'Optimal';
-        this.progressMessageColor = '#4cae4c'; // Darker green
+      return { title: 'Good', color: '#5CB85C' };
+    } else if (value > 89) {
+      return { title: 'Optimal', color: '#4cae4c' };
     }
-
-    return [this.progressMessage, this.progressMessageColor];
-}
-
-// Call this function whenever the progress value changes
-onProgressChange(value: number): void {
-    this.progressValue = value;
-    this.updateProgressMessage(value);
-}
+    return { title: 'No sleep data available', color: 'black' };
+  }
 
 }

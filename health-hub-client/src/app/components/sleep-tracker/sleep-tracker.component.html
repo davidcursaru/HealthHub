@@ -84,9 +84,9 @@
 
                         <mat-grid-tile class="sleep-score-mat-grid">
                             <div class="circle-progress-container">
-                                <circle-progress [title]="score.toString()" [percent]="score" [space]="-10"
+                                <circle-progress [title]="getMessage().score" [percent]="score" [space]="-10"
                                     [radius]="45" [outerStrokeGradient]="false" [outerStrokeWidth]="11"
-                                    [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor()"
+                                    [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor(score)"
                                     [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"
                                     [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
                                     [titleFontWeight]="'600'" [radius]="52">
@@ -107,19 +107,20 @@
                 <!--Asleep time-->
                 <mat-card-content class="asleep-content" *ngIf="i === 2">
                     <div style="text-align: center; font-weight: bold; margin-top: 20px; font-size: x-large;">
-                        {{ sleepGoalHrs }}h {{ sleepGoalMins }}min
+                        {{ sleepHours.hours || 0 }}h {{ sleepHours.minutes || 0 }}min
                     </div>
                     <div class="asleep-bar">
                         <div style="font-weight: bold;">0h</div>
-                        <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+                        <mat-progress-bar mode="determinate" [value]="asleepTimePercentage"></mat-progress-bar>
                         <div style="font-weight: bold;">{{ sleepGoalHrs }}h</div>
                     </div>
-                    <div class="progress-message" [ngStyle]="{ color: progressMessageColor }">
-                        {{ updateProgressMessage(progressValue)[0] }}
+                    <div class="progress-message"
+                        [ngStyle]="{ color: updateAsleepProgressMessage(asleepTimePercentage).color }">
+                        {{ updateAsleepProgressMessage(asleepTimePercentage).title }}
                     </div>
                 </mat-card-content>
 
-              
+
 
                 <!--Deep sleep-->
                 <mat-card-content class="deep-sleep-content" *ngIf="i === 3">
@@ -132,9 +133,19 @@
                     </div>
                 </mat-card-content>
 
-            <mat-card-content class="test" *ngIf="i===4">
-        
-            </mat-card-content>
+                <!--Awake-->
+                <mat-card-content class="deep-sleep-content" *ngIf="i === 4">
+                    <div style="text-align: center; font-weight: bold; margin-top: 10px; font-size: x-large;">
+                        25min (2 times)
+                    </div>
+
+                    <div style="margin-top: 10px;"> <!-- Add some margin-top here -->
+                        <app-awake-bar [userPercentage]="numberOfAwake"></app-awake-bar>
+                    </div>
+                </mat-card-content>
+
+
+
 
 
 
