@@ -1,0 +1,13 @@
+<div class="interval-container">
+    <div class="interval-bar" [style.flexBasis.%]="25" [style.backgroundColor]="getBarColor(10)"></div>
+    <div class="interval-bar" [style.flexBasis.%]="25" [style.backgroundColor]="getBarColor(25)"></div>
+    <div class="interval-bar" [style.flexBasis.%]="25" [style.backgroundColor]="getBarColor(70)"></div>
+  </div>
+  <div class="interval-labels">
+    <div class="interval-label">{{'<'}}10%</div>
+    <div class="interval-label">10%-35%</div>
+    <div class="interval-label">{{'>'}}35%</div>
+  </div>
+  <div class="progress-message" [ngStyle]="{ color: progressMessageColor }">
+    {{ updateProgressMessage(userPercentage)[0] }}
+</div>

@@ -84,11 +84,10 @@
                                         style="font-weight: normal;">{{CaloriesIntakeCurrentDay ?
                                         CaloriesIntakeCurrentDay: 0}} kcal</span></span>
                                 <span style="font-weight: bold; font-size: 1em;display:block;">Calories burned: <span
-                                        style="font-weight: normal;">{{TotalBurnedCaloriesCurrentDay ?
-                                        TotalBurnedCaloriesCurrentDay: 0}} kcal</span></span>
+                                        style="font-weight: normal;">{{getBurnedCaloriesSum()}} kcal</span></span>
                                 <span style="font-weight: bold; font-size: 1em;display:block;">Calories surplus: <span
                                         style="font-weight: normal;">{{CaloriesIntakeCurrentDay -
-                                        TotalBurnedCaloriesCurrentDay}} kcal</span></span>
+                                        getBurnedCaloriesSum()}} kcal</span></span>
                             </p>
                         </div>
                         <p>
@@ -212,7 +211,7 @@
                     <div class="progress-wrapper">
                         <!--  Calories burned intake -->
                         <div>
-                            <p><span class="bold">{{TotalBurnedCaloriesCurrentDay}}</span><span
+                            <p><span class="bold">{{getBurnedCaloriesSum()}}</span><span
                                     class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal Burned calories</span></p>
                         </div>
                         <!-- Circle progress on the right side -->

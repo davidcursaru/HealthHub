@@ -321,10 +321,23 @@ export class DashboardComponent implements OnInit {
   }
 
   getCardioPointsSum(): number {
-    const currentDay = Number(this.HeartMinutesCurrentDay) || 0;
+    const GoogleFit  = Number(this.HeartMinutesCurrentDay) || 0;
     const healthHub = Number(this.HeartMinutesHealthHub) || 0;
-    return currentDay + healthHub;
+    return GoogleFit  + healthHub;
   }
+
+  getActiveMinutesSum(): number {
+    const GoogleFit  = Number(this.ActiveMinutesCurrentDay) || 0;
+    const healthHub = Number(this.ExerciseDurationCurrentDay) || 0;
+    return GoogleFit + healthHub;
+  }
+
+  getBurnedCaloriesSum(): number {
+    const healthHub = Number(this.BurnedCaloriesFromExercises) || 0;
+    const GoogleFit = Number(this.BMRCaloriesCurrentDay) || 0;
+    return GoogleFit + healthHub;
+  }
+
 
   getActiveMinutesData(): void {
     this.googleAPIService.getActiveMinutes(this.userId, this.startTimeMillis, this.endTimeMillis)

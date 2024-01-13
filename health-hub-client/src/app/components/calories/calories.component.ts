@@ -148,7 +148,6 @@ export class CaloriesComponent implements OnInit {
 
     this.BMRCaloriesCurrentDay = localStorage.getItem("BMRCaloriesCurrentDay");
     this.BurnedCaloriesFromExercises = localStorage.getItem("BurnedCaloriesFromExercises");
-    this.TotalBurnedCaloriesCurrentDay = Number(this.BMRCaloriesCurrentDay) + Number(this.BurnedCaloriesFromExercises);
     this.goalsCurrentDayBurnedCalories = localStorage.getItem("BurnedCaloriesGoalsCurrentDay");
     this.CaloriesIntakeCurrentDay = localStorage.getItem("CaloriesIntakeCurrentDay");
     this.goalsCurrentDayCaloriesIntake = localStorage.getItem("CaloriesIntakeGoalsCurrentDay");
@@ -172,6 +171,12 @@ export class CaloriesComponent implements OnInit {
     const heightInMeters = height / 100;
     const bmi = weight / (heightInMeters * heightInMeters);
     return parseFloat(bmi.toFixed(1));
+  }
+
+  getBurnedCaloriesSum(): number {
+    const healthHub = Number(this.BurnedCaloriesFromExercises) || 0;
+    const GoogleFit = Number(this.BMRCaloriesCurrentDay) || 0;
+    return GoogleFit + healthHub;
   }
 
   getBMIClassification(bmi: number): string {

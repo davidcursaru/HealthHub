@@ -42,6 +42,10 @@ import { MatInputModule } from '@angular/material/input';
 import { IntensityBarComponent } from './components/intensity-bar/intensity-bar.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { IntervalBarComponent } from './components/interval-bar/interval-bar.component';
+
+
 
 
 @NgModule({
@@ -64,7 +68,9 @@ import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.
     DeleteAccountConfirmationDialogComponent,
     LoadingComponent,
     IntensityBarComponent,
-    SleepTrackerComponent
+    SleepTrackerComponent,
+    IntervalBarComponent,
+  
   ],
 
   imports: [
@@ -90,6 +96,7 @@ import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.
     MatAutocompleteModule,
     MatInputModule,
     MatSliderModule,
+    MatProgressBarModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,

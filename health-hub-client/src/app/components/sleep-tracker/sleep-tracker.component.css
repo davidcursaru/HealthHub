@@ -1,15 +1,21 @@
 button {
     transition: transform 0.1s cubic-bezier(0.47, 2.02, 0.31, -0.36),
-                box-shadow 0.2s ease,
-            
-  }
-  
-  /* Add hover effect for buttons */
-  button:hover {
-    transform: scale(1.05); /* Adjust the scale value for a smaller size increase */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase the shadow intensity */
-  }
+        box-shadow 0.2s ease,
 
+}
+
+/* Add hover effect for buttons */
+button:hover {
+    transform: scale(1.05);
+    /* Adjust the scale value for a smaller size increase */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Increase the shadow intensity */
+}
+
+.snackbar-success {
+    background-color: green;
+    color: white;
+}
 
 .grid-container {
     margin-bottom: 30px;
@@ -55,8 +61,86 @@ button {
     background-color: #2cb9a2b4;
 }
 
-.schedule-sleep-content{
+.schedule-sleep-content {
     margin-top: 12px;
 }
 
+.mat-grid-list-sleep-score {
+    margin-top: 20px;
+}
+
+.sleep-score-mat-grid {
+    height: 65px;
+    border-right: 2px solid #0e0d0d33;
+    border-width: 5px;
+
+
+}
+
+.sleep-score-mat-grid:last-child {
+    border-right: none;
+}
+
+/* Add this to your component's CSS or styles.scss file */
+
+.score-message-mat-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 60px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.message {
+    font-size: 14px;
+    color: #666;
+    margin-left: 5px;
+    /* Adjust the color as needed */
+}
+
+.asleep-content{
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+.asleep-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+
+.asleep-bar mat-progress-bar {
+    margin-top: 30px;
+    width: 60%;
+    
+}
+
+.interval-container {
+    display: flex;
+  }
   
+  .interval-bar {
+    height: 20px;
+    border: 1px solid #000;
+  }
+  
+  .interval-space {
+    width: 3px; /* Adjust the space width as needed */
+  }
+
+.progress-message{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+

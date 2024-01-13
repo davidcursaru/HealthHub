@@ -1,0 +1,35 @@
+.interval-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 5px;
+    /* Adjust the margin as needed */
+}
+
+.interval-bar {
+    height: 17px;
+    border: 1px solid #000;
+    margin: 1px;
+    border-radius: 5px;
+}
+
+.interval-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    /* Adjust the width as needed */
+    margin: 0 auto;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+
+.interval-label {
+    text-align: center;
+}
+
+.progress-message {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+}

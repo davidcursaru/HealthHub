@@ -13,37 +13,37 @@
                 <mat-card-header>
                     <mat-card-title *ngIf="i === 0">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">alarm</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
                     <mat-card-title *ngIf="i === 1">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">score</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
                     <mat-card-title *ngIf="i === 2">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">hotel</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
                     <mat-card-title *ngIf="i === 3">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">nights_stay</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
                     <mat-card-title *ngIf="i === 4">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">remove_red_eye</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
                     <mat-card-title *ngIf="i === 5">
                         <div class="card-header">
-                            <mat-icon class="card-icon">assessment</mat-icon>
+                            <mat-icon class="card-icon">repeat</mat-icon>
                             <span class="card-title">{{card.title}}</span>
                         </div>
                     </mat-card-title>
@@ -58,6 +58,7 @@
 
                 <!----------CONTENT OF THE MAT-CARDS ------------>
 
+                <!--Sleep schedule-->
                 <mat-card-content class="schedule-sleep-content" *ngIf="i === 0">
                     <ng-container>
                         <form [formGroup]="sleepForm">
@@ -77,17 +78,63 @@
                     </ng-container>
                 </mat-card-content>
 
+                <!--Sleep score-->
                 <mat-card-content class="sleep-score-content" *ngIf="i === 1">
-                    <ng-container>
-                        <div style="margin-top: 20px;margin-left: 30px;">
-                            <circle-progress [title]="'40'" [percent]="40" 
-                                [space]="-10" [radius]="45" [outerStrokeWidth]="11" [innerStrokeWidth]="11"
-                                [outerStrokeColor]="'#4882c2'" [innerStrokeColor]="'#e7e8ea'" [animation]="true"
-                                [animationDuration]="1000" [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
-                                [titleFontWeight]="'600'" [radius]="52"></circle-progress>
-                        </div>
-                    </ng-container>
+                    <mat-grid-list class="mat-grid-list-sleep-score" cols="2" rowHeight="3:1">
+
+                        <mat-grid-tile class="sleep-score-mat-grid">
+                            <div class="circle-progress-container">
+                                <circle-progress [title]="score.toString()" [percent]="score" [space]="-10"
+                                    [radius]="45" [outerStrokeGradient]="false" [outerStrokeWidth]="11"
+                                    [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor()"
+                                    [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"
+                                    [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
+                                    [titleFontWeight]="'600'" [radius]="52">
+                                </circle-progress>
+                            </div>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="title">{{ getMessage().title }}</p>
+                                <p class="message">{{ getMessage().message }}</p>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                 </mat-card-content>
+
+
+                <!--Asleep time-->
+                <mat-card-content class="asleep-content" *ngIf="i === 2">
+                    <div style="text-align: center; font-weight: bold; margin-top: 20px; font-size: x-large;">
+                        {{ sleepGoalHrs }}h {{ sleepGoalMins }}min
+                    </div>
+                    <div class="asleep-bar">
+                        <div style="font-weight: bold;">0h</div>
+                        <mat-progress-bar mode="determinate" [value]="progressValue"></mat-progress-bar>
+                        <div style="font-weight: bold;">{{ sleepGoalHrs }}h</div>
+                    </div>
+                    <div class="progress-message" [ngStyle]="{ color: progressMessageColor }">
+                        {{ updateProgressMessage(progressValue)[0] }}
+                    </div>
+                </mat-card-content>
+
+              
+
+                <!--Deep sleep-->
+                <mat-card-content class="deep-sleep-content" *ngIf="i === 3">
+                    <div style="text-align: center; font-weight: bold; margin-top: 10px; font-size: x-large;">
+                        3h 12min (35%)
+                    </div>
+
+                    <div style="margin-top: 10px;"> <!-- Add some margin-top here -->
+                        <app-interval-bar [userPercentage]="deepSleepPercentage"></app-interval-bar>
+                    </div>
+                </mat-card-content>
+
+            <mat-card-content class="test" *ngIf="i===4">
+        
+            </mat-card-content>
 
 
 
