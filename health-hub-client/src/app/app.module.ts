@@ -45,7 +45,7 @@ import { SleepTrackerComponent } from './components/sleep-tracker/sleep-tracker.
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { IntervalBarComponent } from './components/interval-bar/interval-bar.component';
 import { AwakeBarComponent } from './components/awake-bar/awake-bar.component';
-
+import { NgChartsModule } from 'ng2-charts';
 
 
 
@@ -99,6 +99,7 @@ import { AwakeBarComponent } from './components/awake-bar/awake-bar.component';
     MatInputModule,
     MatSliderModule,
     MatProgressBarModule,
+    NgChartsModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,

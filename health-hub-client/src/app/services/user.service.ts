@@ -4,6 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { Reminders } from '../interfaces/reminders.interface';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
+import { HydrationLogs } from '../interfaces/hydrationLogs.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -109,6 +110,10 @@ export class UserService {
   getWaterQuantity(loggedUserId: any, startDate: string, endDate: string) {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
     return this.http.get(endpoint);
+  }
+  getAllHydrationLogs() {
+    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/1";
+    return this.http.get<HydrationLogs[]>(endpoint);
   }
 
   //Nutrition Logs
