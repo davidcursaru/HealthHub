@@ -3,14 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { Chart, ChartData } from 'chart.js';
 import { HydrationLogs } from 'src/app/interfaces/hydrationLogs.interface';
 import { UserService } from 'src/app/services/user.service';
+import { NutritionLogs } from 'src/app/interfaces/nutritionLogs.interface';
+import { ExerciseLogs } from 'src/app/interfaces/exerciseLogs.interface';
 import * as moment from 'moment';
-
-// Interface to define the structure of time data
-interface TimeData {
-  intervalKey: string;
-  value: number;
-  unit: string;
-}
 
 @Component({
   selector: 'app-reports',
@@ -29,26 +24,67 @@ export class ReportsComponent implements OnInit {
   chartData: ChartData = { datasets: [] };
   chartLabels: string[] = [];
   selectedInterval: string = 'day'; // Default interval is set to 'day'
-  hydrationLogs: HydrationLogs[] = [];
+  dataLogs: any[] = [];
+  selectedReport: string = 'Hydration';
+  dataTypeReport: any;
 
   // Constructor with dependency injection for UserService
   constructor(private userService: UserService) { }
 
   // Lifecycle hook - ngOnInit
   ngOnInit() {
-    this.userId = localStorage.getItem("userId");
     this.getHydrationLogs(); // Fetch initial data
+  }
+
+  changeReportType(): void {
+    if (this.selectedReport === 'Hydration') {
+      this.getHydrationLogs();
+    }
+    else if (this.selectedReport == 'Calories Intake') {
+      this.getNutritionLogs();
+    }
+    else if (this.selectedReport == 'Calories Burned') {
+      this.getExerciseLogs();
+    }
+    else if (this.selectedReport == 'Exercise Minutes') {
+      this.getExerciseLogs();
+    }
+    this.updateChartData();
   }
 
   // Method to fetch hydration logs from the service
   getHydrationLogs() {
-    this.userService.getAllHydrationLogs(this.userId).subscribe(
+    this.userService.getAllHydrationLogs().subscribe(
       (res: HydrationLogs[]) => {
-        this.hydrationLogs = res;
+        this.dataLogs = res;
         this.updateChartData();
       },
       (error) => {
         console.log("Error retrieving hydrationLogs in Reports: ", error);
+      }
+    );
+  }
+
+  getNutritionLogs() {
+    this.userService.getAllNutritionLogs().subscribe(
+      (res: NutritionLogs[]) => {
+        this.dataLogs = res;
+        this.updateChartData();
+      },
+      (error) => {
+        console.log("Error retrieving nutritionLogs in Reports: ", error);
+      }
+    );
+  }
+ 
+  getExerciseLogs() {
+    this.userService.getAllExerciseLogs().subscribe(
+      (res: ExerciseLogs[]) => {
+        this.dataLogs = res;
+        this.updateChartData();
+      },
+      (error) => {
+        console.log("Error retrieving exerciseLogs in Reports: ", error);
       }
     );
   }
@@ -90,7 +126,7 @@ export class ReportsComponent implements OnInit {
         labels: sortedData.labels,
         datasets: [
           {
-            label: "Hydration",
+            label: this.selectedReport,
             data: sortedData.data,
             backgroundColor: '#076c8c', // Bar color
             barThickness: 20,
@@ -137,136 +173,154 @@ export class ReportsComponent implements OnInit {
 
   // Methods to filter data based on different intervals
   filterByDay(): void {
-    const groupedData = this.groupByDate(this.hydrationLogs, 'day');
+    const groupedData = this.groupByDate(this.dataLogs, 'day');
     this.aggregateData(groupedData);
   }
 
   filterByWeek(): void {
-    const groupedData = this.groupByDate(this.hydrationLogs, 'week');
+    const groupedData = this.groupByDate(this.dataLogs, 'week');
     this.aggregateData(groupedData);
   }
 
   filterByMonth(): void {
-    const groupedData = this.groupByDate(this.hydrationLogs, 'month');
+    const groupedData = this.groupByDate(this.dataLogs, 'month');
     this.aggregateData(groupedData);
   }
 
   filterByYear(): void {
-    const groupedData = this.groupByDate(this.hydrationLogs, 'year');
+    const groupedData = this.groupByDate(this.dataLogs, 'year');
     this.aggregateData(groupedData);
   }
 
+  getEntityDate() {
+    if (this.selectedReport === 'Hydration') {
+      return 'hydrationDate';
+    }
+    else if (this.selectedReport === 'Calories Intake') {
+      return 'consumptionDate';
+    }
+    else if (this.selectedReport === 'Exercise Minutes') {
+      return 'exerciseDate';
+    }
+    else if (this.selectedReport === 'Calories Burned') {
+      return 'exerciseDate';
+    }
+    return "date not found";
+  }
+ 
+  getEntityData() {
+    if (this.selectedReport === 'Hydration') {
+      return 'liters';
+    }
+    else if (this.selectedReport === 'Calories Intake') {
+      return 'calories';
+    }
+    else if (this.selectedReport === 'Calories Burned') {
+      return 'burnedCalories';
+    }
+    else if (this.selectedReport === 'Exercise Minutes') {
+      return 'exerciseDuration';
+    }
+    return "data not found";
+  }
+
   // Method to group data by date based on the selected interval
-  groupByDate(data: HydrationLogs[], interval: string): Map<string, number> {
+  groupByDate(data: any[], interval: string): Map<string, number> {
     const groupedMap: any = new Map<string, number>();
-    let logsDay: HydrationLogs[] = [];
 
     data.forEach(log => {
-      const date = new Date(log.hydrationDate);
+      const dateField = this.getEntityDate();
+      const dataField = this.getEntityData();
+      const date = new Date(log[dateField]);
       let key = '';
-      let keyDay = '';
-      logsDay = this.displayLogsForDay(date);
-
+      console.log(date)
+ 
       switch (interval) {
         case 'day':
           // Group data by hour for the selected day
           const startDateOfDay = moment().startOf('day');
           const endDateOfDay = moment().endOf('day');
           const logsForDay = data.filter((log) => {
-            const logDate = moment(log.hydrationDate);
+            const logDate = moment(log[dateField]);
             return logDate.isBetween(startDateOfDay, endDateOfDay, null, '[]');
           });
-
+ 
           for (let i = 0; i < 24; i++) {
             const currentHourLogs = logsForDay.filter((log) => {
-              const logHour = moment(log.hydrationDate).hour();
+              const logHour = moment(log[dateField]).hour();
               return logHour === i;
             });
-
+ 
             const hourName = moment().hour(i).format('HH');
-            groupedMap.set(hourName, currentHourLogs.reduce((total, log) => total + log.liters, 0));
+            groupedMap.set(hourName, currentHourLogs.reduce((total, log) => total + log[dataField], 0));
           }
           break;
-
+ 
         case 'week':
           // Group data by day for the selected week
           const startDateOfWeek = this.currentWeekStartDate;
           const endDateOfWeek = moment().endOf('week').toDate();
-
+ 
           const daysInWeek = [];
           for (let i = 0; i < 7; i++) {
             const currentDay = moment(startDateOfWeek).add(i, 'days').format('YYYY-MM-DD');
             daysInWeek.push(currentDay);
           }
-
+ 
           daysInWeek.forEach((day) => {
             const logsForDay = data.filter((log) => {
-              const logDate = moment(log.hydrationDate).format('YYYY-MM-DD');
+              const logDate = moment(log[dateField]).format('YYYY-MM-DD');
               return logDate === day;
             });
-
-            const dayName = moment(day).format('ddd');
-            groupedMap.set(dayName, logsForDay.reduce((total, log) => total + log.liters, 0));
+ 
+            const dayName = moment(day).format('ddd, MMM DD');
+            groupedMap.set(dayName, logsForDay.reduce((total, log) => total + log[dataField], 0));
           });
-
+ 
           groupedMap.delete("");
           break;
-
+ 
         case 'month':
           // Group data by month for the selected year
           const startDateOfYear = moment().startOf('year');
           const endDateOfYear = moment().endOf('year');
           const currentYear = startDateOfYear.year();
-
+ 
           const logsForYear = data.filter((log) => {
-            const logYear = moment(log.hydrationDate).year();
+            const logYear = moment(log[dateField]).year();
             return logYear === currentYear;
           });
-
+ 
           for (let i = 0; i < 12; i++) {
             const currentMonthLogs = logsForYear.filter((log) => {
-              const logMonth = moment(log.hydrationDate).month();
+              const logMonth = moment(log[dateField]).month();
               return logMonth === i;
             });
-
+ 
             const monthName = moment().month(i).format('MMM');
-            groupedMap.set(monthName, currentMonthLogs.reduce((total, log) => total + log.liters, 0));
+            groupedMap.set(monthName, currentMonthLogs.reduce((total, log) => total + log[dataField], 0));
           }
           break;
-
+ 
         case 'year':
           // Group data by year
           const yearKey = date.getFullYear().toString();
           key = yearKey;
           break;
-
+ 
         default:
           break;
       }
-
+ 
       if (groupedMap.has(key)) {
-        groupedMap.set(key, groupedMap.get(key) + log.liters);
+        groupedMap.set(key, groupedMap.get(key) + log[dataField]);
       } else {
-        groupedMap.set(key, log.liters);
+        groupedMap.set(key, log[dataField]);
       }
     });
-
+ 
     return groupedMap;
-  }
-
-  // Method to display logs for a specific day
-  displayLogsForDay(selectedDate: Date): HydrationLogs[] {
-    const logsForDay: HydrationLogs[] = this.hydrationLogs.filter(log => {
-      const logDate = new Date(log.hydrationDate);
-      return (
-        logDate.getFullYear() === selectedDate.getFullYear() &&
-        logDate.getMonth() === selectedDate.getMonth() &&
-        logDate.getDate() === selectedDate.getDate()
-      );
-    });
-
-    return logsForDay;
-  }
+}
 
   // Method to sort chart labels based on the selected interval
   private sortChartLabels(labels: string[], interval: string): { labels: string[], data: number[] } {

@@ -5,6 +5,8 @@ import { Reminders } from '../interfaces/reminders.interface';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject, Observable, catchError, tap } from 'rxjs';
 import { HydrationLogs } from '../interfaces/hydrationLogs.interface';
+import { NutritionLogs } from '../interfaces/nutritionLogs.interface';
+import { ExerciseLogs } from '../interfaces/exerciseLogs.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { HydrationLogs } from '../interfaces/hydrationLogs.interface';
 export class UserService {
   user: User = {};
   userNameUpdated: EventEmitter<string> = new EventEmitter();
+  idLocalStorage = Number(localStorage.getItem("userId"));
 
   constructor(private http: HttpClient) { }
 
@@ -111,12 +114,17 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
     return this.http.get(endpoint);
   }
-  getAllHydrationLogs(userId: number) {
-    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/" + userId;
+  getAllHydrationLogs() {
+    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/" + this.idLocalStorage;
     return this.http.get<HydrationLogs[]>(endpoint);
   }
 
   //Nutrition Logs
+  getAllNutritionLogs() {
+    const endpoint = environment.userManagement.baseUrl + "nutritionLogs/userId/" + this.idLocalStorage;
+    return this.http.get<NutritionLogs[]>(endpoint);
+  }
+  
   createNutritionLog(userId: number, foodInput: string, foodGrams: number, calories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs';
     const body = {
@@ -134,6 +142,11 @@ export class UserService {
   }
 
   //Exercise logs
+  getAllExerciseLogs() {
+    const endpoint = environment.userManagement.baseUrl + "exercisesLogs/userId/" + this.idLocalStorage;
+    return this.http.get<ExerciseLogs[]>(endpoint);
+  }
+  
   createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number, heartMinutes: Number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {

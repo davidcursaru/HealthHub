@@ -1,3 +1,15 @@
+<div class="report-options">
+    <mat-form-field appearance="fill">
+        <mat-label>Select Report:</mat-label>
+        <mat-select [(value)]="selectedReport" (selectionChange)="changeReportType()">
+            <mat-option value="Hydration">Hydration</mat-option>
+            <mat-option value="Calories Intake">Calories Intake</mat-option>
+            <mat-option value="Calories Burned">Calories Burned</mat-option>
+            <mat-option value="Exercise Minutes">Exercise Minutes</mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
 <div class="chart-interval">
     <div class="interval-selector">
         <button class="interval-button" (click)="changeChartInterval('day')"
