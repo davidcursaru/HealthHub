@@ -4,6 +4,7 @@ import { interval, map } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
+import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 
 
 @Component({
@@ -15,29 +16,42 @@ import { GoogleAPIService } from 'src/app/services/google-api.service';
 export class SleepTrackerComponent {
   userId: any;
   sleepForm: any;
-  deepSleepPercentage: any;
-  score: any;
-
-  sleepPhasesDictionary: { [key: number]: string } = {
-    1: 'Awake',
-    4: 'Light sleep',
-    5: 'Deep sleep'
-  };
 
   startTimeMillis: number = 0;
   endTimeMillis: number = 0;
   sleepStartTimeNanos: any;
   sleepEndTimeNanos: any;
 
+  //for score card
+  score: any;
+
+  sleepData: SleepData | undefined;
+  deepSleepTime: { hours: number, minutes: number } = { hours: 0, minutes: 0 };
+  deepSleepHours: any;
+  deepSleepMinutes: any;
+
+  //for deep sleep card
+  sleepPhasesDictionary: { [key: number]: string } = {
+    1: 'Awake',
+    4: 'Light sleep',
+    5: 'Deep sleep'
+  };
+  deepSleepPercentage: any;
+
+
   //For asleep card
   sleepGoalHrs: any;
   sleepGoalMins: any;
   sleepHours: any;
+  totalSleepMinutes: any;
   asleepTimePercentage: any;
   asleepProgressMessage: any;
   asleepProgressMessageColor: any;
 
-  numberOfAwake: any;
+  //for awake card
+  awakeCounter: any;
+  awakeHours: any;
+  awakeMinutes: any;
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -110,18 +124,24 @@ export class SleepTrackerComponent {
     this.userId = localStorage.getItem("userId");
 
     this.setTimeRangeMillis();
-
     this.initForm();
     this.loadSavedTimes();
+
     this.sleepGoalHrs = localStorage.getItem("sleepGoalHrs");
     this.sleepGoalMins = localStorage.getItem("sleepGoalMins");
     this.getSleepPhases();
 
     this.sleepStartTimeNanos = localStorage.getItem("SleepStartTimeNanos");
     this.sleepEndTimeNanos = localStorage.getItem("SleepEndTimeNanos");
+    // this.awakeCounter = Number(localStorage.getItem("awakeCounter"));
+    // this.deepSleepHours = localStorage.getItem("deepSleepHours");
+    // this.deepSleepMinutes = localStorage.getItem("deepSleepMinutes");
+    // this.deepSleepPercentage = localStorage.getItem("deepSleepPercentage");
+
     interval(100).subscribe(() => {
       this.sleepHours = this.calculateSleepDuration(this.sleepStartTimeNanos, this.sleepEndTimeNanos);
-      this.asleepTimePercentage = this.calculatePercentage((this.sleepHours.hours * 60) + this.sleepHours.minutes, (Number(this.sleepGoalHrs) * 60) + Number(this.sleepGoalMins))
+      this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes;
+      this.asleepTimePercentage = this.calculatePercentage(this.totalSleepMinutes, (Number(this.sleepGoalHrs) * 60) + Number(this.sleepGoalMins))
     });
 
   }
@@ -153,7 +173,7 @@ export class SleepTrackerComponent {
       .subscribe(
         (data) => {
           // Check if 'bucket' array exists and has elements
-          if (data && data.bucket && data.bucket.length > 0) {
+          if (data && data.bucket && data.bucket.length > 0 && data.bucket[0].dataset[0].point.length > 0) {
             const firstObject = data.bucket[0].dataset[0].point[0];
             const lastObject = data.bucket[data.bucket.length - 1].dataset[0].point[data.bucket[data.bucket.length - 1].dataset[0].point.length - 1];
 
@@ -161,10 +181,16 @@ export class SleepTrackerComponent {
             this.sleepEndTimeNanos = lastObject.endTimeNanos;
             localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
             localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
+            this.sleepHours = this.calculateSleepDuration(this.sleepStartTimeNanos, this.sleepEndTimeNanos);
+            this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes;
+            this.calculateSleepPhaseTime(data, 5);
+            this.calculateSleepPhaseTime(data, 1);
+            this.score = this.calculateSleepScore(this.totalSleepMinutes, this.deepSleepMinutes, this.awakeCounter);
+
           } else {
-            console.warn('No data available in the response.');
-            this.sleepEndTimeNanos = 0;
+            console.warn('No sleep data available in the response.');
             this.sleepStartTimeNanos = 0;
+            this.sleepEndTimeNanos = 0;
             localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
             localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
           }
@@ -178,6 +204,50 @@ export class SleepTrackerComponent {
           localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
         }
       );
+  }
+
+  calculateSleepPhaseTime(sleepData: SleepData, sleepPhase: number): void {
+
+    // Initialize deep sleep time
+    let totalDeepSleepNanos = 0;
+    let counter = 0;
+
+    sleepData.bucket.forEach(bucket => {
+      if (bucket.dataset && bucket.dataset.length > 0) {
+        bucket.dataset.forEach(dataset => {
+          if (dataset.point && dataset.point.length > 0) {
+            dataset.point.forEach(point => {
+              if (point.value && point.value.length > 0 && point.value[0].intVal === sleepPhase) {
+                // Calculate deep sleep time for each point
+                totalDeepSleepNanos += (Number(point.endTimeNanos) - Number(point.startTimeNanos));
+                if (sleepPhase === 1) {
+                  counter += 1;
+                }
+
+              }
+            });
+          }
+        });
+      }
+    });
+
+    // Convert nanoseconds to hours and minutes
+    const totalDeepSleepMinutes = Math.round(totalDeepSleepNanos / (60 * 1e9));
+    if (sleepPhase === 5) {
+      this.deepSleepPercentage = this.calculatePercentage(totalDeepSleepMinutes, this.totalSleepMinutes);
+      this.deepSleepHours = Math.floor(totalDeepSleepMinutes / 60);
+      this.deepSleepMinutes = totalDeepSleepMinutes % 60;
+
+      localStorage.setItem("deepSleepPercentage", this.deepSleepPercentage);
+      localStorage.setItem("deepSleepHours", this.deepSleepHours);
+      localStorage.setItem("deepSleepMinutes", this.deepSleepMinutes);
+    }
+    else if (sleepPhase === 1) {
+      this.awakeHours = Math.floor(totalDeepSleepMinutes / 60);
+      this.awakeMinutes = totalDeepSleepMinutes % 60;
+      this.awakeCounter = counter;
+    }
+
   }
 
   calculateSleepDuration(startSleepTimeNanos: number, wakeUpTimeNanos: number): { hours: number, minutes: number } {
@@ -202,8 +272,6 @@ export class SleepTrackerComponent {
       });
     }
   }
-
-
 
   saveSleepTimes(): void {
     localStorage.setItem('sleepStartTime', this.sleepForm.value.sleepStartTime);
@@ -269,14 +337,59 @@ export class SleepTrackerComponent {
   }
 
   updateAsleepProgressMessage(value: number): { title: string, color: string } {
-    if (value < 70) {
+    if (value < 70 && value > 1) {
       return { title: 'Accord Care', color: 'red' };
     } else if (value >= 70 && value <= 89) {
       return { title: 'Good', color: '#5CB85C' };
     } else if (value > 89) {
-      return { title: 'Optimal', color: '#4cae4c' };
+      return { title: 'Optimal', color: 'green' };
     }
     return { title: 'No sleep data available', color: 'black' };
+  }
+
+  calculateSleepScore(totalSleepMinutes: number, deepSleepMinutes: number, numberOfAwakeTimes: number): number {
+    // Define weights for each factor
+    const totalSleepWeight = 0.85;
+    const deepSleepWeight = 0.6;
+    const awakeTimesWeight = 0.035;
+    let weightedSum = 0
+
+    // Normalize values (you can define your own normalization logic)
+    const normalizedTotalSleep = this.normalize(totalSleepMinutes, 8 * 60); // Assuming 8 hours as ideal sleep
+    const normalizedDeepSleep = this.normalize(deepSleepMinutes, totalSleepMinutes);
+    const normalizedAwakeTimes = (awakeTimesWeight * numberOfAwakeTimes); // Assuming fewer awakenings are better
+
+    // Calculate the weighted sum
+    if (normalizedAwakeTimes > 0) {
+      weightedSum = (totalSleepWeight * normalizedTotalSleep) + (deepSleepWeight * normalizedDeepSleep) - normalizedAwakeTimes;
+    }
+    else {
+      weightedSum = (totalSleepWeight * normalizedTotalSleep) + (deepSleepWeight * normalizedDeepSleep) + 0.1;
+    }
+
+    // Adjust the score based on deep sleep percentage
+    const deepSleepPercentage = (deepSleepMinutes / totalSleepMinutes) * 100;
+
+    if (deepSleepPercentage > 35) {
+      // Subtract from the score for deep sleep percentage greater than 35
+      weightedSum -= (deepSleepPercentage - 35) * 0.01;
+    } else if (deepSleepPercentage < 10) {
+      // Subtract from the score for deep sleep percentage less than 10
+      weightedSum -= (10 - deepSleepPercentage) * 0.01;
+    }
+
+    // You can adjust the range and scale based on your preferences
+    const sleepScore = Math.round(weightedSum * 100);
+
+    return sleepScore;
+  }
+
+  // Basic normalization function to map values between 0 and 1
+  private normalize(value: number, idealValue: number): number {
+    if (idealValue === 0) {
+      return 0;
+    }
+    return Math.min(1, Math.max(0, value / idealValue));
   }
 
 }

@@ -21,6 +21,7 @@ export class ReportsComponent implements OnInit {
   // Properties to store date range for the current week
   currentWeekStartDate: moment.Moment = moment().startOf('week');
   currentWeekEndDate: moment.Moment = moment().endOf('week');
+  userId: any;
 
   // Properties for chart data and options
   public chart: any;
@@ -35,12 +36,13 @@ export class ReportsComponent implements OnInit {
 
   // Lifecycle hook - ngOnInit
   ngOnInit() {
+    this.userId = localStorage.getItem("userId");
     this.getHydrationLogs(); // Fetch initial data
   }
 
   // Method to fetch hydration logs from the service
   getHydrationLogs() {
-    this.userService.getAllHydrationLogs().subscribe(
+    this.userService.getAllHydrationLogs(this.userId).subscribe(
       (res: HydrationLogs[]) => {
         this.hydrationLogs = res;
         this.updateChartData();

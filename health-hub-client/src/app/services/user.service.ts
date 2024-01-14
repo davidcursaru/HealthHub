@@ -111,8 +111,8 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
     return this.http.get(endpoint);
   }
-  getAllHydrationLogs() {
-    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/1";
+  getAllHydrationLogs(userId: number) {
+    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/" + userId;
     return this.http.get<HydrationLogs[]>(endpoint);
   }
 

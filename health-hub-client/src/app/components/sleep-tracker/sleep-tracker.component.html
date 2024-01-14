@@ -106,9 +106,15 @@
 
                 <!--Asleep time-->
                 <mat-card-content class="asleep-content" *ngIf="i === 2">
-                    <div style="text-align: center; font-weight: bold; margin-top: 20px; font-size: x-large;">
+                    <div style="text-align: center; font-weight: bold; margin-top: 20px; font-size: x-large;"
+                        *ngIf="sleepHours; else loading">
                         {{ sleepHours.hours || 0 }}h {{ sleepHours.minutes || 0 }}min
                     </div>
+                    <ng-template #loading>
+                        <div style="text-align: center; font-weight: bold; margin-top: 20px; font-size: x-large;">
+                            0h 0min
+                        </div>
+                    </ng-template>
                     <div class="asleep-bar">
                         <div style="font-weight: bold;">0h</div>
                         <mat-progress-bar mode="determinate" [value]="asleepTimePercentage"></mat-progress-bar>
@@ -125,10 +131,10 @@
                 <!--Deep sleep-->
                 <mat-card-content class="deep-sleep-content" *ngIf="i === 3">
                     <div style="text-align: center; font-weight: bold; margin-top: 10px; font-size: x-large;">
-                        3h 12min (35%)
+                        {{ deepSleepHours || 0 }}h {{ deepSleepMinutes || 0 }}min ({{deepSleepPercentage || 0 }}%)
                     </div>
 
-                    <div style="margin-top: 10px;"> <!-- Add some margin-top here -->
+                    <div style="margin-top: 10px;">
                         <app-interval-bar [userPercentage]="deepSleepPercentage"></app-interval-bar>
                     </div>
                 </mat-card-content>
@@ -136,20 +142,13 @@
                 <!--Awake-->
                 <mat-card-content class="deep-sleep-content" *ngIf="i === 4">
                     <div style="text-align: center; font-weight: bold; margin-top: 10px; font-size: x-large;">
-                        25min (2 times)
+                        {{ awakeHours || 0}}h {{ awakeMinutes||0}}min ({{awakeCounter||0 }} times)
                     </div>
 
                     <div style="margin-top: 10px;"> <!-- Add some margin-top here -->
-                        <app-awake-bar [userPercentage]="numberOfAwake"></app-awake-bar>
+                        <app-awake-bar [userPercentage]="awakeCounter"></app-awake-bar>
                     </div>
                 </mat-card-content>
-
-
-
-
-
-
-
 
 
 
