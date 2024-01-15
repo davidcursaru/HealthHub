@@ -150,7 +150,33 @@
                     </div>
                 </mat-card-content>
 
+                    <!--Regularity-->
+                    <mat-card-content class="regularity-content" *ngIf="i === 5">
+                        <mat-grid-list class="mat-grid-list-sleep-score" cols="2" rowHeight="3:1">
 
+                            <mat-grid-tile class="sleep-score-mat-grid">
+                                <div class="circle-progress-container">
+                                    <circle-progress [title]="regularityScore" [percent]="regularityScore" [space]="-10"
+                                [radius]="45" [outerStrokeGradient]="false" [outerStrokeWidth]="11"
+                                [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor(regularityScore)"
+                                [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"
+                                [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
+                                [titleFontWeight]="'600'" [radius]="52">
+                            
+                                    </circle-progress>
+                                </div>
+                            </mat-grid-tile>
+    
+                            <mat-grid-tile class="score-message-mat-grid">
+                                <div>
+                                    <p class="title">{{ getRegularityMessage().title }}</p>
+                                    <p class="message">{{ getRegularityMessage().message }}</p>
+                                </div>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                  
+                
+                    </mat-card-content>
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
             </mat-card>

@@ -5,6 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
+import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
 
 
 @Component({
@@ -16,6 +17,15 @@ import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 export class SleepTrackerComponent {
   userId: any;
   sleepForm: any;
+
+  timezoneOffset = new Date().getTimezoneOffset();
+  currentDate = new Date();
+  // Calculate the date of 7 days ago
+  sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
+  startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+  endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+  isoDateString1 = this.sevenDaysAgoDate.toISOString();
+  isoDateString2 = this.endDate.toISOString();
 
   startTimeMillis: number = 0;
   endTimeMillis: number = 0;
@@ -52,6 +62,12 @@ export class SleepTrackerComponent {
   awakeCounter: any;
   awakeHours: any;
   awakeMinutes: any;
+
+  //for regularity card
+  regularityScore: any;
+  averageSleepStartTime: any;
+  averageWakeUpTime: any;
+  averageSleepDuration: any;
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -94,8 +110,8 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 20, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 30, route: '' },
-          { title: 'Sleep phases', cols: 2, rows: 20, route: '' },
+          { title: 'Regularity', cols: 1, rows: 33, route: '' },
+          { title: 'Sleep phases', cols: 2, rows: 23, route: '' },
           { columns: 3 }
         ];
       }
@@ -117,7 +133,8 @@ export class SleepTrackerComponent {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private googleAPIService: GoogleAPIService
+    private googleAPIService: GoogleAPIService,
+    private sleepRegularityService: SleepRegularityService
   ) { }
 
   ngOnInit(): void {
@@ -143,6 +160,48 @@ export class SleepTrackerComponent {
       this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes;
       this.asleepTimePercentage = this.calculatePercentage(this.totalSleepMinutes, (Number(this.sleepGoalHrs) * 60) + Number(this.sleepGoalMins))
     });
+
+    this.googleAPIService.getSession(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
+      (data) => {
+        const sleepDataRegularity = [];
+
+        for (const session of data.session) {
+          if (session.name === 'Sleep') {
+            const sleepEntry = {
+              sleepStartTimeMillis: parseInt(session.startTimeMillis),
+              wakeUpTimeMillis: parseInt(session.endTimeMillis),
+            };
+
+            sleepDataRegularity.push(sleepEntry);
+          }
+        }
+
+        if (sleepDataRegularity.length > 2) {
+          // Calculate and display the regularity score
+          this.regularityScore = this.sleepRegularityService.calculateSRI(sleepDataRegularity);
+          // Calculate and display the average sleep start time
+          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
+          // Calculate and display the average wake-up time
+          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+        }
+        else if(sleepDataRegularity.length != 0)
+        {
+          this.regularityScore = 0;
+          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
+          // Calculate and display the average wake-up time
+          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+        }
+        else{
+          this.averageSleepStartTime = 'No data';
+          this.averageWakeUpTime = 'No data';
+        }
+
+      },
+      (error) => {
+        console.error('Error fetching session data:', error);
+
+      }
+    );
 
   }
 
@@ -336,6 +395,24 @@ export class SleepTrackerComponent {
     return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to acces Google Fit data' };
   }
 
+  getRegularityMessage(): { score: string, title: string, message: string } {
+    if (this.regularityScore <= 60) {
+      return { score: this.regularityScore.toString(), title: 'Accord Care', message: '' };
+    } else if (this.regularityScore > 60 && this.score <= 79) {
+      return { score: this.regularityScore.toString(), title: 'Satisfying', message: '' };
+    } else if (this.regularityScore >= 80 && this.score <= 89) {
+      return { score: this.regularityScore.toString(), title: 'Good', message: '' };
+    }
+    else if (this.regularityScore > 89) {
+      return { score: this.regularityScore.toString(), title: 'Optimal', message: '' };
+    }
+    if(this.regularityScore == 0)
+    {
+      return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 3 sleep sessions with your smartwatch.' };
+    }
+    return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to access Google Fit data' };
+  }
+
   updateAsleepProgressMessage(value: number): { title: string, color: string } {
     if (value < 70 && value > 1) {
       return { title: 'Accord Care', color: 'red' };
@@ -392,6 +469,6 @@ export class SleepTrackerComponent {
     return Math.min(1, Math.max(0, value / idealValue));
   }
 
-  
+
 
 }

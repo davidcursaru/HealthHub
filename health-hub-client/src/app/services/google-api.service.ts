@@ -59,4 +59,10 @@ export class GoogleAPIService {
 
     return this.http.post<any>(endpoint, body);
   }
+
+  getSession(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'GoogleFit/Sessions/' + userId + '?startTime=' + startDate + "&endTime=" + endDate;
+ 
+    return this.http.get<any>(endpoint);
+  }
 }
