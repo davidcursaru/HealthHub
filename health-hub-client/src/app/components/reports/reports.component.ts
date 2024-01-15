@@ -135,20 +135,20 @@ export class ReportsComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio: 2.0,
+        aspectRatio: 1.9,
         scales: {
           y: {
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Liters',
+              text: '',
               color: 'blue'
             }
           },
           x: {
             title: {
               display: true,
-              text: 'Date',
+              text: '',
               color: 'blue'
             }
           }
