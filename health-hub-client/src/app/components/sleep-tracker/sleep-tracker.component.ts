@@ -21,7 +21,7 @@ export class SleepTrackerComponent {
   timezoneOffset = new Date().getTimezoneOffset();
   currentDate = new Date();
   // Calculate the date of 7 days ago
-  sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
+  sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 8, 0, 0 - this.timezoneOffset, 0);
   startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
   endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
   isoDateString1 = this.sevenDaysAgoDate.toISOString();

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import * as moment from 'moment';
 
 interface SleepData {
   sleepStartTimeMillis: number;
@@ -11,17 +12,47 @@ interface SleepData {
 export class SleepRegularityService {
 
   calculateAverageSleepStartTime(data: SleepData[]): string {
-    const totalSleepStartTime = data.reduce((acc, entry) => acc + entry.sleepStartTimeMillis, 0);
-    const averageSleepStartTime = totalSleepStartTime / data.length;
+    // Convert sleep start times to hours in 24-hour format
+    const sleepStartHoursArray = data.map(entry => {
+      const sleepStartTime = moment(entry.sleepStartTimeMillis).format('hh:mm A');
+      return sleepStartTime;
+    });
 
-    return this.formatTime(averageSleepStartTime);
+    // Parse hours using moment
+    const parsedHours = sleepStartHoursArray.map(hour => moment(hour, 'hh:mm A'));
+
+    // Calculate the total number of minutes
+    const totalMinutes = parsedHours.reduce((sum, hour) => sum + hour.hours() * 60 + hour.minutes(), 0);
+
+    // Calculate the average
+    const averageMinutes = totalMinutes / sleepStartHoursArray.length;
+
+    // Convert back to hh:mm A format
+    const averageHour = moment().startOf('day').add(averageMinutes, 'minutes').format('hh:mm A');
+
+    return averageHour;
   }
 
   calculateAverageWakeUpTime(data: SleepData[]): string {
-    const totalWakeUpTime = data.reduce((acc, entry) => acc + entry.wakeUpTimeMillis, 0);
-    const averageWakeUpTime = totalWakeUpTime / data.length;
+    // Convert wake up times to hours in 24-hour format
+    const wakeUpHoursArray = data.map(entry => {
+      const wakeUpTime = moment(entry.wakeUpTimeMillis).format('hh:mm A');
+      return wakeUpTime;
+    });
 
-    return this.formatTime(averageWakeUpTime);
+    // Parse hours using moment
+    const parsedHours = wakeUpHoursArray.map(hour => moment(hour, 'hh:mm A'));
+
+    // Calculate the total number of minutes
+    const totalMinutes = parsedHours.reduce((sum, hour) => sum + hour.hours() * 60 + hour.minutes(), 0);
+
+    // Calculate the average
+    const averageMinutes = totalMinutes / wakeUpHoursArray.length;
+
+    // Convert back to hh:mm A format
+    const averageWakeUpTime = moment().startOf('day').add(averageMinutes, 'minutes').format('hh:mm A');
+
+    return averageWakeUpTime;
   }
 
   convertTimeToMinutes(timeString: string): number {
