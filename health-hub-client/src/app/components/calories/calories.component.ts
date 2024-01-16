@@ -87,23 +87,64 @@ export class CaloriesComponent implements OnInit {
   };
 
   private breakpointObserver = inject(BreakpointObserver);
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
+  cards = this.breakpointObserver.observe([
+    Breakpoints.Small,
+    Breakpoints.Handset,
+    Breakpoints.Medium,
+    Breakpoints.Large,
+    Breakpoints.XLarge
+  ]).pipe(
+    map(({ breakpoints }) => {
+      if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.Handset]) {
         return [
-          { title: 'BMI Card', cols: 1, rows: 1, route: '' },
-          { title: 'Calories tracker', cols: 1, rows: 1, route: '' },
-          { title: 'Hydration tracker', cols: 1, rows: 1, route: '' },
+          { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
+          { title: 'Calories intake', cols: 1, rows: 2, route: '' },
+          { title: 'Water intake', cols: 1, rows: 3, route: '' },
+          { title: 'Calories and nutritional values calculator', cols: 1, rows: 5, route: '' },
+          { title: 'Progress ', cols: 1, rows: 3, route: '' },
+          { columns: 1 }
         ];
       }
+      else if (breakpoints[Breakpoints.Medium]) {
+        return [
+          { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
+          { title: 'Calories intake', cols: 1, rows: 2, route: '' },
+          { title: 'Water intake', cols: 1, rows: 3, route: '' },
+          { title: 'Calories and nutritional values calculator', cols: 1, rows: 6, route: '' },
+          { title: 'Progress ', cols: 1, rows: 3, route: '' },
+          { columns: 2 }
+        ];
+      }
+      else if (breakpoints[Breakpoints.Large]) {
+        return [
+          { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
+          { title: 'Calories intake', cols: 1, rows: 2, route: '' },
+          { title: 'Water intake', cols: 1, rows: 3, route: '' },
+          { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
+          { title: 'Progress ', cols: 1, rows: 3, route: '' },
+          { columns: 3 }
+        ];
+      }
+      else if ( breakpoints[Breakpoints.XLarge]) {
+        return [
+          { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
+          { title: 'Calories intake', cols: 1, rows: 2, route: '' },
+          { title: 'Water intake', cols: 1, rows: 3, route: '' },
+          { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
+          { title: 'Progress ', cols: 1, rows: 3, route: '' },
+          { columns: 3 }
+        ];
+      }
+
       return [
         { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
         { title: 'Calories intake', cols: 1, rows: 2, route: '' },
         { title: 'Water intake', cols: 1, rows: 3, route: '' },
-        { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
+        { title: 'Calories and nutritional values calculator', cols: 1, rows: 6, route: '' },
         { title: 'Progress ', cols: 1, rows: 3, route: '' },
+        { columns: 1 }
       ];
+
     })
   );
 

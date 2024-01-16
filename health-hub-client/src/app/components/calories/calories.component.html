@@ -8,7 +8,7 @@
         Goal</button>
     </div>
 
-    <mat-grid-list cols="3" rowHeight="115px">
+    <mat-grid-list [cols]="(cards | async)?.[5]?.columns || (cards | async)?.[4]?.columns" rowHeight="115px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="calories-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
