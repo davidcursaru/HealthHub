@@ -3,6 +3,7 @@
     <div>
         <h1 class="mat-h1">Sleep tracker</h1>
     </div>
+  
 
     <mat-grid-list [cols]="(cards | async)?.[7]?.columns || (cards | async)?.[6]?.columns" rowHeight="12px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
@@ -127,14 +128,14 @@
 
                     <!-- Fell asleep and Woke up titles with times -->
                     <mat-grid-list class="mat-grid-list-asleep" cols="2" rowHeight="4:1">
-                        <mat-grid-tile class="score-message-mat-grid">
+                        <mat-grid-tile class="fell-asleep-mat-grid">
                             <div>
                                 <p class="message-average">Fell asleep at:</p>
                                 <p class="title">{{ fellAsleep ?? 'No data' }}</p>
                             </div>
                         </mat-grid-tile>
 
-                        <mat-grid-tile class="score-message-mat-grid">
+                        <mat-grid-tile class="fell-asleep-mat-grid">
                             <div>
                                 <p class="message-average">Woke up at: </p>
                                 <p class="title">{{ wokeUp ?? 'No data'}}</p>
@@ -195,14 +196,14 @@
                     </mat-grid-list>
 
                     <mat-grid-list class="mat-grid-list-average-sleep-times" cols="2" rowHeight="4:1">
-                        <mat-grid-tile class="score-message-mat-grid">
+                        <mat-grid-tile class="regularity-mat-grid">
                             <div>
                                 <p class="message-average">Average sleep start time</p>
                                 <p class="title">{{ averageSleepStartTime ?? 'No data' }}</p>
                             </div>
                         </mat-grid-tile>
 
-                        <mat-grid-tile class="score-message-mat-grid">
+                        <mat-grid-tile class="regularity-mat-grid">
                             <div>
                                 <p class="message-average">Average wake up time</p>
                                 <p class="title">{{ averageWakeUpTime ?? 'No data'}}</p>
@@ -211,7 +212,7 @@
                     </mat-grid-list>
 
                     <mat-grid-list class="mat-grid-list-average-sleep-times" cols="1" rowHeight="8:1">
-                        <mat-grid-tile class="score-message-mat-grid">
+                        <mat-grid-tile class="regularity-mat-grid">
                             <div>
                                 <p class="message-average">Average sleep duration</p>
                                 <p class="title">{{ averageSleepDuration.hours }}h {{averageSleepDuration.minutes}}min

@@ -83,10 +83,10 @@ export class SleepTrackerComponent {
         return [
           { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
           { title: 'Sleep score', cols: 1, rows: 20, route: '' },
-          { title: 'Asleep time', cols: 1, rows: 20, route: '' },
+          { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 30, route: '' },
+          { title: 'Regularity', cols: 1, rows: 43, route: '' },
           { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
           { columns: 1 }
         ];
@@ -95,15 +95,27 @@ export class SleepTrackerComponent {
         return [
           { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
           { title: 'Sleep score', cols: 1, rows: 20, route: '' },
-          { title: 'Asleep time', cols: 1, rows: 20, route: '' },
+          { title: 'Asleep time', cols: 1, rows: 27, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 30, route: '' },
+          { title: 'Regularity', cols: 1, rows: 40, route: '' },
           { title: 'Sleep phases', cols: 2, rows: 20, route: '' },
           { columns: 2 }
         ];
       }
-      else if (breakpoints[Breakpoints.Large] || breakpoints[Breakpoints.XLarge]) {
+      else if (breakpoints[Breakpoints.Large]) {
+        return [
+          { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
+          { title: 'Sleep score', cols: 1, rows: 20, route: '' },
+          { title: 'Asleep time', cols: 1, rows: 30, route: '' },
+          { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
+          { title: 'Awake', cols: 1, rows: 20, route: '' },
+          { title: 'Regularity(last 7 days)', cols: 1, rows: 36, route: '' },
+          { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
+          { columns: 3 }
+        ];
+      }
+      else if ( breakpoints[Breakpoints.XLarge]) {
         return [
           { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
           { title: 'Sleep score', cols: 1, rows: 20, route: '' },
@@ -119,10 +131,10 @@ export class SleepTrackerComponent {
       return [
         { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
         { title: 'Sleep score', cols: 1, rows: 20, route: '' },
-        { title: 'Asleep time', cols: 1, rows: 20, route: '' },
+        { title: 'Asleep time', cols: 1, rows: 25, route: '' },
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
-        { title: 'Regularity(last 7 days)', cols: 1, rows: 30, route: '' },
+        { title: 'Regularity(last 7 days)', cols: 1, rows: 33, route: '' },
         { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
         { columns: 1 }
       ];

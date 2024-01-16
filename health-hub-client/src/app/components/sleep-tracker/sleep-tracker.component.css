@@ -125,6 +125,15 @@ button:hover {
     
 }
 
+.fell-asleep-mat-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 60px;
+}
+
 .interval-container {
     display: flex;
   }
@@ -154,4 +163,135 @@ button:hover {
     font-weight: bold;
 }
 
+.regularity-mat-grid{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 60px;
+}
 
+
+/* Media for different screen sizes */
+
+@media screen and (max-width: 600px) {
+
+    /* Styles for Small and Handset breakpoints */
+    .regularity-mat-grid{
+        margin-top: 10px;
+        height: 12px;
+    }
+}
+
+@media screen and (min-width: 600px) and (max-width: 779px) {
+    .score-message-mat-grid{
+        height: 50px;
+    }
+    .sleep-score-mat-grid{
+        height: 50px;
+    }
+    .schedule-sleep-content {
+        margin-top: 30px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+
+  
+}
+@media screen and (min-width: 780px) and (max-width: 960px) {
+    .score-message-mat-grid{
+        height: 20px;
+    }
+    .sleep-score-mat-grid{
+        height: 20px;
+    }
+    .schedule-sleep-content {
+        margin-top: 30px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+    .regularity-mat-grid{
+        margin-top: 10px;
+        height: 2px;
+    }
+
+  
+}
+
+@media screen and (min-width: 960px) and (max-width: 1279px) {
+
+    /* Styles for Medium breakpoints */
+    .schedule-sleep-content {
+        margin-top: 30px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+    .fell-asleep-mat-grid{
+        height: 9px;
+    }
+
+
+}
+
+@media screen and (min-width: 1280px) and (max-width: 1649px) {
+    .score-message-mat-grid{
+        height: 65px;
+    }
+    .sleep-score-mat-grid{
+        height: 65px;
+    }
+    .schedule-sleep-content {
+        margin-top: 20px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+    .regularity-mat-grid{
+        margin-top: 10px;
+        height: 20px;
+    }
+ 
+}
+
+@media screen and (min-width: 1650px) and (max-width: 1919px) {
+    .score-message-mat-grid{
+        height: 50px;
+    }
+    .sleep-score-mat-grid{
+        height: 50px;
+    }
+    .schedule-sleep-content {
+        margin-top: 20px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+    .regularity-mat-grid{
+        
+        height: 2px;
+    }
+ 
+}
+
+@media screen and (min-width: 1920px) {
+    .score-message-mat-grid{
+        height: 50px;
+    }
+    .sleep-score-mat-grid{
+        height: 50px;
+    }
+    .schedule-sleep-content {
+        margin-top: 20px;
+    }
+    mat-form-field{
+        margin-right: 10px;
+    }
+    .regularity-mat-grid{
+        height: 10px;
+    }
+ 
+}
