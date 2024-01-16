@@ -110,19 +110,19 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity(last 7 days)', cols: 1, rows: 36, route: '' },
+          { title: 'Regularity', cols: 1, rows: 36, route: '' },
           { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
       }
-      else if ( breakpoints[Breakpoints.XLarge]) {
+      else if (breakpoints[Breakpoints.XLarge]) {
         return [
           { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
           { title: 'Sleep score', cols: 1, rows: 20, route: '' },
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity(last 7 days)', cols: 1, rows: 36, route: '' },
+          { title: 'Regularity', cols: 1, rows: 36, route: '' },
           { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
@@ -134,7 +134,7 @@ export class SleepTrackerComponent {
         { title: 'Asleep time', cols: 1, rows: 30, route: '' },
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
-        { title: 'Regularity(last 7 days)', cols: 1, rows: 33, route: '' },
+        { title: 'Regularity', cols: 1, rows: 33, route: '' },
         { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
         { columns: 1 }
       ];
@@ -193,10 +193,10 @@ export class SleepTrackerComponent {
           const lastSleepEntry = sleepDataRegularity[sleepDataRegularity.length - 1];
           this.fellAsleep = this.sleepRegularityService.formatTime(lastSleepEntry.sleepStartTimeMillis);
           this.wokeUp = this.sleepRegularityService.formatTime(lastSleepEntry.wakeUpTimeMillis);
-          
-      } else {
-          
-      }
+
+        } else {
+
+        }
 
         if (sleepDataRegularity.length > 2) {
           // Calculate and display the regularity score
@@ -207,7 +207,6 @@ export class SleepTrackerComponent {
           this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
 
           const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
-          console.log("sleep duration minutes: ", sleepDuration);
           this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 };
         }
         else if (sleepDataRegularity.length != 0) {
@@ -255,7 +254,7 @@ export class SleepTrackerComponent {
     this.startTimeMillis = now.getTime();
   }
 
-  setRequestsDateTimeRange(): void{
+  setRequestsDateTimeRange(): void {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = new Date();
     // Calculate the date of 7 days ago

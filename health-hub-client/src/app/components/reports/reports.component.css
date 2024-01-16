@@ -25,11 +25,11 @@
 }
 
 .interval-button:hover {
-    background-color: #0066cc;
+    background-color: #030f1b;
 }
 
 .interval-button.active {
-    background-color: #0066cc;
+    background-color: #05192e;
 }
 
 .chart-wrapper {

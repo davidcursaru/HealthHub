@@ -257,8 +257,6 @@ export class DashboardComponent implements OnInit {
     this.endTimeMillis = Date.now();
     now.setHours(0, 0, 0, 0);
     this.startTimeMillis = now.getTime();
-    console.log("start millis: ", this.startTimeMillis);
-    console.log("end Millis: ", this.endTimeMillis);
   }
 
   getStepCountData(): void {
@@ -323,13 +321,13 @@ export class DashboardComponent implements OnInit {
   }
 
   getCardioPointsSum(): number {
-    const GoogleFit  = Number(this.HeartMinutesCurrentDay) || 0;
+    const GoogleFit = Number(this.HeartMinutesCurrentDay) || 0;
     const healthHub = Number(this.HeartMinutesHealthHub) || 0;
-    return GoogleFit  + healthHub;
+    return GoogleFit + healthHub;
   }
 
   getActiveMinutesSum(): number {
-    const GoogleFit  = Number(this.ActiveMinutesCurrentDay) || 0;
+    const GoogleFit = Number(this.ActiveMinutesCurrentDay) || 0;
     const healthHub = Number(this.ExerciseDurationCurrentDay) || 0;
     return GoogleFit + healthHub;
   }
