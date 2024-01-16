@@ -57,6 +57,8 @@ export class SleepTrackerComponent {
   asleepTimePercentage: any;
   asleepProgressMessage: any;
   asleepProgressMessageColor: any;
+  fellAsleep: any;
+  wokeUp: any;
 
   //for awake card
   awakeCounter: any;
@@ -175,6 +177,15 @@ export class SleepTrackerComponent {
             sleepDataRegularity.push(sleepEntry);
           }
         }
+
+        if (sleepDataRegularity.length > 0) {
+          const lastSleepEntry = sleepDataRegularity[sleepDataRegularity.length - 1];
+          this.fellAsleep = this.sleepRegularityService.formatTime(lastSleepEntry.sleepStartTimeMillis);
+          this.wokeUp = this.sleepRegularityService.formatTime(lastSleepEntry.wakeUpTimeMillis);
+          
+      } else {
+          
+      }
 
         if (sleepDataRegularity.length > 2) {
           // Calculate and display the regularity score
@@ -475,7 +486,5 @@ export class SleepTrackerComponent {
     }
     return Math.min(1, Math.max(0, value / idealValue));
   }
-
-
 
 }

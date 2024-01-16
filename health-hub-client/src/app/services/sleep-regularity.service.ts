@@ -80,7 +80,7 @@ export class SleepRegularityService {
   }
 
 
-  private formatTime(timeInMillis: number): string {
+  formatTime(timeInMillis: number): string {
     const formattedTime = new Date(timeInMillis).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     return formattedTime;

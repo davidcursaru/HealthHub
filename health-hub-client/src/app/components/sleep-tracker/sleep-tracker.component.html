@@ -126,16 +126,21 @@
                     </div>
 
                     <!-- Fell asleep and Woke up titles with times -->
-                    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
-                        <div style="text-align: center; font-weight: bold;">Fell asleep</div>
-                        <div style="text-align: center; font-weight: bold;">Woke up</div>
-                    </div>
+                    <mat-grid-list class="mat-grid-list-asleep" cols="2" rowHeight="4:1">
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="message-average">Fell asleep at:</p>
+                                <p class="title">{{ fellAsleep ?? 'No data' }}</p>
+                            </div>
+                        </mat-grid-tile>
 
-                    <!-- Actual sleep times -->
-                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
-                        <div> 10:00 PM</div>
-                        <div> 8:30 AM</div>
-                    </div>
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="message-average">Woke up at: </p>
+                                <p class="title">{{ wokeUp ?? 'No data'}}</p>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
 
 
                 </mat-card-content>
