@@ -131,7 +131,7 @@ export class SleepTrackerComponent {
       return [
         { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
         { title: 'Sleep score', cols: 1, rows: 20, route: '' },
-        { title: 'Asleep time', cols: 1, rows: 25, route: '' },
+        { title: 'Asleep time', cols: 1, rows: 30, route: '' },
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
         { title: 'Regularity(last 7 days)', cols: 1, rows: 33, route: '' },
