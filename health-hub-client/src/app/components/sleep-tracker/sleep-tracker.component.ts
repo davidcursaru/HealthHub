@@ -18,14 +18,12 @@ export class SleepTrackerComponent {
   userId: any;
   sleepForm: any;
 
-  timezoneOffset = new Date().getTimezoneOffset();
-  currentDate = new Date();
-  // Calculate the date of 7 days ago
-  sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 8, 0, 0 - this.timezoneOffset, 0);
-  startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
-  endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
-  isoDateString1 = this.sevenDaysAgoDate.toISOString();
-  isoDateString2 = this.endDate.toISOString();
+  timezoneOffset: any;
+  currentDate: any;
+  sevenDaysAgoDate: any;
+  endDate: any;
+  isoDateString1: any;
+  isoDateString2: any;
 
   startTimeMillis: number = 0;
   endTimeMillis: number = 0;
@@ -112,7 +110,7 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 36, route: '' },
+          { title: 'Regularity(last 7 days)', cols: 1, rows: 36, route: '' },
           { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
@@ -124,7 +122,7 @@ export class SleepTrackerComponent {
         { title: 'Asleep time', cols: 1, rows: 20, route: '' },
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
-        { title: 'Regularity', cols: 1, rows: 30, route: '' },
+        { title: 'Regularity(last 7 days)', cols: 1, rows: 30, route: '' },
         { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
         { columns: 1 }
       ];
@@ -143,6 +141,7 @@ export class SleepTrackerComponent {
     this.userId = localStorage.getItem("userId");
 
     this.setTimeRangeMillis();
+    this.setRequestsDateTimeRange();
     this.initForm();
     this.loadSavedTimes();
 
@@ -242,6 +241,17 @@ export class SleepTrackerComponent {
     this.endTimeMillis = Date.now();
     now.setHours(0, 0, 0, 0);
     this.startTimeMillis = now.getTime();
+  }
+
+  setRequestsDateTimeRange(): void{
+    this.timezoneOffset = new Date().getTimezoneOffset();
+    this.currentDate = new Date();
+    // Calculate the date of 7 days ago
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 8, 0, 0 - this.timezoneOffset, 0);
+    // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+    this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+    this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
+    this.isoDateString2 = this.endDate.toISOString();
   }
 
   getSleepPhases(): void {
@@ -486,5 +496,6 @@ export class SleepTrackerComponent {
     }
     return Math.min(1, Math.max(0, value / idealValue));
   }
+
 
 }
