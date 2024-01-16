@@ -67,7 +67,7 @@ export class SleepTrackerComponent {
   regularityScore: any;
   averageSleepStartTime: any;
   averageWakeUpTime: any;
-  averageSleepDuration: any;
+  averageSleepDuration: { hours: number, minutes: number } = { hours: 0, minutes: 0 };
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -107,11 +107,11 @@ export class SleepTrackerComponent {
         return [
           { title: 'Schedule sleep hours ', cols: 1, rows: 20, route: '' },
           { title: 'Sleep score', cols: 1, rows: 20, route: '' },
-          { title: 'Asleep time', cols: 1, rows: 20, route: '' },
+          { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 33, route: '' },
-          { title: 'Sleep phases', cols: 2, rows: 23, route: '' },
+          { title: 'Regularity', cols: 1, rows: 36, route: '' },
+          { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
       }
@@ -183,23 +183,29 @@ export class SleepTrackerComponent {
           this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
           // Calculate and display the average wake-up time
           this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+
+          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
+          console.log("sleep duration minutes: ", sleepDuration);
+          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 };
         }
-        else if(sleepDataRegularity.length != 0)
-        {
+        else if (sleepDataRegularity.length != 0) {
           this.regularityScore = 0;
           this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
           // Calculate and display the average wake-up time
           this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+
+          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
+          console.log("sleep duration minutes: ", sleepDuration);
+          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 }
         }
-        else{
-          this.averageSleepStartTime = 'No data';
-          this.averageWakeUpTime = 'No data';
+        else {
+          this.regularityScore = 0;
         }
 
       },
       (error) => {
         console.error('Error fetching session data:', error);
-
+        this.regularityScore = undefined;
       }
     );
 
@@ -245,6 +251,8 @@ export class SleepTrackerComponent {
             this.calculateSleepPhaseTime(data, 5);
             this.calculateSleepPhaseTime(data, 1);
             this.score = this.calculateSleepScore(this.totalSleepMinutes, this.deepSleepMinutes, this.awakeCounter);
+            const awakeTime = this.awakeHours * 60 + this.awakeMinutes;
+            this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes - awakeTime;
 
           } else {
             console.warn('No sleep data available in the response.');
@@ -396,7 +404,7 @@ export class SleepTrackerComponent {
   }
 
   getRegularityMessage(): { score: string, title: string, message: string } {
-    if (this.regularityScore <= 60) {
+    if (this.regularityScore <= 60 && this.regularityScore != 0) {
       return { score: this.regularityScore.toString(), title: 'Accord Care', message: '' };
     } else if (this.regularityScore > 60 && this.score <= 79) {
       return { score: this.regularityScore.toString(), title: 'Satisfying', message: '' };
@@ -406,22 +414,21 @@ export class SleepTrackerComponent {
     else if (this.regularityScore > 89) {
       return { score: this.regularityScore.toString(), title: 'Optimal', message: '' };
     }
-    if(this.regularityScore == 0)
-    {
+    if (this.regularityScore == 0) {
       return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 3 sleep sessions with your smartwatch.' };
     }
     return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to access Google Fit data' };
   }
 
   updateAsleepProgressMessage(value: number): { title: string, color: string } {
-    if (value < 70 && value > 1) {
+    if (value < 70 && value > 0) {
       return { title: 'Accord Care', color: 'red' };
     } else if (value >= 70 && value <= 89) {
-      return { title: 'Good', color: '#5CB85C' };
+      return { title: 'Good', color: 'green' };
     } else if (value > 89) {
       return { title: 'Optimal', color: 'green' };
     }
-    return { title: 'No sleep data available', color: 'black' };
+    return { title: 'No sleep data available or the sleep schedule is not set.', color: 'black' };
   }
 
   calculateSleepScore(totalSleepMinutes: number, deepSleepMinutes: number, numberOfAwakeTimes: number): number {

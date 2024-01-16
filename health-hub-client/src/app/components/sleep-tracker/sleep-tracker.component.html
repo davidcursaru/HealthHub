@@ -118,12 +118,26 @@
                     <div class="asleep-bar">
                         <div style="font-weight: bold;">0h</div>
                         <mat-progress-bar mode="determinate" [value]="asleepTimePercentage"></mat-progress-bar>
-                        <div style="font-weight: bold;">{{ sleepGoalHrs }}h</div>
+                        <div style="font-weight: bold;">{{ sleepGoalHrs ?? 0 }}h</div>
                     </div>
                     <div class="progress-message"
                         [ngStyle]="{ color: updateAsleepProgressMessage(asleepTimePercentage).color }">
                         {{ updateAsleepProgressMessage(asleepTimePercentage).title }}
                     </div>
+
+                    <!-- Fell asleep and Woke up titles with times -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                        <div style="text-align: center; font-weight: bold;">Fell asleep</div>
+                        <div style="text-align: center; font-weight: bold;">Woke up</div>
+                    </div>
+
+                    <!-- Actual sleep times -->
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <div> 10:00 PM</div>
+                        <div> 8:30 AM</div>
+                    </div>
+
+
                 </mat-card-content>
 
 
@@ -150,33 +164,60 @@
                     </div>
                 </mat-card-content>
 
-                    <!--Regularity-->
-                    <mat-card-content class="regularity-content" *ngIf="i === 5">
-                        <mat-grid-list class="mat-grid-list-sleep-score" cols="2" rowHeight="3:1">
+                <!--Regularity-->
+                <mat-card-content class="regularity-content" *ngIf="i === 5">
+                    <mat-grid-list class="mat-grid-list-sleep-score" cols="2" rowHeight="3:1">
 
-                            <mat-grid-tile class="sleep-score-mat-grid">
-                                <div class="circle-progress-container">
-                                    <circle-progress [title]="regularityScore" [percent]="regularityScore" [space]="-10"
-                                [radius]="45" [outerStrokeGradient]="false" [outerStrokeWidth]="11"
-                                [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor(regularityScore)"
-                                [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"
-                                [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
-                                [titleFontWeight]="'600'" [radius]="52">
-                            
-                                    </circle-progress>
-                                </div>
-                            </mat-grid-tile>
-    
-                            <mat-grid-tile class="score-message-mat-grid">
-                                <div>
-                                    <p class="title">{{ getRegularityMessage().title }}</p>
-                                    <p class="message">{{ getRegularityMessage().message }}</p>
-                                </div>
-                            </mat-grid-tile>
-                        </mat-grid-list>
-                  
-                
-                    </mat-card-content>
+                        <mat-grid-tile class="sleep-score-mat-grid">
+                            <div class="circle-progress-container">
+                                <circle-progress [title]="regularityScore ?? 0" [percent]="regularityScore ?? 0"
+                                    [space]="-10" [radius]="45" [outerStrokeGradient]="false" [outerStrokeWidth]="11"
+                                    [innerStrokeWidth]="11" [outerStrokeColor]="getCircleColor(regularityScore)"
+                                    [innerStrokeColor]="'#e7e8ea'" [animation]="true" [animationDuration]="1000"
+                                    [units]="' '" [showUnits]="true" [showSubtitle]="false" [titleFontSize]="'35'"
+                                    [titleFontWeight]="'600'" [radius]="52">
+
+                                </circle-progress>
+                            </div>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="title">{{ getRegularityMessage().title }}</p>
+                                <p class="message">{{ getRegularityMessage().message }}</p>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+
+                    <mat-grid-list class="mat-grid-list-average-sleep-times" cols="2" rowHeight="4:1">
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="message-average">Average sleep start time</p>
+                                <p class="title">{{ averageSleepStartTime ?? 'No data' }}</p>
+                            </div>
+                        </mat-grid-tile>
+
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="message-average">Average wake up time</p>
+                                <p class="title">{{ averageWakeUpTime ?? 'No data'}}</p>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+
+                    <mat-grid-list class="mat-grid-list-average-sleep-times" cols="1" rowHeight="8:1">
+                        <mat-grid-tile class="score-message-mat-grid">
+                            <div>
+                                <p class="message-average">Average sleep duration</p>
+                                <p class="title">{{ averageSleepDuration.hours }}h {{averageSleepDuration.minutes}}min
+                                </p>
+                            </div>
+                        </mat-grid-tile>
+
+                    </mat-grid-list>
+
+
+                </mat-card-content>
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
             </mat-card>
