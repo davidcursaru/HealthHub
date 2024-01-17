@@ -13,9 +13,20 @@ import * as moment from 'moment';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+
+  currentDayStartDate: moment.Moment = moment().startOf('day');
+  currentDayEndDate: moment.Moment = moment().endOf('day');
+  currentDayChart: string = this.currentDayStartDate.format('D MMM YYYY');
+
   // Properties to store date range for the current week
   currentWeekStartDate: moment.Moment = moment().startOf('week');
   currentWeekEndDate: moment.Moment = moment().endOf('week');
+
+  currentMonthStartDate: moment.Moment = moment().startOf('month');
+  currentMonthEndDate: moment.Moment = moment().endOf('month');
+  currentYearChart: string = this.currentMonthStartDate.format('YYYY');
+  currentDateDisplay: string = '';
+
   userId: any;
 
   // Properties for chart data and options
@@ -76,7 +87,7 @@ export class ReportsComponent implements OnInit {
       }
     );
   }
- 
+
   getExerciseLogs() {
     this.userService.getAllExerciseLogs().subscribe(
       (res: ExerciseLogs[]) => {
@@ -129,8 +140,8 @@ export class ReportsComponent implements OnInit {
             label: this.selectedReport,
             data: sortedData.data,
             backgroundColor: '#076c8c', // Bar color
-            barThickness: 20,
-            borderRadius: 10 // Bar border radius
+            barThickness: 30,
+            borderRadius: 0 // Bar border radius
           }
         ]
       },
@@ -161,15 +172,40 @@ export class ReportsComponent implements OnInit {
 
   // Method to move to the previous week in the chart
   moveToPreviousWeek() {
-    this.currentWeekStartDate.subtract(1, 'week').startOf('week');
-    this.currentWeekEndDate.subtract(1, 'week').endOf('week');
+    if (this.selectedInterval === 'day') {
+      this.currentDayStartDate = this.currentDayStartDate.clone().subtract(1, 'day').startOf('day');
+      this.currentDayEndDate = this.currentDayEndDate.clone().subtract(1, 'day').endOf('day');
+      this.currentDateDisplay = this.currentDayStartDate.format('D MMM YYYY');
+    }
+    else if (this.selectedInterval === 'week') {
+      this.currentWeekStartDate = this.currentWeekStartDate.clone().subtract(1, 'week').startOf('week');
+      this.currentWeekEndDate = this.currentWeekEndDate.clone().subtract(1, 'week').endOf('week');
+    }
+    else if (this.selectedInterval === 'month') {
+      this.currentMonthStartDate = this.currentMonthStartDate.clone().subtract(12, 'month').startOf('month');
+      this.currentMonthEndDate = this.currentMonthEndDate.clone().subtract(12, 'month').endOf('month');
+      this.currentDateDisplay = this.currentMonthEndDate.format('YYYY');
+    }
     this.updateChartData();
   }
 
+
   // Method to move to the next week in the chart
   moveToNextWeek() {
-    this.currentWeekStartDate.add(1, 'week').startOf('week');
-    this.currentWeekEndDate.add(1, 'week').endOf('week');
+    if (this.selectedInterval === 'day') {
+      this.currentDayStartDate = this.currentDayStartDate.clone().add(1, 'day').startOf('day');
+      this.currentDayEndDate = this.currentDayEndDate.clone().add(1, 'day').endOf('day');
+      this.currentDateDisplay = this.currentDayStartDate.format('D MMM YYYY');
+    }
+    else if (this.selectedInterval === 'week') {
+      this.currentWeekStartDate = this.currentWeekStartDate.clone().add(1, 'week').startOf('week');
+      this.currentWeekEndDate = this.currentWeekEndDate.clone().add(1, 'week').endOf('week');
+    }
+    else if (this.selectedInterval === 'month') {
+      this.currentMonthStartDate = this.currentMonthStartDate.clone().add(12, 'month').startOf('month');
+      this.currentMonthEndDate = this.currentMonthEndDate.clone().add(12, 'month').endOf('month');
+      this.currentDateDisplay = this.currentMonthEndDate.format('YYYY');
+    }
     this.updateChartData();
   }
 
@@ -209,7 +245,7 @@ export class ReportsComponent implements OnInit {
     }
     return "date not found";
   }
- 
+
   getEntityData() {
     if (this.selectedReport === 'Hydration') {
       return 'liters';
@@ -235,94 +271,98 @@ export class ReportsComponent implements OnInit {
       const dataField = this.getEntityData();
       const date = new Date(log[dateField]);
       let key = '';
-      console.log(date)
- 
+      // console.log(date)
+
       switch (interval) {
         case 'day':
           // Group data by hour for the selected day
-          const startDateOfDay = moment().startOf('day');
-          const endDateOfDay = moment().endOf('day');
+          const startDateOfDay = this.currentDayStartDate;
+          const endDateOfDay = this.currentDayEndDate;
           const logsForDay = data.filter((log) => {
             const logDate = moment(log[dateField]);
             return logDate.isBetween(startDateOfDay, endDateOfDay, null, '[]');
           });
- 
+
+          this.currentDateDisplay = this.currentDayStartDate.format('D MMM YYYY');
+
           for (let i = 0; i < 24; i++) {
             const currentHourLogs = logsForDay.filter((log) => {
               const logHour = moment(log[dateField]).hour();
               return logHour === i;
             });
- 
+
             const hourName = moment().hour(i).format('HH');
             groupedMap.set(hourName, currentHourLogs.reduce((total, log) => total + log[dataField], 0));
           }
           break;
- 
+
         case 'week':
           // Group data by day for the selected week
           const startDateOfWeek = this.currentWeekStartDate;
           const endDateOfWeek = moment().endOf('week').toDate();
- 
+
           const daysInWeek = [];
           for (let i = 0; i < 7; i++) {
             const currentDay = moment(startDateOfWeek).add(i, 'days').format('YYYY-MM-DD');
             daysInWeek.push(currentDay);
           }
- 
+
           daysInWeek.forEach((day) => {
             const logsForDay = data.filter((log) => {
               const logDate = moment(log[dateField]).format('YYYY-MM-DD');
               return logDate === day;
             });
- 
+
             const dayName = moment(day).format('ddd, MMM DD');
             groupedMap.set(dayName, logsForDay.reduce((total, log) => total + log[dataField], 0));
           });
- 
+
           groupedMap.delete("");
           break;
- 
+
         case 'month':
           // Group data by month for the selected year
-          const startDateOfYear = moment().startOf('year');
-          const endDateOfYear = moment().endOf('year');
+          const startDateOfYear = this.currentMonthStartDate;
+          const endDateOfYear = this.currentMonthEndDate;
           const currentYear = startDateOfYear.year();
- 
+
+
           const logsForYear = data.filter((log) => {
             const logYear = moment(log[dateField]).year();
             return logYear === currentYear;
           });
- 
+
           for (let i = 0; i < 12; i++) {
             const currentMonthLogs = logsForYear.filter((log) => {
               const logMonth = moment(log[dateField]).month();
               return logMonth === i;
             });
- 
+
             const monthName = moment().month(i).format('MMM');
             groupedMap.set(monthName, currentMonthLogs.reduce((total, log) => total + log[dataField], 0));
           }
+          this.currentDateDisplay = this.currentMonthEndDate.format('YYYY');
           break;
- 
+
         case 'year':
           // Group data by year
           const yearKey = date.getFullYear().toString();
           key = yearKey;
           break;
- 
+
         default:
           break;
       }
- 
+
       if (groupedMap.has(key)) {
         groupedMap.set(key, groupedMap.get(key) + log[dataField]);
       } else {
         groupedMap.set(key, log[dataField]);
       }
     });
- 
+
     return groupedMap;
-}
+  }
 
   // Method to sort chart labels based on the selected interval
   private sortChartLabels(labels: string[], interval: string): { labels: string[], data: number[] } {
@@ -383,6 +423,7 @@ export class ReportsComponent implements OnInit {
       this.chartLabels.push(key);
       this.data.push(value);
     });
+
     this.sortChartLabels(this.chartLabels, this.selectedInterval);
     this.createChart();
   }

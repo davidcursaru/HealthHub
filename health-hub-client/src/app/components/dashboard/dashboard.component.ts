@@ -8,7 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { interval } from 'rxjs';
+import { ChartData, ChartOptions } from 'chart.js';
+import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
 
+interface TimeData {
+  intervalKey: string;
+  value: number;
+  unit: string;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -17,6 +24,39 @@ import { interval } from 'rxjs';
 })
 
 export class DashboardComponent implements OnInit {
+  timezoneOffsetChart: any;
+  currentDateChart: any;
+  sevenDaysAgoDate: any;
+  endDateChart: any;
+  isoDateStringChart1: any;
+  isoDateStringChart2: any;
+
+  sleepLogs: any = [];
+  optionTimeUnit: string = '';
+  chartData: ChartData = {
+    datasets: [],
+  };
+  chartLabels: string[] = [];
+  chartOptions: ChartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Hours Worked',
+          color: 'blue'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+          color: 'blue'
+        }
+      }
+    }
+  };
+  selectedInterval: string = 'day';
   user: User | null = null;
 
   showCaloriesBurned: boolean = true;
@@ -104,7 +144,8 @@ export class DashboardComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private googleAPIService: GoogleAPIService
+    private googleAPIService: GoogleAPIService,
+    private sleepRegularityService: SleepRegularityService
   ) { }
 
   ngOnInit(): void {
@@ -235,7 +276,10 @@ export class DashboardComponent implements OnInit {
 
 
     })
+    this.setRequestsDateTimeRange();
 
+    this.getSleepSessions();
+    this.updateChartData();
 
   }
 
@@ -418,6 +462,157 @@ export class DashboardComponent implements OnInit {
 
   navigateToDestination(dynamicPath: string) {
     this.router.navigate([dynamicPath]);
+  }
+
+  updateChartData(): void {
+    const timeWorkedPerInterval = this.processTimeEntries(this.selectedInterval);
+
+    this.chartData.datasets = [
+      {
+        data: timeWorkedPerInterval.map(data => data.value),
+        label: 'Sleep hours',
+        backgroundColor: '#076c8c',
+        borderColor: '#7fa8b5',
+        borderWidth: 0,
+
+      },
+    ];
+
+    this.chartLabels = this.sortChartLabels(timeWorkedPerInterval.map(data => data.intervalKey));
+
+    this.chartOptions = {
+      maintainAspectRatio: false,
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 120, // 2 hours in minutes
+            callback: (value: string | number) => {
+              const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+              const hours = Math.floor(numericValue / 60);
+              return `${hours}h`;
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context: any) => {
+              const value = context.raw;
+              const hours = Math.floor(value / 60);
+              const minutes = value % 60;
+              return `${hours}h ${minutes}min`;
+            }
+          }
+        }
+      }
+    };
+  }
+
+
+  private processTimeEntries(interval: string): TimeData[] {
+    // Logic to process the time entries based on the selected interval
+    const timeWorkedPerInterval: TimeData[] = [];
+
+    // Iterate through the time entries and calculate the time worked per interval
+    const sleepLogsString = localStorage.getItem("sleepLogs");
+    this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
+    console.log("sleep logs: ", this.sleepLogs);
+    this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
+      const date = new Date(entry.startDate);
+      console.log("entry starTime", entry.startDate);
+      console.log("date from: ", date);
+
+      let intervalKey: any;
+      const localeOptions: Intl.DateTimeFormatOptions = {
+        // year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        timeZone: 'Europe/Bucharest' // Replace 'Europe/Bucharest' with your desired Eastern European time zone
+      };
+
+      if (!isNaN(date.getTime())) {
+        intervalKey = date.toLocaleDateString('en-GB', localeOptions);
+      }
+
+      let timeData = timeWorkedPerInterval.find(data => data.intervalKey === intervalKey);
+      if (!timeData) {
+        timeData = {
+          intervalKey,
+          value: 0,
+          unit: 'Minutes'
+        };
+        timeWorkedPerInterval.push(timeData);
+      }
+
+      const startTime = new Date(entry.startDate).getTime();
+      const endTime = new Date(entry.endDate).getTime();
+      const durationMs = endTime - startTime;
+
+      let totalMinutes: number;
+
+      if (durationMs < 1000 * 60) {
+        totalMinutes = durationMs / 1000 / 60;
+      } else {
+        totalMinutes = durationMs / (1000 * 60);
+      }
+
+      timeData.value += totalMinutes;
+      timeData.unit = 'Minutes'; // Update the unit to 'Minutes'
+    });
+
+    return timeWorkedPerInterval;
+  }
+
+
+  private sortChartLabels(labels: string[]): string[] {
+    return labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  }
+
+  getSleepSessions(): void {
+    this.googleAPIService.getSession(this.userId, this.isoDateStringChart1, this.isoDateStringChart2).subscribe(
+      (data) => {
+        const sleepDataRegularity = [];
+        this.sleepLogs = [];
+
+        for (const session of data.session) {
+          if (session.name === 'Sleep') {
+            const sleepEntry = {
+              sleepStartTimeMillis: parseInt(session.startTimeMillis),
+              wakeUpTimeMillis: parseInt(session.endTimeMillis),
+            };
+
+            this.sleepLogs.push({
+              startDate: new Date(this.sleepRegularityService.formatTimeChart(sleepEntry.sleepStartTimeMillis)),
+              endDate: new Date(this.sleepRegularityService.formatTimeChart(sleepEntry.wakeUpTimeMillis))
+            })
+            // console.log(" date format :", this.sleepRegularityService.formatTime(sleepEntry.sleepStartTimeMillis));
+
+            sleepDataRegularity.push(sleepEntry);
+          }
+        }
+
+
+
+        localStorage.setItem("sleepLogs", JSON.stringify(this.sleepLogs));
+
+        this.updateChartData();
+
+      });
+
+  }
+
+  setRequestsDateTimeRange(): void {
+    this.timezoneOffsetChart = new Date().getTimezoneOffset();
+    this.currentDateChart = new Date();
+    // Calculate the date of 7 days ago
+    this.sevenDaysAgoDate = new Date(this.currentDateChart.getFullYear(), this.currentDateChart.getMonth(), this.currentDateChart.getDate() - 7, 0, 0 - this.timezoneOffsetChart, 0);
+    // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+    this.endDateChart = new Date(this.currentDateChart.getFullYear(), this.currentDateChart.getMonth(), this.currentDateChart.getDate(), 23, 59 - this.timezoneOffsetChart, 59);
+    this.isoDateStringChart1 = this.sevenDaysAgoDate.toISOString();
+    this.isoDateStringChart2 = this.endDateChart.toISOString();
   }
 
 }

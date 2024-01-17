@@ -33,14 +33,15 @@
 
 <div class="chart-wrapper">
     <div class="chart-container">
+        <label *ngIf="selectedInterval === 'day' || selectedInterval === 'month'">{{currentDateDisplay}}</label>
         <canvas #myChart id="MyChart"></canvas>
         <div class="chart-nav-buttons">
-            <button *ngIf="selectedInterval === 'week'" class="arrow-button prev" (click)="moveToPreviousWeek()">
+            <button *ngIf="selectedInterval != 'year'" class="arrow-button prev" (click)="moveToPreviousWeek()">
                 &lt;
             </button>
-            <button *ngIf="selectedInterval === 'week'" class="arrow-button next" (click)="moveToNextWeek()">
+            <button *ngIf="selectedInterval != 'year'" class="arrow-button next" (click)="moveToNextWeek()">
                 &gt;
             </button>
         </div>
-    </div>
+    </div>
 </div>

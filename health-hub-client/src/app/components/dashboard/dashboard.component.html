@@ -187,6 +187,16 @@
             </div>
           </div>
         </mat-card-content>
+
+        <mat-card-content *ngIf="i === 4">
+                   
+          <div class="chart-wrapper">
+              <div class="chart-container">
+                  <canvas baseChart [datasets]="chartData.datasets" [labels]="chartLabels" [options]="chartOptions"
+                      chartType="bar"></canvas>
+              </div>
+          </div>
+      </mat-card-content>
         <!----------END OF CONTENT OF THE MAT-CARDS ------------>
       </mat-card>
     </mat-grid-tile>
