@@ -8,6 +8,8 @@ import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
 
 
+
+
 @Component({
   selector: 'app-sleep-tracker',
   templateUrl: './sleep-tracker.component.html',
@@ -17,6 +19,9 @@ import { SleepRegularityService } from 'src/app/services/sleep-regularity.servic
 export class SleepTrackerComponent {
   userId: any;
   sleepForm: any;
+  dateTime!: Date;
+  counter: any;
+
 
   timezoneOffset: any;
   currentDate: any;
@@ -67,7 +72,7 @@ export class SleepTrackerComponent {
   regularityScore: any;
   averageSleepStartTime: any;
   averageWakeUpTime: any;
-  averageSleepDuration: { hours: number, minutes: number } = { hours: 0, minutes: 0 };
+  averageSleepDuration: { hours: any, minutes: any } = { hours: 0, minutes: 0 };
 
 
   private breakpointObserver = inject(BreakpointObserver);
@@ -151,9 +156,12 @@ export class SleepTrackerComponent {
 
   ngOnInit(): void {
     this.userId = localStorage.getItem("userId");
-
+    this.counter = 0;
+    this.dateTime = new Date;
     this.setTimeRangeMillis();
     this.setRequestsDateTimeRange();
+    console.log("start time isostring: ", this.isoDateString1);
+    console.log("start time isostring: ", this.isoDateString2);
     this.initForm();
     this.loadSavedTimes();
 
@@ -174,63 +182,54 @@ export class SleepTrackerComponent {
       this.asleepTimePercentage = this.calculatePercentage(this.totalSleepMinutes, (Number(this.sleepGoalHrs) * 60) + Number(this.sleepGoalMins))
     });
 
-    this.googleAPIService.getSession(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
-      (data) => {
-        const sleepDataRegularity = [];
+    this.getSleepSessions();
+  }
 
-        for (const session of data.session) {
-          if (session.name === 'Sleep') {
-            const sleepEntry = {
-              sleepStartTimeMillis: parseInt(session.startTimeMillis),
-              wakeUpTimeMillis: parseInt(session.endTimeMillis),
-            };
+  // Method to handle previous button click
+  previousDay(): void {
+    this.counter++;
+    this.updateTimeRange();
+  }
 
-            sleepDataRegularity.push(sleepEntry);
-          }
-        }
+  // Method to handle next button click
+  nextDay(): void {
 
-        if (sleepDataRegularity.length > 0) {
-          const lastSleepEntry = sleepDataRegularity[sleepDataRegularity.length - 1];
-          this.fellAsleep = this.sleepRegularityService.formatTime(lastSleepEntry.sleepStartTimeMillis);
-          this.wokeUp = this.sleepRegularityService.formatTime(lastSleepEntry.wakeUpTimeMillis);
-
-        } else {
-
-        }
-
-        if (sleepDataRegularity.length > 2) {
-          // Calculate and display the regularity score
-          this.regularityScore = this.sleepRegularityService.calculateSRI(sleepDataRegularity);
-          // Calculate and display the average sleep start time
-          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
-          // Calculate and display the average wake-up time
-          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
-
-          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
-          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 };
-        }
-        else if (sleepDataRegularity.length != 0) {
-          this.regularityScore = 0;
-          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
-          // Calculate and display the average wake-up time
-          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
-
-          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
-          console.log("sleep duration minutes: ", sleepDuration);
-          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 }
-        }
-        else {
-          this.regularityScore = 0;
-        }
-
-      },
-      (error) => {
-        console.error('Error fetching session data:', error);
-        this.regularityScore = undefined;
-      }
-    );
+    this.counter--;
+    this.updateTimeRange();
 
   }
+  updateTimeRange(): void {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    // Subtract or add days based on the counter
+    const displayDate = new Date(now.setDate(now.getDate() - this.counter));
+
+    this.startTimeMillis = now.getTime();
+
+    // Set endTimeMillis to the end of the day of the current date
+    const endOfDay = new Date(now);
+    endOfDay.setHours(23, 59, 59, 999);
+    this.endTimeMillis = endOfDay.getTime();
+
+    // Assign displayDate to this.dateTime
+    this.dateTime = displayDate;
+
+    this.timezoneOffset = new Date().getTimezoneOffset();
+    this.currentDate = displayDate;
+    // Calculate the date of 7 days ago
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
+    // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+    this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+    this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
+    this.isoDateString2 = this.endDate.toISOString();
+
+    this.getSleepPhases();
+    this.getSleepSessions();
+
+
+  }
+
 
   initForm(): void {
     this.sleepForm = this.fb.group({
@@ -258,11 +257,65 @@ export class SleepTrackerComponent {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = new Date();
     // Calculate the date of 7 days ago
-    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 8, 0, 0 - this.timezoneOffset, 0);
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
     this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
     this.isoDateString2 = this.endDate.toISOString();
+  }
+
+  getSleepSessions(): void {
+    this.googleAPIService.getSession(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
+      (data) => {
+        const sleepDataRegularity = [];
+
+        for (const session of data.session) {
+          if (session.name === 'Sleep') {
+            const sleepEntry = {
+              sleepStartTimeMillis: parseInt(session.startTimeMillis),
+              wakeUpTimeMillis: parseInt(session.endTimeMillis),
+            };
+
+            sleepDataRegularity.push(sleepEntry);
+          }
+        }
+
+        if (sleepDataRegularity.length > 2) {
+          // Calculate and display the regularity score
+          this.regularityScore = this.sleepRegularityService.calculateSRI(sleepDataRegularity);
+          // Calculate and display the average sleep start time
+          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
+          // Calculate and display the average wake-up time
+          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+
+          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
+          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 };
+        }
+        else if (sleepDataRegularity.length > 1) {
+          this.regularityScore = 0;
+          this.averageSleepStartTime = this.sleepRegularityService.calculateAverageSleepStartTime(sleepDataRegularity);
+          // Calculate and display the average wake-up time
+          this.averageWakeUpTime = this.sleepRegularityService.calculateAverageWakeUpTime(sleepDataRegularity);
+
+          const sleepDuration = this.sleepRegularityService.convertTimeToMinutes(this.averageWakeUpTime) - this.sleepRegularityService.convertTimeToMinutes(this.averageSleepStartTime);
+          console.log("sleep duration minutes: ", sleepDuration);
+          this.averageSleepDuration = { hours: Math.floor(sleepDuration / 60), minutes: sleepDuration % 60 }
+        }
+        else {
+          this.regularityScore = 0;
+          this.averageWakeUpTime = undefined;
+          this.averageSleepStartTime = undefined;
+          this.averageSleepDuration.hours = undefined;
+          this.averageSleepDuration.minutes = undefined;
+
+        }
+
+      },
+      (error) => {
+        console.error('Error fetching session data:', error);
+        this.regularityScore = undefined;
+      }
+    );
   }
 
   getSleepPhases(): void {
@@ -276,6 +329,8 @@ export class SleepTrackerComponent {
 
             this.sleepStartTimeNanos = firstObject.startTimeNanos;
             this.sleepEndTimeNanos = lastObject.endTimeNanos;
+            this.fellAsleep = this.sleepRegularityService.formatTime(this.sleepStartTimeNanos / 1000000);
+            this.wokeUp = this.sleepRegularityService.formatTime(this.sleepEndTimeNanos / 1000000);
             localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
             localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
             this.sleepHours = this.calculateSleepDuration(this.sleepStartTimeNanos, this.sleepEndTimeNanos);
@@ -288,10 +343,19 @@ export class SleepTrackerComponent {
 
           } else {
             console.warn('No sleep data available in the response.');
+            console.log(" a intrat in else si nu s-a updatat nimic")
             this.sleepStartTimeNanos = 0;
             this.sleepEndTimeNanos = 0;
             localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
             localStorage.setItem("SleepEndTimeNanos", this.sleepEndTimeNanos.toString());
+            this.score = 0;
+            this.fellAsleep = undefined;
+            this.awakeCounter = undefined;
+            this.awakeHours = undefined;
+            this.wokeUp = undefined;
+            this.deepSleepPercentage = undefined;
+            this.deepSleepHours = undefined;
+            this.deepSleepMinutes = undefined;
           }
 
         },

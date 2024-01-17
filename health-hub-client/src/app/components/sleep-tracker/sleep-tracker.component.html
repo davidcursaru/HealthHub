@@ -2,8 +2,13 @@
 
     <div>
         <h1 class="mat-h1">Sleep tracker</h1>
+        <button (click)="previousDay()">Previous Day</button>
+        <button (click)="nextDay()">Next Day</button>
+
+        {{dateTime | date: 'd MMM y' }}
+
     </div>
-  
+
 
     <mat-grid-list [cols]="(cards | async)?.[7]?.columns || (cards | async)?.[6]?.columns" rowHeight="12px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
@@ -215,7 +220,8 @@
                         <mat-grid-tile class="regularity-mat-grid">
                             <div>
                                 <p class="message-average">Average sleep duration</p>
-                                <p class="title">{{ averageSleepDuration.hours }}h {{averageSleepDuration.minutes}}min
+                                <p class="title">{{ averageSleepDuration.hours ?? 0}}h {{averageSleepDuration.minutes ??
+                                    0}}min
                                 </p>
                             </div>
                         </mat-grid-tile>
