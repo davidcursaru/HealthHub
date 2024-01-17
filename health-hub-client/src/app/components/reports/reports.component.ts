@@ -135,6 +135,8 @@ export class ReportsComponent implements OnInit {
         ]
       },
       options: {
+        maintainAspectRatio: false,
+        responsive: true,
         aspectRatio: 1.9,
         scales: {
           y: {

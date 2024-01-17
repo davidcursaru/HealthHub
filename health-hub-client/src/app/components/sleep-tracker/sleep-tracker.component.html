@@ -2,10 +2,10 @@
 
     <div>
         <h1 class="mat-h1">Sleep tracker</h1>
-        <button (click)="previousDay()">Previous Day</button>
-        <button (click)="nextDay()">Next Day</button>
+        <button class="previous-button" (click)="previousDay()">Previous Day</button>
+        <button class="previous-button" (click)="nextDay()">Next Day</button>
 
-        {{dateTime | date: 'd MMM y' }}
+        <span style="margin-left: 10px; font-weight: bold;">{{dateTime | date: 'd MMM y' }}</span>
 
     </div>
 
@@ -176,18 +176,7 @@
                 </mat-card-content>
 
                 <mat-card-content class="deep-sleep-content" *ngIf="i === 6">
-                    <div class="chart-interval">
-                        <div class="interval-selector">
-                            <button class="interval-button" (click)="changeChartInterval('day')"
-                                [class.active]="selectedInterval === 'day'">Day</button>
-                            <button class="interval-button" (click)="changeChartInterval('week')"
-                                [class.active]="selectedInterval === 'week'">Week</button>
-                            <button class="interval-button" (click)="changeChartInterval('month')"
-                                [class.active]="selectedInterval === 'month'">Month</button>
-                            <button class="interval-button" (click)="changeChartInterval('year')"
-                                [class.active]="selectedInterval === 'year'">Year</button>
-                        </div>
-                    </div>
+                   
                     <div class="chart-wrapper">
                         <div class="chart-container">
                             <canvas baseChart [datasets]="chartData.datasets" [labels]="chartLabels" [options]="chartOptions"

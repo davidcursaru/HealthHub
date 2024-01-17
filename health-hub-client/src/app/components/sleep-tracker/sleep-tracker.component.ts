@@ -160,7 +160,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 36, route: '' },
-          { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
+          { title: 'Last 7 sleep sessions', cols: 2, rows: 35, route: '' },
           { columns: 3 }
         ];
       }
@@ -215,37 +215,37 @@ export class SleepTrackerComponent {
     });
 
     this.getSleepSessions();
+    this.updateChartData();
   }
 
   updateChartData(): void {
     const timeWorkedPerInterval = this.processTimeEntries(this.selectedInterval);
-
-    const unitLabels: Record<string, string> = {
-      seconds: 's',
-      minutes: 'min',
-      hours: 'h',
-    };
-
+  
     this.chartData.datasets = [
       {
         data: timeWorkedPerInterval.map(data => data.value),
-        label: 'Time Worked per Interval',
-        backgroundColor: '#7fa8b5',
+        label: 'Sleep hours',
+        backgroundColor: '#076c8c',
         borderColor: '#7fa8b5',
         borderWidth: 0,
+        
       },
     ];
-    // this.chartLabels = timeWorkedPerInterval.map(data => data.intervalKey);
-    this.chartLabels = this.sortChartLabels(timeWorkedPerInterval.map(data => data.intervalKey), this.selectedInterval);
+  
+    this.chartLabels = this.sortChartLabels(timeWorkedPerInterval.map(data => data.intervalKey));
+  
     this.chartOptions = {
+      maintainAspectRatio: false,
+      responsive: true,
       scales: {
         y: {
           beginAtZero: true,
           ticks: {
+            stepSize: 120, // 2 hours in minutes
             callback: (value: string | number) => {
-              const unit = unitLabels[timeWorkedPerInterval[0].unit];
               const numericValue = typeof value === 'string' ? parseFloat(value) : value;
-              return numericValue % 1 === 0 ? numericValue : numericValue.toFixed(2) + ' ' + unit;
+              const hours = Math.floor(numericValue / 60);
+              return `${hours}h`;
             }
           }
         }
@@ -255,15 +255,17 @@ export class SleepTrackerComponent {
           callbacks: {
             label: (context: any) => {
               const value = context.raw;
-              const unit = unitLabels[timeWorkedPerInterval[0].unit];
-              return `${value.toFixed(0)} ${unit}`;
+              const hours = Math.floor(value / 60);
+              const minutes = value % 60;
+              return `${hours}h ${minutes}min`;
             }
           }
         }
       }
     };
   }
-
+  
+  
   changeChartInterval(interval: string): void {
     this.selectedInterval = interval;
     this.updateChartData();
@@ -273,100 +275,63 @@ export class SleepTrackerComponent {
   private processTimeEntries(interval: string): TimeData[] {
     // Logic to process the time entries based on the selected interval
     const timeWorkedPerInterval: TimeData[] = [];
-
+  
     // Iterate through the time entries and calculate the time worked per interval
-    this.sleepLogs.forEach((entry: { startTime: string | number | Date; endTime: string | number | Date; }) => {
-      const date = new Date(entry.startTime);
-
+    const sleepLogsString = localStorage.getItem("sleepLogs");
+    this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
+    console.log("sleep logs: ", this.sleepLogs);
+    this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
+      const date = new Date(entry.startDate);
+      console.log("entry starTime", entry.startDate);
+      console.log("date from: ", date);
+  
       let intervalKey: any;
       const localeOptions: Intl.DateTimeFormatOptions = {
         // year: 'numeric',
-        month: 'long',
+        month: 'short',
         day: '2-digit',
         timeZone: 'Europe/Bucharest' // Replace 'Europe/Bucharest' with your desired Eastern European time zone
       };
-
-      switch (interval) {
-        case 'day':
-          intervalKey = date.toLocaleDateString('en-GB', localeOptions);
-          break;
-        case 'week':
-          intervalKey = this.getWeekNumber(date);
-          break;
-        case 'month':
-          intervalKey = date.toLocaleString('default', { month: 'long' });
-          break;
-        case 'year':
-          intervalKey = date.getFullYear().toString();
-          break;
-        default:
-          intervalKey = '';
-          break;
+  
+      if (!isNaN(date.getTime())) {
+        intervalKey = date.toLocaleDateString('en-GB', localeOptions);
       }
-
+  
       let timeData = timeWorkedPerInterval.find(data => data.intervalKey === intervalKey);
       if (!timeData) {
         timeData = {
           intervalKey,
           value: 0,
-          unit: 'hours'
+          unit: 'Minutes'
         };
         timeWorkedPerInterval.push(timeData);
       }
-
-      const startTime = new Date(entry.startTime).getTime();
-      const endTime = new Date(entry.endTime).getTime();
+  
+      const startTime = new Date(entry.startDate).getTime();
+      const endTime = new Date(entry.endDate).getTime();
       const durationMs = endTime - startTime;
-
-      let hours: number;
-      let unit: string;
-
+  
+      let totalMinutes: number;
+  
       if (durationMs < 1000 * 60) {
-        hours = durationMs / 1000;
-        unit = 'seconds';
-      } else if (durationMs < 1000 * 60 * 60) {
-        hours = durationMs / (1000 * 60);
-        unit = 'minutes';
+        totalMinutes = durationMs / 1000 / 60;
       } else {
-        hours = durationMs / (1000 * 60 * 60);
-        unit = 'hours';
+        totalMinutes = durationMs / (1000 * 60);
       }
-
-      timeData.value += hours;
-      timeData.unit = unit;
+  
+      timeData.value += totalMinutes;
+      timeData.unit = 'Minutes'; // Update the unit to 'Minutes'
     });
-
+  
     return timeWorkedPerInterval;
   }
+  
 
-  private sortChartLabels(labels: string[], interval: string): string[] {
-    switch (interval) {
-      case 'day':
-        return labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-      case 'week':
-        return labels.sort((a, b) => {
-          const weekA = parseInt(a.split(' ')[1]);
-          const weekB = parseInt(b.split(' ')[1]);
-          return weekA - weekB;
-        });
-      case 'month':
-        return labels.sort((a, b) => {
-          const dateA = moment(a, 'MMMM');
-          const dateB = moment(b, 'MMMM');
-          return dateA.diff(dateB);
-        });
-      case 'year':
-        return labels.sort((a, b) => parseInt(a) - parseInt(b));
-      default:
-        return labels;
-    }
+  private sortChartLabels(labels: string[]): string[] {
+    return labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
   }
 
-  private getWeekNumber(date: Date): string {
-    const onejan = new Date(date.getFullYear(), 0, 1);
-    const weekNumber = Math.ceil(((date.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7);
-    return `Week ${weekNumber}`;
-  }
+
 
   // Method to handle previous button click
   previousDay(): void {
@@ -447,6 +412,7 @@ export class SleepTrackerComponent {
     this.isoDateString2 = this.endDate.toISOString();
   }
 
+
   getSleepSessions(): void {
     this.googleAPIService.getSession(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
       (data) => {
@@ -470,7 +436,11 @@ export class SleepTrackerComponent {
           }
         }
 
-        console.log("sleepLogs: ", this.sleepLogs);
+       
+
+        localStorage.setItem("sleepLogs", JSON.stringify(this.sleepLogs));
+
+        this.updateChartData();
 
         if (sleepDataRegularity.length > 2) {
           // Calculate and display the regularity score
