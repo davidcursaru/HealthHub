@@ -6,9 +6,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
+import { ChartData, ChartOptions } from 'chart.js';
+import * as moment from 'moment';
 
-
-
+interface TimeData {
+  intervalKey: string;
+  value: number;
+  unit: string;
+}
 
 @Component({
   selector: 'app-sleep-tracker',
@@ -17,6 +22,33 @@ import { SleepRegularityService } from 'src/app/services/sleep-regularity.servic
 
 })
 export class SleepTrackerComponent {
+  sleepLogs: any = [];
+  optionTimeUnit: string = '';
+  chartData: ChartData = {
+    datasets: [],
+  };
+  chartLabels: string[] = [];
+  chartOptions: ChartOptions = {
+    scales: {
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Hours Worked',
+          color: 'blue'
+        }
+      },
+      x: {
+        title: {
+          display: true,
+          text: 'Date',
+          color: 'blue'
+        }
+      }
+    }
+  };
+  selectedInterval: string = 'day';
+
   userId: any;
   sleepForm: any;
   dateTime!: Date;
@@ -185,6 +217,157 @@ export class SleepTrackerComponent {
     this.getSleepSessions();
   }
 
+  updateChartData(): void {
+    const timeWorkedPerInterval = this.processTimeEntries(this.selectedInterval);
+
+    const unitLabels: Record<string, string> = {
+      seconds: 's',
+      minutes: 'min',
+      hours: 'h',
+    };
+
+    this.chartData.datasets = [
+      {
+        data: timeWorkedPerInterval.map(data => data.value),
+        label: 'Time Worked per Interval',
+        backgroundColor: '#7fa8b5',
+        borderColor: '#7fa8b5',
+        borderWidth: 0,
+      },
+    ];
+    // this.chartLabels = timeWorkedPerInterval.map(data => data.intervalKey);
+    this.chartLabels = this.sortChartLabels(timeWorkedPerInterval.map(data => data.intervalKey), this.selectedInterval);
+    this.chartOptions = {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            callback: (value: string | number) => {
+              const unit = unitLabels[timeWorkedPerInterval[0].unit];
+              const numericValue = typeof value === 'string' ? parseFloat(value) : value;
+              return numericValue % 1 === 0 ? numericValue : numericValue.toFixed(2) + ' ' + unit;
+            }
+          }
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context: any) => {
+              const value = context.raw;
+              const unit = unitLabels[timeWorkedPerInterval[0].unit];
+              return `${value.toFixed(0)} ${unit}`;
+            }
+          }
+        }
+      }
+    };
+  }
+
+  changeChartInterval(interval: string): void {
+    this.selectedInterval = interval;
+    this.updateChartData();
+  }
+
+
+  private processTimeEntries(interval: string): TimeData[] {
+    // Logic to process the time entries based on the selected interval
+    const timeWorkedPerInterval: TimeData[] = [];
+
+    // Iterate through the time entries and calculate the time worked per interval
+    this.sleepLogs.forEach((entry: { startTime: string | number | Date; endTime: string | number | Date; }) => {
+      const date = new Date(entry.startTime);
+
+      let intervalKey: any;
+      const localeOptions: Intl.DateTimeFormatOptions = {
+        // year: 'numeric',
+        month: 'long',
+        day: '2-digit',
+        timeZone: 'Europe/Bucharest' // Replace 'Europe/Bucharest' with your desired Eastern European time zone
+      };
+
+      switch (interval) {
+        case 'day':
+          intervalKey = date.toLocaleDateString('en-GB', localeOptions);
+          break;
+        case 'week':
+          intervalKey = this.getWeekNumber(date);
+          break;
+        case 'month':
+          intervalKey = date.toLocaleString('default', { month: 'long' });
+          break;
+        case 'year':
+          intervalKey = date.getFullYear().toString();
+          break;
+        default:
+          intervalKey = '';
+          break;
+      }
+
+      let timeData = timeWorkedPerInterval.find(data => data.intervalKey === intervalKey);
+      if (!timeData) {
+        timeData = {
+          intervalKey,
+          value: 0,
+          unit: 'hours'
+        };
+        timeWorkedPerInterval.push(timeData);
+      }
+
+      const startTime = new Date(entry.startTime).getTime();
+      const endTime = new Date(entry.endTime).getTime();
+      const durationMs = endTime - startTime;
+
+      let hours: number;
+      let unit: string;
+
+      if (durationMs < 1000 * 60) {
+        hours = durationMs / 1000;
+        unit = 'seconds';
+      } else if (durationMs < 1000 * 60 * 60) {
+        hours = durationMs / (1000 * 60);
+        unit = 'minutes';
+      } else {
+        hours = durationMs / (1000 * 60 * 60);
+        unit = 'hours';
+      }
+
+      timeData.value += hours;
+      timeData.unit = unit;
+    });
+
+    return timeWorkedPerInterval;
+  }
+
+  private sortChartLabels(labels: string[], interval: string): string[] {
+    switch (interval) {
+      case 'day':
+        return labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+      case 'week':
+        return labels.sort((a, b) => {
+          const weekA = parseInt(a.split(' ')[1]);
+          const weekB = parseInt(b.split(' ')[1]);
+          return weekA - weekB;
+        });
+      case 'month':
+        return labels.sort((a, b) => {
+          const dateA = moment(a, 'MMMM');
+          const dateB = moment(b, 'MMMM');
+          return dateA.diff(dateB);
+        });
+      case 'year':
+        return labels.sort((a, b) => parseInt(a) - parseInt(b));
+      default:
+        return labels;
+    }
+  }
+
+  private getWeekNumber(date: Date): string {
+    const onejan = new Date(date.getFullYear(), 0, 1);
+    const weekNumber = Math.ceil(((date.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7);
+    return `Week ${weekNumber}`;
+  }
+
   // Method to handle previous button click
   previousDay(): void {
     this.counter++;
@@ -268,6 +451,7 @@ export class SleepTrackerComponent {
     this.googleAPIService.getSession(this.userId, this.isoDateString1, this.isoDateString2).subscribe(
       (data) => {
         const sleepDataRegularity = [];
+        this.sleepLogs = [];
 
         for (const session of data.session) {
           if (session.name === 'Sleep') {
@@ -276,9 +460,17 @@ export class SleepTrackerComponent {
               wakeUpTimeMillis: parseInt(session.endTimeMillis),
             };
 
+            this.sleepLogs.push({
+              startDate: new Date(this.sleepRegularityService.formatTimeChart(sleepEntry.sleepStartTimeMillis)),
+              endDate: new Date(this.sleepRegularityService.formatTimeChart(sleepEntry.wakeUpTimeMillis))
+            })
+            // console.log(" date format :", this.sleepRegularityService.formatTime(sleepEntry.sleepStartTimeMillis));
+
             sleepDataRegularity.push(sleepEntry);
           }
         }
+
+        console.log("sleepLogs: ", this.sleepLogs);
 
         if (sleepDataRegularity.length > 2) {
           // Calculate and display the regularity score

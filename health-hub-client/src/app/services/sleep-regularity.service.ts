@@ -116,4 +116,10 @@ export class SleepRegularityService {
 
     return formattedTime;
   }
+
+  formatTimeChart(timeInMillis: number): Date {
+    const formattedTime = new Date(timeInMillis);
+ 
+    return formattedTime;
+  }
 }

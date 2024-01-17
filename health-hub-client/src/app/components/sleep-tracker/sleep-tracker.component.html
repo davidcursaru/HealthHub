@@ -175,6 +175,16 @@
                     </div>
                 </mat-card-content>
 
+                <mat-card-content class="deep-sleep-content" *ngIf="i === 6">
+                    <div class="chart-wrapper">
+                        <div class="chart-container">
+                            <canvas baseChart [datasets]="chartData.datasets" [labels]="chartLabels" [options]="chartOptions"
+                                chartType="bar"></canvas>
+                        </div>
+                    </div>
+                </mat-card-content>
+
+
                 <!--Regularity-->
                 <mat-card-content class="regularity-content" *ngIf="i === 5">
                     <mat-grid-list class="mat-grid-list-sleep-score" cols="2" rowHeight="3:1">

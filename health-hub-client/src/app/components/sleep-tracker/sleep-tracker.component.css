@@ -1,3 +1,19 @@
+.chart-wrapper {
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    /* margin-bottom: 20px; */
+}
+
+.chart-container {
+    /* width: 80%; */
+    /* max-width: 800px; */
+    height: 200px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
 button {
     transition: transform 0.1s cubic-bezier(0.47, 2.02, 0.31, -0.36),
         box-shadow 0.2s ease,
@@ -105,7 +121,7 @@ button:hover {
     /* Adjust the color as needed */
 }
 
-.asleep-content{
+.asleep-content {
     display: block;
     justify-content: center;
     align-items: center;
@@ -122,7 +138,7 @@ button:hover {
 .asleep-bar mat-progress-bar {
     margin-top: 30px;
     width: 60%;
-    
+
 }
 
 .fell-asleep-mat-grid {
@@ -136,26 +152,28 @@ button:hover {
 
 .interval-container {
     display: flex;
-  }
-  
-  .interval-bar {
+}
+
+.interval-bar {
     height: 20px;
     border: 1px solid #000;
-  }
-  
-  .interval-space {
-    width: 3px; /* Adjust the space width as needed */
-  }
+}
 
-.progress-message{
+.interval-space {
+    width: 3px;
+    /* Adjust the space width as needed */
+}
+
+.progress-message {
     justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-.mat-grid-list-average-sleep-times{
+.mat-grid-list-average-sleep-times {
     margin-top: 60px;
 }
+
 .message-average {
     font-size: 14px;
     color: #666666d4;
@@ -163,7 +181,7 @@ button:hover {
     font-weight: bold;
 }
 
-.regularity-mat-grid{
+.regularity-mat-grid {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -178,47 +196,55 @@ button:hover {
 @media screen and (max-width: 600px) {
 
     /* Styles for Small and Handset breakpoints */
-    .regularity-mat-grid{
+    .regularity-mat-grid {
         margin-top: 10px;
         height: 12px;
     }
 }
 
 @media screen and (min-width: 600px) and (max-width: 779px) {
-    .score-message-mat-grid{
+    .score-message-mat-grid {
         height: 50px;
     }
-    .sleep-score-mat-grid{
+
+    .sleep-score-mat-grid {
         height: 50px;
     }
+
     .schedule-sleep-content {
         margin-top: 30px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
 
-  
+
 }
+
 @media screen and (min-width: 780px) and (max-width: 960px) {
-    .score-message-mat-grid{
+    .score-message-mat-grid {
         height: 20px;
     }
-    .sleep-score-mat-grid{
+
+    .sleep-score-mat-grid {
         height: 20px;
     }
+
     .schedule-sleep-content {
         margin-top: 30px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
-    .regularity-mat-grid{
+
+    .regularity-mat-grid {
         margin-top: 10px;
         height: 2px;
     }
 
-  
+
 }
 
 @media screen and (min-width: 960px) and (max-width: 1279px) {
@@ -227,10 +253,12 @@ button:hover {
     .schedule-sleep-content {
         margin-top: 30px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
-    .fell-asleep-mat-grid{
+
+    .fell-asleep-mat-grid {
         height: 9px;
     }
 
@@ -238,60 +266,72 @@ button:hover {
 }
 
 @media screen and (min-width: 1280px) and (max-width: 1649px) {
-    .score-message-mat-grid{
+    .score-message-mat-grid {
         height: 65px;
     }
-    .sleep-score-mat-grid{
+
+    .sleep-score-mat-grid {
         height: 65px;
     }
+
     .schedule-sleep-content {
         margin-top: 20px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
-    .regularity-mat-grid{
+
+    .regularity-mat-grid {
         margin-top: 10px;
         height: 20px;
     }
- 
+
 }
 
 @media screen and (min-width: 1650px) and (max-width: 1919px) {
-    .score-message-mat-grid{
+    .score-message-mat-grid {
         height: 50px;
     }
-    .sleep-score-mat-grid{
+
+    .sleep-score-mat-grid {
         height: 50px;
     }
+
     .schedule-sleep-content {
         margin-top: 20px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
-    .regularity-mat-grid{
-        
+
+    .regularity-mat-grid {
+
         height: 2px;
     }
- 
+
 }
 
 @media screen and (min-width: 1920px) {
-    .score-message-mat-grid{
+    .score-message-mat-grid {
         height: 50px;
     }
-    .sleep-score-mat-grid{
+
+    .sleep-score-mat-grid {
         height: 50px;
     }
+
     .schedule-sleep-content {
         margin-top: 20px;
     }
-    mat-form-field{
+
+    mat-form-field {
         margin-right: 10px;
     }
-    .regularity-mat-grid{
+
+    .regularity-mat-grid {
         height: 10px;
     }
- 
+
 }
