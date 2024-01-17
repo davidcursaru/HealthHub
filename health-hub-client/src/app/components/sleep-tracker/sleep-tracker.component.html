@@ -176,6 +176,18 @@
                 </mat-card-content>
 
                 <mat-card-content class="deep-sleep-content" *ngIf="i === 6">
+                    <div class="chart-interval">
+                        <div class="interval-selector">
+                            <button class="interval-button" (click)="changeChartInterval('day')"
+                                [class.active]="selectedInterval === 'day'">Day</button>
+                            <button class="interval-button" (click)="changeChartInterval('week')"
+                                [class.active]="selectedInterval === 'week'">Week</button>
+                            <button class="interval-button" (click)="changeChartInterval('month')"
+                                [class.active]="selectedInterval === 'month'">Month</button>
+                            <button class="interval-button" (click)="changeChartInterval('year')"
+                                [class.active]="selectedInterval === 'year'">Year</button>
+                        </div>
+                    </div>
                     <div class="chart-wrapper">
                         <div class="chart-container">
                             <canvas baseChart [datasets]="chartData.datasets" [labels]="chartLabels" [options]="chartOptions"
