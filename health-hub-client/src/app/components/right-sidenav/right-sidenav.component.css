@@ -7,8 +7,9 @@
 }
 
 .grid-container.collapsed {
-    grid-template-columns: 0; /* Set the width to 0 or any value you desire */
-  }
+    grid-template-columns: 0;
+    /* Set the width to 0 or any value you desire */
+}
 
 .right-sidenav-card {
     position: absolute;

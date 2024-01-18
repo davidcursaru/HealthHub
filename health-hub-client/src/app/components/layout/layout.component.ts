@@ -26,7 +26,6 @@ export class LayoutComponent implements OnInit {
   rightSideNavWidth = computed(() => this.collapsedRight() ? '0px' : '280px');
 
   private breakpointObserver = inject(BreakpointObserver);
-  /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe([
     Breakpoints.XSmall,
     Breakpoints.Small,
@@ -38,18 +37,12 @@ export class LayoutComponent implements OnInit {
     if (result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset] || result.breakpoints[Breakpoints.XSmall]) {
       this.collapsed.set(true);
       this.collapsedRight.set(true);
-      
+
     }
-    else if( result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.XLarge])
-    {
+    else if (result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.XLarge]) {
       this.collapsedRight.set(false);
     }
-
     this.collapsed.set(true);
-    
-    
-  
-
   });
 
   ngOnInit(): void {
@@ -67,11 +60,11 @@ export class LayoutComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.isDashboardPage = this.router.url === '/layout/dashboard';
         localStorage.setItem('isDashboardPage', JSON.stringify(this.isDashboardPage));
-     
+
       }
     });
 
-    
+
 
     const storedIsDashboardPage = localStorage.getItem('isDashboardPage');
     if (storedIsDashboardPage) {
