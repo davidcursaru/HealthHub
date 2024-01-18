@@ -198,7 +198,7 @@ export class CaloriesComponent implements OnInit {
     this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
     this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
-    this.percentageBurnedCalories = this.calculatePercentage(Number(this.TotalBurnedCaloriesCurrentDay), Number(this.goalsCurrentDayBurnedCalories));
+    this.percentageBurnedCalories = this.calculatePercentage(Number(this.getBurnedCaloriesSum()), Number(this.goalsCurrentDayBurnedCalories));
     this.percentageTitleBurnedCalories = this.percentageBurnedCalories.toString() + "%";
     })
 

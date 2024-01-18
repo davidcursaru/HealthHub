@@ -18,12 +18,12 @@ export type MenuItem = {
 })
 export class CostumSidenavComponent {
 
-  sideNavCollapsed = signal(false);
+  //sideNavCollapsed = signal(false);
   routes = RouterModule;
 
-  @Input() set collapsed(val: boolean) {
-    this.sideNavCollapsed.set(val)
-  }
+  // //@Input() set collapsed(val: boolean) {
+  //   this.sideNavCollapsed.set(val)
+  // }
 
   constructor(private userService: UserService) { }
 

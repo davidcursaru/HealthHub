@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, computed, signal } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { Reminders } from 'src/app/interfaces/reminders.interface';
+import { SchedulingComponent } from '../scheduling/scheduling.component';
+import { MatDialog } from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-right-sidenav',
@@ -20,7 +23,15 @@ export class RightSidenavComponent implements OnInit {
   firstName: any;
   lastName: any;
 
-  constructor(private userService: UserService) { }
+  // sideNavCollapsed = signal(false);
+  // sideNavWidth = computed(() => this.sideNavCollapsed() ? '0px' : '280px');
+
+  // @Input() set collapsed(val: boolean) {
+  //   this.sideNavCollapsed.set(val)
+  // }
+
+
+  constructor(private userService: UserService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     const userInfo = localStorage.getItem('userInfo');
@@ -37,7 +48,7 @@ export class RightSidenavComponent implements OnInit {
   }
 
   fetchRemindersForCurrentUser(): void {
-    const loggedUserId =this.user.id;
+    const loggedUserId = this.user.id;
 
     this.userService.getCurrentDaySchedule(loggedUserId).subscribe(
       (data: Reminders[]) => {
@@ -59,5 +70,13 @@ export class RightSidenavComponent implements OnInit {
     const names = name.split(' ');
     const initials = names.map(name => name.charAt(0)).join('');
     return initials.toUpperCase();
+  }
+
+  openCreateScheduleDialog() {
+    const dialogRef = this.dialog.open(SchedulingComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(() => { });
   }
 }

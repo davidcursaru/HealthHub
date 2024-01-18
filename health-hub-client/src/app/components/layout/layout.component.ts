@@ -21,19 +21,34 @@ export class LayoutComponent implements OnInit {
   constructor(private userService: UserService, private router: Router, private route: ActivatedRoute) { }
 
   collapsed = signal(false);
+  collapsedRight = signal(false);
   sideNavWidth = computed(() => this.collapsed() ? '65px' : '250px');
+  rightSideNavWidth = computed(() => this.collapsedRight() ? '0px' : '280px');
 
   private breakpointObserver = inject(BreakpointObserver);
   /** Based on the screen size, switch from standard to one column per row */
   cards = this.breakpointObserver.observe([
+    Breakpoints.XSmall,
     Breakpoints.Small,
-    Breakpoints.Handset
+    Breakpoints.Handset,
+    Breakpoints.Medium,
+    Breakpoints.Large,
+    Breakpoints.XLarge
   ]).subscribe(result => {
-    if (result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset]) {
+    if (result.breakpoints[Breakpoints.Small] || result.breakpoints[Breakpoints.Handset] || result.breakpoints[Breakpoints.XSmall]) {
       this.collapsed.set(true);
+      this.collapsedRight.set(true);
+      
+    }
+    else if( result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Large] || result.breakpoints[Breakpoints.XLarge])
+    {
+      this.collapsedRight.set(false);
     }
 
     this.collapsed.set(true);
+    
+    
+  
 
   });
 
@@ -52,8 +67,11 @@ export class LayoutComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         this.isDashboardPage = this.router.url === '/layout/dashboard';
         localStorage.setItem('isDashboardPage', JSON.stringify(this.isDashboardPage));
+     
       }
     });
+
+    
 
     const storedIsDashboardPage = localStorage.getItem('isDashboardPage');
     if (storedIsDashboardPage) {

@@ -118,4 +118,13 @@ mat-sidenav-content {
 
 .right-sidenav {
     background: rgba(221, 216, 216, 0.356);
+    width:280px;
+}
+
+@media screen and (max-width: 960px) {
+
+    /* Styles for Small and Handset breakpoints */
+  .right-sidenav{
+    width: 0px;
+  }
 }

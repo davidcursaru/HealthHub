@@ -88,12 +88,24 @@ export class UserService {
     return this.http.get<Reminders[]>(endpoint);
   }
 
+  createScheduleLog(reminderType: string, startActivity: string, endActivity: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'reminders';
+    const body = {
+      userId: this.idLocalStorage,
+      reminderType: reminderType,
+      startActivity: startActivity,
+      endActivity: endActivity
+    };
+
+    return this.http.post<any>(endpoint, body);
+  }
+
   //Food API
   getFoodCalories(foodInput: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'foodapi/nutrition?query=' + foodInput;
     return this.http.get<any>(endpoint);
   }
- 
+
   //Exercise API
   getCaloriesBurned(activity: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesapi/caloriesburned?activity=' + activity;
@@ -124,7 +136,7 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + "nutritionLogs/userId/" + this.idLocalStorage;
     return this.http.get<NutritionLogs[]>(endpoint);
   }
-  
+
   createNutritionLog(userId: number, foodInput: string, foodGrams: number, calories: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs';
     const body = {
@@ -146,7 +158,7 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + "exercisesLogs/userId/" + this.idLocalStorage;
     return this.http.get<ExerciseLogs[]>(endpoint);
   }
-  
+
   createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number, heartMinutes: Number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {

@@ -1,3 +1,15 @@
+.mat-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .bottom-right {
+ display: flex;
+ justify-content: space-between;
+  }
+  
+
 button {
     transition: transform 0.1s cubic-bezier(0.47, 2.02, 0.31, -0.36),
                 box-shadow 0.2s ease,

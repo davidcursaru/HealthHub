@@ -124,7 +124,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 43, route: '' },
-          { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
+          { title: 'Last 7 sleep sessions', cols: 1, rows: 27, route: '' },
           { columns: 1 }
         ];
       }
@@ -136,7 +136,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 40, route: '' },
-          { title: 'Sleep phases', cols: 2, rows: 20, route: '' },
+          { title: 'Last 7 sleep sessions', cols: 2, rows: 27, route: '' },
           { columns: 2 }
         ];
       }
@@ -172,7 +172,7 @@ export class SleepTrackerComponent {
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
         { title: 'Regularity', cols: 1, rows: 33, route: '' },
-        { title: 'Sleep phases', cols: 1, rows: 20, route: '' },
+        { title: 'Last 7 sleep sessions', cols: 1, rows: 27, route: '' },
         { columns: 1 }
       ];
 
@@ -514,6 +514,7 @@ export class SleepTrackerComponent {
             this.fellAsleep = undefined;
             this.awakeCounter = undefined;
             this.awakeHours = undefined;
+            this.awakeMinutes = undefined;
             this.wokeUp = undefined;
             this.deepSleepPercentage = undefined;
             this.deepSleepHours = undefined;
@@ -648,7 +649,7 @@ export class SleepTrackerComponent {
   }
 
   getMessage(): { score: string, title: string, message: string } {
-    if (this.score <= 60) {
+    if (this.score <= 60 && this.score !=0) {
       return { score: this.score.toString(), title: 'Accord Care', message: 'Consider adjusting your sleep routine' };
     } else if (this.score > 60 && this.score <= 79) {
       return { score: this.score.toString(), title: 'Satisfying', message: 'Congratulations! You have a satisfying sleep score' };

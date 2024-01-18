@@ -148,18 +148,28 @@
                     <ng-container>
                         <div class="mat-card-container">
                             <mat-card class="journal-mat-card" *ngFor="let exercise of exercises;">
-                                <mat-card-header clas="journal-mat-card-header">
-                                    <div mat-card-avatar class="example-header-image">
-                                        <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon></div>
-                                    <mat-card-title style="font-size: large;">{{ exercise.name }}</mat-card-title>
-
+                                <mat-card-header class="journal-mat-card-header">
+                                  <div mat-card-avatar class="example-header-image">
+                                    <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon>
+                                  </div>
+                                  <div class="header-content">
+                                    <mat-card-title style="font-size: large;">{{ exercise.name }}</mat-card-title>  
+                                  </div>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <p class="cardio-icon-journal"><mat-icon style="color: #0992B8;">favorite_border</mat-icon>  <span  style="font-weight: bold;">{{exercise.heart_minutes }} pct</span></p>
-                                    <p><span style="font-weight: bold;">Burned Calories:</span> {{ exercise.burned_calories }} kcal</p>
+                                  <p class="cardio-icon-journal">
+                                    <mat-icon style="color: #0992B8;">favorite_border</mat-icon>
+                                    <span style="font-weight: bold;">{{exercise.heart_minutes }} pct</span>
+                                  </p>
+                                  <p><span style="font-weight: bold;">Burned Calories:</span> {{ exercise.burned_calories }} kcal</p>
+                                  <div class="bottom-right">
                                     <p><span style="font-weight: bold;">Duration: </span> {{ exercise.duration }} min</p>
+                                    <p style="font-weight: bold;">{{ exercise.date | date:'h:mm a' }}</p>
+                                  </div>
+                                
                                 </mat-card-content>
-                            </mat-card>
+                              </mat-card>
+                              
                         </div>
                     </ng-container>
                 </mat-card-content>

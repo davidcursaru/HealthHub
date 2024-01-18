@@ -1,0 +1,16 @@
+.snackbar-success {
+    background-color: green; /* Customize the background color */
+    color: white; /* Customize the text color */
+  }
+
+  button {
+    transition: transform 0.1s cubic-bezier(0.47, 2.02, 0.31, -0.36),
+                box-shadow 0.2s ease,
+            
+  }
+  
+  /* Add hover effect for buttons */
+  button:hover {
+    transform: scale(1.05); /* Adjust the scale value for a smaller size increase */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase the shadow intensity */
+  }

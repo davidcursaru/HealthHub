@@ -205,6 +205,10 @@ button:hover {
         margin-top: 10px;
         height: 12px;
     }
+    .previous-button{
+        font-size: medium;
+        width: 130px;
+    }
 }
 
 @media screen and (min-width: 600px) and (max-width: 779px) {
@@ -223,6 +227,7 @@ button:hover {
     mat-form-field {
         margin-right: 10px;
     }
+
 
 
 }
@@ -248,6 +253,8 @@ button:hover {
         margin-top: 10px;
         height: 2px;
     }
+  
+
 
 
 }
@@ -264,7 +271,7 @@ button:hover {
     }
 
     .fell-asleep-mat-grid {
-        height: 9px;
+        height: 15px;
     }
 
 

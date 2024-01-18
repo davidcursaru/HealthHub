@@ -1,4 +1,4 @@
-<div class="grid-container">
+<div class="grid-container" >
     <mat-grid-list cols="2" rowHeight="110px">
         <mat-grid-tile colspan="2" rowspan="2">
             <mat-card class="right-sidenav-card" ngClass="card">
@@ -41,11 +41,15 @@
 </div>
 
 <div class="cards-container">
-    <h1 class="mat-h1">My Schedule</h1>
+    <h1 class="mat-h1">My Schedule <div><button mat-icon-button (click)="openCreateScheduleDialog()">
+        <mat-icon>add_circle</mat-icon>  
+     </button></div></h1>
+
     <!-- Loop through reminders array and create a mat-card for each reminder -->
     <mat-grid-list cols="1" rowHeight="90px">
 
         <p class="current-day">{{ currentDate | date:'EEEE' }}</p>
+
         <p *ngIf="reminders.length === 0" class="no-reminders-message">No Schedule or Reminders entries found.</p>
 
         <mat-grid-tile class="grid-tile-reminders" *ngFor="let reminder of reminders; let i = index">
@@ -54,11 +58,11 @@
                 <mat-card-content class="reminder-content">
 
                     <div class="upper-right-content">
-                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]"></mat-checkbox>
+                        <mat-checkbox class="checkbox" [(ngModel)]="isChecked[i]" color="primary"></mat-checkbox>
                     </div>
 
                     <div class="reminder-icon-container">
-                        <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">notifications</mat-icon>
+                        <mat-icon class="reminder-icon" [fontSet]=" 'material-icons-outlined'">schedule</mat-icon>
                     </div>
 
                     <div class="reminder-flex-containter">

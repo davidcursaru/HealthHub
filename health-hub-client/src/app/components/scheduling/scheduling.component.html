@@ -1,1 +1,30 @@
-<h1>Schedule and reminders</h1>
+<h2 mat-dialog-title>Create schedule item</h2>
+<mat-dialog-content>
+    <form [formGroup]="ScheduleForm">
+        <mat-form-field appearance="fill">
+            <mat-label>Reminder type</mat-label>
+            <input matInput formControlName="reminderType" type="string" required>
+            <mat-error *ngIf="ScheduleForm.controls['reminderType'].hasError('required')">Reminder type is
+                required.</mat-error>
+            </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Start time</mat-label>
+            <input matInput formControlName="startActivity" type="datetime-local" required>
+            <mat-error *ngIf="ScheduleForm.controls['startActivity'].hasError('required')">Start activity is
+                required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>End time</mat-label>
+            <input matInput formControlName="endActivity" type="datetime-local" required>
+            <mat-error *ngIf="ScheduleForm.controls['endActivity'].hasError('required')">End activity is
+                required.</mat-error>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" (click)="createScheduleItem(ScheduleForm.value)" [disabled]="ScheduleForm.invalid">Create
+        schedule item</button>
+</mat-dialog-actions>

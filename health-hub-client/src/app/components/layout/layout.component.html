@@ -6,7 +6,7 @@
 
     <div class="user">
 
-        <button mat-icon-button class="mat-icon" [matMenuTriggerFor]="menu">
+        <button mat-icon-button class="mat-icon" (click)="collapsedRight.set(!collapsedRight())">
             <div class="center-circle">
                 <div class="profile-div">
                     <p class="profile-pic">{{userInitials1}}</p>
@@ -15,33 +15,28 @@
 
         </button>
 
-        <mat-menu #menu="matMenu">
-            <!-- Settings option -->
-            <button mat-menu-item routerLink="/layout/settings">
-                <mat-icon>settings</mat-icon>
-                <span>Profile Settings</span>
-            </button>
-
-            <!-- Logout option -->
-            <button mat-menu-item routerLink="/auth" (click)="logout()">
-                <mat-icon>exit_to_app</mat-icon>
-                <span>Logout</span>
-            </button>
-        </mat-menu>
+      
     </div>
 </mat-toolbar>
 
 <mat-sidenav-container class="mat-sidenav-container">
     <mat-sidenav class="left-sidenav" opened mode="side" [style.width]="sideNavWidth()">
-        <app-costum-sidenav [collapsed]="collapsed()" />
+        <app-costum-sidenav  />
     </mat-sidenav>
-    <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()">
-        <router-outlet></router-outlet>
-    </mat-sidenav-content>
+    
+        <mat-sidenav-content class="content"  *ngIf="isDashboardPage; else otherContent" [style.margin-left]="sideNavWidth()" [style.margin-right]="rightSideNavWidth()">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    
+    <ng-template #otherContent>
+        <mat-sidenav-content class="content" [style.margin-left]="sideNavWidth()" >
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </ng-template>
 
     <mat-sidenav class="right-sidenav" *ngIf="isDashboardPage" mode="side" opened="true" position="end"
-        [style.width]="'300px'">
-        <app-right-sidenav></app-right-sidenav>
+    [style.width]="rightSideNavWidth()">
+        <app-right-sidenav ></app-right-sidenav>
     </mat-sidenav>
 
 </mat-sidenav-container>

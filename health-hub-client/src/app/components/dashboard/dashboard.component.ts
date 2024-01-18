@@ -114,30 +114,78 @@ export class DashboardComponent implements OnInit {
   decodedAuthorizationCode: string | any;
 
   private breakpointObserver = inject(BreakpointObserver);
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
+  cards = this.breakpointObserver.observe([
+    Breakpoints.Small,
+    Breakpoints.Handset,
+    Breakpoints.Medium,
+    Breakpoints.Large,
+    Breakpoints.XLarge
+  ]).pipe(
+    map(({ breakpoints }) => {
+      if (breakpoints[Breakpoints.Small] || breakpoints[Breakpoints.Handset]) {
         return [
-          { title: 'Main card', cols: 1, rows: 1, route: 'layout/dashboard' },
-          { title: 'Calories tracker', cols: 1, rows: 1, route: 'layout/calories' },
-          { title: 'Hydration tracker', cols: 1, rows: 1, route: 'layout/hydration' },
-          { title: 'Exercise tracker', cols: 1, rows: 1, route: 'layout/exercise' },
-          { title: 'Report overview month/week/day', cols: 1, rows: 1, route: 'layout/reports' },
-          { title: 'Upcoming activity/ reminder', cols: 1, rows: 1, route: 'layout/scheduling' }
+          { cols: 1, rows: 3, route: 'layout/dashboard' },
+          { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
+          { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
+          { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
+          { title: 'Sleep tracker', cols: 1, rows: 4, route: 'layout/reports' },
+          { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
+          { title: 'Active minutes', cols: 1, rows: 2 },
+          { columns: 1 }
         ];
       }
+      else if (breakpoints[Breakpoints.Medium]) {
+        return [
+          { cols: 2, rows: 2, route: 'layout/dashboard' },
+          { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
+          { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
+          { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
+          { title: 'Sleep tracker', cols: 2, rows: 4, route: 'layout/reports' },
+          { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
+          { title: 'Active minutes', cols: 1, rows: 2 },
+          { columns: 2 }
+        ];
+      }
+      else if (breakpoints[Breakpoints.Large]) {
+        return [
+          { cols: 3, rows: 2, route: 'layout/dashboard' },
+          { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
+          { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
+          { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
+          { title: 'Sleep tracker', cols: 2, rows: 4, route: 'layout/reports' },
+          { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
+          { title: 'Active minutes', cols: 1, rows: 2 },
+          { columns: 3 }
+        ];
+      }
+      else if (breakpoints[Breakpoints.XLarge]) {
+        return [
+          { cols: 3, rows: 2, route: 'layout/dashboard' },
+          { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
+          { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
+          { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
+          { title: 'Sleep tracker', cols: 2, rows: 4, route: 'layout/reports' },
+          { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
+          { title: 'Active minutes', cols: 1, rows: 2 },
+          { columns: 3 }
+        ];
+      }
+
       return [
-        { cols: 3, rows: 2, route: 'layout/dashboard' },
+        { cols: 1, rows: 3, route: 'layout/dashboard' },
         { title: 'Calories tracker', cols: 1, rows: 2, route: 'layout/calories' },
         { title: 'Hydration tracker', cols: 1, rows: 2, route: 'layout/hydration' },
         { title: 'Exercise tracker', cols: 1, rows: 2, route: 'layout/exercise' },
-        { title: 'Report overview', cols: 2, rows: 4, route: 'layout/reports' },
+        { title: 'Sleep tracker', cols: 1, rows: 4, route: 'layout/reports' },
         { title: 'Steps tracker', cols: 1, rows: 2, route: 'layout/scheduling' },
-        { title: 'Active minutes', cols: 1, rows: 2 }
+        { title: 'Active minutes', cols: 1, rows: 2 },
+        { columns: 1 }
       ];
+
     })
   );
+
+
 
   constructor(
     private router: Router,
@@ -265,7 +313,7 @@ export class DashboardComponent implements OnInit {
       this.percentageSteps = this.calculatePercentage(Number(this.StepsCountCurrentDay), Number(this.goalsCurrentDaySteps));
       this.percentageTitleSteps = this.percentageSteps.toString() + "%";
 
-      this.percentageActiveMinutes = this.calculatePercentage(Number(this.ActiveMinutesCurrentDay), Number(this.goalsCurrentDayActiveMinutes));
+      this.percentageActiveMinutes = this.calculatePercentage(this.getActiveMinutesSum(), Number(this.goalsCurrentDayActiveMinutes));
       this.percentageTitleActiveMinutes = this.percentageActiveMinutes.toString() + "%";
 
       this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
@@ -519,12 +567,9 @@ export class DashboardComponent implements OnInit {
     // Iterate through the time entries and calculate the time worked per interval
     const sleepLogsString = localStorage.getItem("sleepLogs");
     this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
-    console.log("sleep logs: ", this.sleepLogs);
     this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
       const date = new Date(entry.startDate);
-      console.log("entry starTime", entry.startDate);
-      console.log("date from: ", date);
-
+    
       let intervalKey: any;
       const localeOptions: Intl.DateTimeFormatOptions = {
         // year: 'numeric',

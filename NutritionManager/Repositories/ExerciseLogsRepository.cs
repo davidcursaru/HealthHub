@@ -118,6 +118,7 @@ namespace NutritionManager.Repositories
                     duration = exercise.ExerciseDuration,
                     burned_calories = exercise.BurnedCalories,
                     heart_minutes = exercise.HeartMinutes,
+                    date = exercise.ExerciseDate
                 };
 
                 exerciseDataList.Add(exerciseData);

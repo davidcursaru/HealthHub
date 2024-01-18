@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { NutritionLogs } from 'src/app/interfaces/nutritionLogs.interface';
 import { ExerciseLogs } from 'src/app/interfaces/exerciseLogs.interface';
 import * as moment from 'moment';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-reports',
@@ -44,7 +45,9 @@ export class ReportsComponent implements OnInit {
 
   // Lifecycle hook - ngOnInit
   ngOnInit() {
+    
     this.getHydrationLogs(); // Fetch initial data
+    
   }
 
   changeReportType(): void {

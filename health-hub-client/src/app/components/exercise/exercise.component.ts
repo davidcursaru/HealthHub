@@ -204,6 +204,7 @@ export class ExerciseComponent implements OnInit {
     const formValue = this.exerciseFormGroup.value;
     const exerciseType = formValue.exerciseType;
     const exerciseDuration = formValue.exerciseDuration;
+    const now = new Date();
     this.getExerciseBurnedCalories(exerciseForm);
 
     setTimeout(() => {
@@ -213,7 +214,8 @@ export class ExerciseComponent implements OnInit {
         name: exerciseType,
         burned_calories: Number(caloriesBurned),
         duration: exerciseDuration,
-        heart_minutes: this.cardioPointsToAdd
+        heart_minutes: this.cardioPointsToAdd,
+        date: now.toISOString()
       };
   
       // Add the new entry to the beginning of the 'exercises' array
