@@ -7,6 +7,7 @@ import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
 import { ChartData, ChartOptions } from 'chart.js';
+import { switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
 
 interface TimeData {
@@ -22,6 +23,18 @@ interface TimeData {
 
 })
 export class SleepTrackerComponent {
+    // Get the user's local timezone offset in minutes
+    timezoneOffsetTest: any;
+    currentDateTest: any;
+    // Adjust startDate and endDate using the timezone offset
+    startDateTest: any;
+    endDateTest: any;
+    DateString1: any;
+    DateString2: any;
+
+
+
+
   sleepLogs: any = [];
   optionTimeUnit: string = '';
   chartData: ChartData = {
@@ -199,7 +212,8 @@ export class SleepTrackerComponent {
 
     this.sleepGoalHrs = localStorage.getItem("sleepGoalHrs");
     this.sleepGoalMins = localStorage.getItem("sleepGoalMins");
-    this.getSleepPhases();
+    //this.getSleepPhases();
+    this.getSleepData();
 
     this.sleepStartTimeNanos = localStorage.getItem("SleepStartTimeNanos");
     this.sleepEndTimeNanos = localStorage.getItem("SleepEndTimeNanos");
@@ -216,11 +230,12 @@ export class SleepTrackerComponent {
 
     this.getSleepSessions();
     this.updateChartData();
+    
   }
 
   updateChartData(): void {
     const timeWorkedPerInterval = this.processTimeEntries(this.selectedInterval);
-  
+
     this.chartData.datasets = [
       {
         data: timeWorkedPerInterval.map(data => data.value),
@@ -228,12 +243,12 @@ export class SleepTrackerComponent {
         backgroundColor: '#076c8c',
         borderColor: '#7fa8b5',
         borderWidth: 0,
-        
+
       },
     ];
-  
+
     this.chartLabels = this.sortChartLabels(timeWorkedPerInterval.map(data => data.intervalKey));
-  
+
     this.chartOptions = {
       maintainAspectRatio: false,
       responsive: true,
@@ -264,8 +279,8 @@ export class SleepTrackerComponent {
       }
     };
   }
-  
-  
+
+
   changeChartInterval(interval: string): void {
     this.selectedInterval = interval;
     this.updateChartData();
@@ -275,16 +290,16 @@ export class SleepTrackerComponent {
   private processTimeEntries(interval: string): TimeData[] {
     // Logic to process the time entries based on the selected interval
     const timeWorkedPerInterval: TimeData[] = [];
-  
+
     // Iterate through the time entries and calculate the time worked per interval
     const sleepLogsString = localStorage.getItem("sleepLogs");
     this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
-    console.log("sleep logs: ", this.sleepLogs);
+    //console.log("sleep logs: ", this.sleepLogs);
     this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
       const date = new Date(entry.startDate);
-      console.log("entry starTime", entry.startDate);
-      console.log("date from: ", date);
-  
+      // console.log("entry starTime", entry.startDate);
+      // console.log("date from: ", date);
+
       let intervalKey: any;
       const localeOptions: Intl.DateTimeFormatOptions = {
         // year: 'numeric',
@@ -292,11 +307,11 @@ export class SleepTrackerComponent {
         day: '2-digit',
         timeZone: 'Europe/Bucharest' // Replace 'Europe/Bucharest' with your desired Eastern European time zone
       };
-  
+
       if (!isNaN(date.getTime())) {
         intervalKey = date.toLocaleDateString('en-GB', localeOptions);
       }
-  
+
       let timeData = timeWorkedPerInterval.find(data => data.intervalKey === intervalKey);
       if (!timeData) {
         timeData = {
@@ -306,26 +321,27 @@ export class SleepTrackerComponent {
         };
         timeWorkedPerInterval.push(timeData);
       }
-  
+
       const startTime = new Date(entry.startDate).getTime();
       const endTime = new Date(entry.endDate).getTime();
       const durationMs = endTime - startTime;
-  
+
       let totalMinutes: number;
-  
+
       if (durationMs < 1000 * 60) {
         totalMinutes = durationMs / 1000 / 60;
       } else {
         totalMinutes = durationMs / (1000 * 60);
       }
-  
+      
+
       timeData.value += totalMinutes;
       timeData.unit = 'Minutes'; // Update the unit to 'Minutes'
     });
-  
+
     return timeWorkedPerInterval;
   }
-  
+
 
   private sortChartLabels(labels: string[]): string[] {
     return labels.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
@@ -366,14 +382,23 @@ export class SleepTrackerComponent {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = displayDate;
     // Calculate the date of 7 days ago
-    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 6, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
     this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
     this.isoDateString2 = this.endDate.toISOString();
 
-    this.getSleepPhases();
+    this.timezoneOffsetTest = new Date().getTimezoneOffset();
+    this.currentDateTest = displayDate;
+    // Adjust startDate and endDate using the timezone offset
+    this.startDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 0, 0 - this.timezoneOffsetTest, 0);
+    this.endDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 23, 59 - this.timezoneOffsetTest, 59);
+    this.DateString1 = this.startDateTest.toISOString();
+    this.DateString2 = this.endDateTest.toISOString();
+
+    //this.getSleepPhases();
     this.getSleepSessions();
+    this.getSleepData();
 
 
   }
@@ -405,11 +430,20 @@ export class SleepTrackerComponent {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = new Date();
     // Calculate the date of 7 days ago
-    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 6, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
     this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
     this.isoDateString2 = this.endDate.toISOString();
+
+    this.timezoneOffsetTest = new Date().getTimezoneOffset();
+    this.currentDateTest = new Date();
+    // Adjust startDate and endDate using the timezone offset
+    this.startDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 0, 0 - this.timezoneOffsetTest, 0);
+    this. endDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 23, 59 - this.timezoneOffsetTest, 59);
+    this.DateString1 = this.startDateTest.toISOString();
+    this.DateString2 = this.endDateTest.toISOString();
+
   }
 
 
@@ -436,8 +470,8 @@ export class SleepTrackerComponent {
           }
         }
 
-       
 
+        console.log("regularity data: ", sleepDataRegularity);
         localStorage.setItem("sleepLogs", JSON.stringify(this.sleepLogs));
 
         this.updateChartData();
@@ -480,8 +514,43 @@ export class SleepTrackerComponent {
     );
   }
 
-  getSleepPhases(): void {
-    this.googleAPIService.getSleepPhases(this.userId, this.startTimeMillis, this.endTimeMillis)
+  getSleepData(): void {
+    this.googleAPIService.getSession(this.userId, this.DateString1, this.DateString2).subscribe(
+      (dataSession) => {
+
+        const sleepSession = dataSession.session.find((session: { name: string; }) => session.name === 'Sleep');
+
+        if (sleepSession) {
+          // If a Sleep session is found, extract startTimeMillis and endTimeMillis
+          const startTime = sleepSession.startTimeMillis;
+          const endTime = sleepSession.endTimeMillis;
+
+          this.getSleepPhases(startTime, endTime);
+          // Now you can use startTimeMillis and endTimeMillis as needed
+          console.log("startTimeMillis:", startTime);
+          console.log("endTimeMillis:", endTime);
+        } else {
+          // Handle the case when no "Sleep" session is found
+          const startTime = 0;
+          const endTime = 0;
+          this.getSleepPhases(startTime, endTime);
+        }
+        
+
+      },
+      (error) => {
+        console.error('Error fetching sleep data:', error);
+        const startTime = 0;
+        const endTime = 0;
+        this.getSleepPhases(startTime, endTime);
+        
+      });
+
+      
+  }
+
+  getSleepPhases(startTime: number, endTime: number): void {
+    this.googleAPIService.getSleepPhases(this.userId, startTime, endTime)
       .subscribe(
         (data) => {
           // Check if 'bucket' array exists and has elements
@@ -500,8 +569,8 @@ export class SleepTrackerComponent {
             this.calculateSleepPhaseTime(data, 5);
             this.calculateSleepPhaseTime(data, 1);
             this.score = this.calculateSleepScore(this.totalSleepMinutes, this.deepSleepMinutes, this.awakeCounter);
-            const awakeTime = this.awakeHours * 60 + this.awakeMinutes;
-            this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes - awakeTime;
+            //const awakeTime = this.awakeHours * 60 + this.awakeMinutes;
+            this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes;
 
           } else {
             console.warn('No sleep data available in the response.');
@@ -649,7 +718,7 @@ export class SleepTrackerComponent {
   }
 
   getMessage(): { score: string, title: string, message: string } {
-    if (this.score <= 60 && this.score !=0) {
+    if (this.score <= 60 && this.score != 0) {
       return { score: this.score.toString(), title: 'Accord Care', message: 'Consider adjusting your sleep routine' };
     } else if (this.score > 60 && this.score <= 79) {
       return { score: this.score.toString(), title: 'Satisfying', message: 'Congratulations! You have a satisfying sleep score' };

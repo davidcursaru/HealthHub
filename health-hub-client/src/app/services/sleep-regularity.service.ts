@@ -14,23 +14,54 @@ export class SleepRegularityService {
   calculateAverageSleepStartTime(data: SleepData[]): string {
     // Convert sleep start times to hours in 24-hour format
     const sleepStartHoursArray = data.map(entry => {
-      const sleepStartTime = moment(entry.sleepStartTimeMillis).format('hh:mm A');
+      const sleepStartTime = moment(entry.sleepStartTimeMillis).format('HH:mm');
       return sleepStartTime;
     });
 
     // Parse hours using moment
-    const parsedHours = sleepStartHoursArray.map(hour => moment(hour, 'hh:mm A'));
+    const parsedHours = sleepStartHoursArray.map(hour => moment(hour, 'HH:mm'));
 
     // Calculate the total number of minutes
-    const totalMinutes = parsedHours.reduce((sum, hour) => sum + hour.hours() * 60 + hour.minutes(), 0);
+    const totalFloatValues = parsedHours.reduce((sum, hour) => sum + this.timeToFloat(hour.format('HH:mm')), 0);
 
     // Calculate the average
-    const averageMinutes = totalMinutes / sleepStartHoursArray.length;
+    const averageFloatValue = totalFloatValues / sleepStartHoursArray.length;
 
-    // Convert back to hh:mm A format
-    const averageHour = moment().startOf('day').add(averageMinutes, 'minutes').format('hh:mm A');
+    // Split the float value into integer and decimal parts
+    const [integerPart, decimalPart] = averageFloatValue.toFixed(10).split('.').map(Number);
+
+    const decimalPartString = Math.round(decimalPart).toString();
+
+    // Extract the first two characters
+    const firstTwoDigitsString = decimalPartString.slice(0, 2);
+
+    // Convert the extracted string back to a number
+    const firstTwoDigits = parseInt(firstTwoDigitsString, 10);
+
+    // Handle the left part (hours)
+    const adjustedHours = integerPart >= 24 ? integerPart - 24 : integerPart;
+
+    const adjustedMinutes = Math.round(firstTwoDigits / 10 / 0.166666666666666666666666666);
+
+    // Determine AM/PM
+    const period = adjustedHours >= 12 ? 'PM' : 'AM';
+
+    // Convert back to hh:mm AM/PM format
+    const averageHour = `${adjustedHours % 12 || 12}:${adjustedMinutes.toString().padStart(2, '0')} ${period}`;
 
     return averageHour;
+  }
+
+  timeToFloat(time: string): number {
+    const [hours, minutes] = time.split(':').map(Number);
+    let floatValue = hours + minutes / 60;
+
+    // Handle the case where the input time is after 24:00
+    if (floatValue < 7) {
+      floatValue += 24;
+    }
+
+    return floatValue;
   }
 
   calculateAverageWakeUpTime(data: SleepData[]): string {
@@ -119,7 +150,7 @@ export class SleepRegularityService {
 
   formatTimeChart(timeInMillis: number): Date {
     const formattedTime = new Date(timeInMillis);
- 
+
     return formattedTime;
   }
 }
