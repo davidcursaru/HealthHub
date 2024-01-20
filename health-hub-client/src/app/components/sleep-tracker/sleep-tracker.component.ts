@@ -7,8 +7,6 @@ import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { SleepData } from 'src/app/interfaces/sleepPhases.interface';
 import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
 import { ChartData, ChartOptions } from 'chart.js';
-import { switchMap } from 'rxjs/operators';
-import * as moment from 'moment';
 
 interface TimeData {
   intervalKey: string;
@@ -205,22 +203,15 @@ export class SleepTrackerComponent {
     this.dateTime = new Date;
     this.setTimeRangeMillis();
     this.setRequestsDateTimeRange();
-    console.log("start time isostring: ", this.isoDateString1);
-    console.log("start time isostring: ", this.isoDateString2);
     this.initForm();
     this.loadSavedTimes();
 
     this.sleepGoalHrs = localStorage.getItem("sleepGoalHrs");
     this.sleepGoalMins = localStorage.getItem("sleepGoalMins");
-    //this.getSleepPhases();
     this.getSleepData();
 
     this.sleepStartTimeNanos = localStorage.getItem("SleepStartTimeNanos");
     this.sleepEndTimeNanos = localStorage.getItem("SleepEndTimeNanos");
-    // this.awakeCounter = Number(localStorage.getItem("awakeCounter"));
-    // this.deepSleepHours = localStorage.getItem("deepSleepHours");
-    // this.deepSleepMinutes = localStorage.getItem("deepSleepMinutes");
-    // this.deepSleepPercentage = localStorage.getItem("deepSleepPercentage");
 
     interval(100).subscribe(() => {
       this.sleepHours = this.calculateSleepDuration(this.sleepStartTimeNanos, this.sleepEndTimeNanos);
@@ -296,7 +287,7 @@ export class SleepTrackerComponent {
     this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
     //console.log("sleep logs: ", this.sleepLogs);
     this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
-      const date = new Date(entry.startDate);
+      const date = new Date(entry.endDate);
       // console.log("entry starTime", entry.startDate);
       // console.log("date from: ", date);
 
@@ -384,7 +375,7 @@ export class SleepTrackerComponent {
     // Calculate the date of 7 days ago
     this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 6, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
-    this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+    this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 6, 0 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
     this.isoDateString2 = this.endDate.toISOString();
 
@@ -470,8 +461,6 @@ export class SleepTrackerComponent {
           }
         }
 
-
-        console.log("regularity data: ", sleepDataRegularity);
         localStorage.setItem("sleepLogs", JSON.stringify(this.sleepLogs));
 
         this.updateChartData();
@@ -578,8 +567,6 @@ export class SleepTrackerComponent {
             this.totalSleepMinutes = (this.sleepHours.hours * 60) + this.sleepHours.minutes;
 
           } else {
-            console.warn('No sleep data available in the response.');
-            console.log(" a intrat in else si nu s-a updatat nimic")
             this.sleepStartTimeNanos = 0;
             this.sleepEndTimeNanos = 0;
             localStorage.setItem("SleepStartTimeNanos", this.sleepStartTimeNanos.toString());
@@ -766,14 +753,14 @@ export class SleepTrackerComponent {
 
   calculateSleepScore(totalSleepMinutes: number, deepSleepMinutes: number, numberOfAwakeTimes: number): number {
     // Define weights for each factor
-    const totalSleepWeight = 0.85;
-    const deepSleepWeight = 0.6;
+    const totalSleepWeight = 0.8;
+    const deepSleepWeight = 0.3;
     const awakeTimesWeight = 0.035;
     let weightedSum = 0
 
     // Normalize values (you can define your own normalization logic)
     const normalizedTotalSleep = this.normalize(totalSleepMinutes, 8 * 60); // Assuming 8 hours as ideal sleep
-    const normalizedDeepSleep = this.normalize(deepSleepMinutes, totalSleepMinutes);
+    const normalizedDeepSleep = this.normalize(deepSleepMinutes, totalSleepMinutes*35/100);
     const normalizedAwakeTimes = (awakeTimesWeight * numberOfAwakeTimes); // Assuming fewer awakenings are better
 
     // Calculate the weighted sum

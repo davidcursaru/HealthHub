@@ -568,7 +568,7 @@ export class DashboardComponent implements OnInit {
     const sleepLogsString = localStorage.getItem("sleepLogs");
     this.sleepLogs = sleepLogsString ? JSON.parse(sleepLogsString) : [];
     this.sleepLogs.forEach((entry: { startDate: string | number | Date; endDate: string | number | Date; }) => {
-      const date = new Date(entry.startDate);
+      const date = new Date(entry.endDate);
     
       let intervalKey: any;
       const localeOptions: Intl.DateTimeFormatOptions = {

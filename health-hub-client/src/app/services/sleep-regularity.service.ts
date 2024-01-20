@@ -17,6 +17,7 @@ export class SleepRegularityService {
       const sleepStartTime = moment(entry.sleepStartTimeMillis).format('HH:mm');
       return sleepStartTime;
     });
+    console.log("start hours array: ", sleepStartHoursArray);
 
     // Parse hours using moment
     const parsedHours = sleepStartHoursArray.map(hour => moment(hour, 'HH:mm'));
@@ -26,22 +27,28 @@ export class SleepRegularityService {
 
     // Calculate the average
     const averageFloatValue = totalFloatValues / sleepStartHoursArray.length;
+    console.log("total float value: ", averageFloatValue);
 
     // Split the float value into integer and decimal parts
-    const [integerPart, decimalPart] = averageFloatValue.toFixed(10).split('.').map(Number);
+// Split the float value into integer and decimal parts
+const [integerPart, decimalPart] = averageFloatValue.toFixed(12).split('.');
+const decimalPartString = decimalPart.length > 2 ? decimalPart.slice(0, 2) : decimalPart;
 
-    const decimalPartString = Math.round(decimalPart).toString();
+// Convert the extracted string back to a number
+const firstTwoDigits = parseInt(decimalPartString, 10);
 
     // Extract the first two characters
-    const firstTwoDigitsString = decimalPartString.slice(0, 2);
-
+    const firstTwoDigitsString = decimalPartString[0] === '0' ? decimalPartString.slice(0, 0) : decimalPartString.slice(0, 2);
+    console.log("first 2 digits string: ", decimalPartString);
+    
     // Convert the extracted string back to a number
-    const firstTwoDigits = parseInt(firstTwoDigitsString, 10);
+  
 
     // Handle the left part (hours)
-    const adjustedHours = integerPart >= 24 ? integerPart - 24 : integerPart;
+    const adjustedHours = Number(integerPart) >= 24 ? Number(integerPart) - 24 : Number(integerPart);
 
     const adjustedMinutes = Math.round(firstTwoDigits / 10 / 0.166666666666666666666666666);
+    console.log("adjusted time: ",adjustedMinutes);
 
     // Determine AM/PM
     const period = adjustedHours >= 12 ? 'PM' : 'AM';
@@ -61,6 +68,7 @@ export class SleepRegularityService {
       floatValue += 24;
     }
 
+    console.log("floatValues: ", floatValue);
     return floatValue;
   }
 
@@ -101,7 +109,7 @@ export class SleepRegularityService {
   }
 
   calculateSRI(sleepData: SleepData[]): number {
-    const consistencyWeight = 0.5;
+    const consistencyWeight = 0.6;
     const totalSleepPeriods = sleepData.length;
 
     // Calculate the consistency score based on sleep timing
