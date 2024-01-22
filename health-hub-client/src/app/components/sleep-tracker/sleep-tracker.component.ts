@@ -135,7 +135,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 43, route: '' },
-          { title: 'Last 7 sleep sessions', cols: 1, rows: 27, route: '' },
+          { title: 'Sleep duration overview (last 7 sessions)', cols: 1, rows: 27, route: '' },
           { columns: 1 }
         ];
       }
@@ -147,7 +147,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 40, route: '' },
-          { title: 'Last 7 sleep sessions', cols: 2, rows: 27, route: '' },
+          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 27, route: '' },
           { columns: 2 }
         ];
       }
@@ -159,7 +159,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 36, route: '' },
-          { title: 'Sleep phases', cols: 2, rows: 26, route: '' },
+          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
       }
@@ -171,7 +171,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity', cols: 1, rows: 36, route: '' },
-          { title: 'Last 7 sleep sessions', cols: 2, rows: 35, route: '' },
+          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 35, route: '' },
           { columns: 3 }
         ];
       }
@@ -183,7 +183,7 @@ export class SleepTrackerComponent {
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
         { title: 'Regularity', cols: 1, rows: 33, route: '' },
-        { title: 'Last 7 sleep sessions', cols: 1, rows: 27, route: '' },
+        { title: 'Sleep duration overview (last 7 sessions)', cols: 1, rows: 27, route: '' },
         { columns: 1 }
       ];
 
@@ -720,7 +720,7 @@ export class SleepTrackerComponent {
     else if (this.score > 89) {
       return { score: this.score.toString(), title: 'Optimal', message: 'Fantastic job! Your sleep score reflects excellent sleep quality' };
     }
-    return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to acces Google Fit data' };
+    return { score: '0', title: 'No data available', message: 'Log in with Google account to acces Google Fit data' };
   }
 
   getRegularityMessage(): { score: string, title: string, message: string } {
