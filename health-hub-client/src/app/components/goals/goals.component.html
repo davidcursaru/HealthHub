@@ -32,7 +32,7 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button mat-dialog-close (click)="refresh()">Cancel</button>
     <button mat-raised-button color="primary" (click)="createGoal(GoalForm.value)" [disabled]="GoalForm.invalid">Create
         Goal</button>
 </mat-dialog-actions>

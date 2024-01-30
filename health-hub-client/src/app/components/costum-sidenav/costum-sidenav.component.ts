@@ -1,15 +1,12 @@
-import { Component, Input, signal, computed,inject } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-
-
 export type MenuItem = {
 
   icon: string;
   label: string;
   route: string;
 }
-
 @Component({
   selector: 'app-costum-sidenav',
   templateUrl: './costum-sidenav.component.html',
@@ -17,16 +14,8 @@ export type MenuItem = {
 
 })
 export class CostumSidenavComponent {
-
-  //sideNavCollapsed = signal(false);
   routes = RouterModule;
-
-  // //@Input() set collapsed(val: boolean) {
-  //   this.sideNavCollapsed.set(val)
-  // }
-
   constructor(private userService: UserService) { }
-
   logout(): void {
     this.userService.logout();
   }

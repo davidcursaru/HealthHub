@@ -134,8 +134,8 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 43, route: '' },
-          { title: 'Sleep duration overview (last 7 sessions)', cols: 1, rows: 27, route: '' },
+          { title: 'Regularity (last 7 days)', cols: 1, rows: 43, route: '' },
+          { title: 'Sleep duration overview (last 7 days)', cols: 1, rows: 27, route: '' },
           { columns: 1 }
         ];
       }
@@ -146,8 +146,8 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 27, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 40, route: '' },
-          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 27, route: '' },
+          { title: 'Regularity (last 7 days)', cols: 1, rows: 40, route: '' },
+          { title: 'Sleep duration overview (last 7 days)', cols: 2, rows: 27, route: '' },
           { columns: 2 }
         ];
       }
@@ -158,8 +158,8 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 36, route: '' },
-          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 26, route: '' },
+          { title: 'Regularity (last 7 days)', cols: 1, rows: 36, route: '' },
+          { title: 'Sleep duration overview (last 7 days)', cols: 2, rows: 26, route: '' },
           { columns: 3 }
         ];
       }
@@ -170,8 +170,8 @@ export class SleepTrackerComponent {
           { title: 'Asleep time', cols: 1, rows: 30, route: '' },
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
-          { title: 'Regularity', cols: 1, rows: 36, route: '' },
-          { title: 'Sleep duration overview (last 7 sessions)', cols: 2, rows: 35, route: '' },
+          { title: 'Regularity (last 7 days)', cols: 1, rows: 36, route: '' },
+          { title: 'Sleep duration overview (last 7 days)', cols: 2, rows: 35, route: '' },
           { columns: 3 }
         ];
       }
@@ -182,8 +182,8 @@ export class SleepTrackerComponent {
         { title: 'Asleep time', cols: 1, rows: 30, route: '' },
         { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
         { title: 'Awake', cols: 1, rows: 20, route: '' },
-        { title: 'Regularity', cols: 1, rows: 33, route: '' },
-        { title: 'Sleep duration overview (last 7 sessions)', cols: 1, rows: 27, route: '' },
+        { title: 'Regularity (last 7 days)', cols: 1, rows: 33, route: '' },
+        { title: 'Sleep duration overview (last 7 days)', cols: 1, rows: 27, route: '' },
         { columns: 1 }
       ];
 
@@ -373,7 +373,7 @@ export class SleepTrackerComponent {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = displayDate;
     // Calculate the date of 7 days ago
-    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 6, 0, 0 - this.timezoneOffset, 0);
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
     this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 6, 0 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
@@ -383,9 +383,10 @@ export class SleepTrackerComponent {
     this.currentDateTest = displayDate;
     // Adjust startDate and endDate using the timezone offset
     this.startDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 0, 0 - this.timezoneOffsetTest, 0);
-    this.endDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 23, 59 - this.timezoneOffsetTest, 59);
+    this.endDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 15, 59 - this.timezoneOffsetTest, 59);
     this.DateString1 = this.startDateTest.toISOString();
     this.DateString2 = this.endDateTest.toISOString();
+    
 
     //this.getSleepPhases();
     this.getSleepSessions();
@@ -421,7 +422,7 @@ export class SleepTrackerComponent {
     this.timezoneOffset = new Date().getTimezoneOffset();
     this.currentDate = new Date();
     // Calculate the date of 7 days ago
-    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 6, 0, 0 - this.timezoneOffset, 0);
+    this.sevenDaysAgoDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate() - 7, 0, 0 - this.timezoneOffset, 0);
     // startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
     this.endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
     this.isoDateString1 = this.sevenDaysAgoDate.toISOString();
@@ -434,6 +435,7 @@ export class SleepTrackerComponent {
     this.endDateTest = new Date(this.currentDateTest.getFullYear(), this.currentDateTest.getMonth(), this.currentDateTest.getDate(), 23, 59 - this.timezoneOffsetTest, 59);
     this.DateString1 = this.startDateTest.toISOString();
     this.DateString2 = this.endDateTest.toISOString();
+    
 
   }
 
@@ -489,7 +491,7 @@ export class SleepTrackerComponent {
           this.averageSleepStartTime = undefined;
         }
 
-        if (sleepDataRegularity.length > 2) {
+        if (sleepDataRegularity.length >= 4) {
           // Calculate and display the regularity score
           this.regularityScore = this.sleepRegularityService.calculateSRI(sleepDataRegularity);
         }
@@ -512,6 +514,7 @@ export class SleepTrackerComponent {
     this.googleAPIService.getSession(this.userId, this.DateString1, this.DateString2).subscribe(
       (dataSession) => {
 
+        
         const sleepSession = dataSession.session.find((session: { name: string; }) => session.name === 'Sleep');
 
         if (sleepSession) {
@@ -528,6 +531,7 @@ export class SleepTrackerComponent {
           const startTime = 0;
           const endTime = 0;
           this.getSleepPhases(startTime, endTime);
+          console.log("intra acisisasa");
         }
 
 
@@ -735,7 +739,7 @@ export class SleepTrackerComponent {
       return { score: this.regularityScore.toString(), title: 'Optimal', message: '' };
     }
     if (this.regularityScore == 0) {
-      return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 3 sleep sessions with your smartwatch.' };
+      return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 4 sleep sessions with your smartwatch.' };
     }
     return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to access Google Fit data' };
   }
@@ -798,3 +802,5 @@ export class SleepTrackerComponent {
 
 
 }
+
+

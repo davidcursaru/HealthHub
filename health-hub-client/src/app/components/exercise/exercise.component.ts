@@ -260,3 +260,5 @@ export class ExerciseComponent implements OnInit {
   }
 
 }
+
+

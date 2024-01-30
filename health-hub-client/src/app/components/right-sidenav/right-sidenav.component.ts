@@ -44,6 +44,7 @@ export class RightSidenavComponent implements OnInit {
     localStorage.setItem("FirstNameInitial", this.userInitials1);
     localStorage.setItem("LastNameInitial", this.userInitials2);
 
+  
     this.fetchRemindersForCurrentUser();
   }
 

@@ -51,9 +51,9 @@ export class GoalsComponent {
         verticalPosition: 'top',
         panelClass: ['snackbar-success'],
       });
-      setTimeout(() => {
-      }, 4000);
-      window.location.reload();
+      // setTimeout(() => {
+      // }, 4000);
+      // window.location.reload();
 
     });
 
@@ -61,6 +61,12 @@ export class GoalsComponent {
 
   onGoalTypeChange(selectedGoalType: string): void {
     this.GoalForm.get('goalType')?.setValue(selectedGoalType);
+  }
+
+  refresh(): void{
+       setTimeout(() => {
+      }, 1000);
+      window.location.reload();
   }
 
 }

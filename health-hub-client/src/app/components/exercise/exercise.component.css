@@ -194,6 +194,11 @@ button {
     justify-content: center;
     height: 50px;
 }
+.example-header-image{
+    margin-top: 30px;
+    
+    
+}
 
 .cardio-icon-journal {
     display: flex;
