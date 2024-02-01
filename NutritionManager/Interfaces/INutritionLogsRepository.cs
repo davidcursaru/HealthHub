@@ -12,6 +12,6 @@ namespace NutritionManager.Interfaces
         Task<double> GetNutritionLogsTotalCalories(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate);
         Task<NutritionLogs> GetNutritionLogsById(int id);
         Task UpdateNutritionLogs(NutritionLogs newNutritionLogs);
-        Task DeleteNutritionLogs(int id);
+        Task DeleteNutritionLogs(int logId, int userId);
     }
 }

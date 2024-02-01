@@ -57,10 +57,10 @@ namespace NutritionManager.Controllers
             await _nutritionLogsRepository.UpdateNutritionLogs(nutritionLogs);
         }
 
-        [HttpDelete("id/{id}")]
-        public async Task DeleteNutritionLogsAsync(int id)
+        [HttpDelete]
+        public async Task DeleteNutritionLogsAsync(int logId, int userId)
         {
-            await _nutritionLogsRepository.DeleteNutritionLogs(id);
+            await _nutritionLogsRepository.DeleteNutritionLogs(logId, userId);
         }
     }
 }

@@ -22,11 +22,16 @@ namespace NutritionManager.Repositories
             return nutritionLogs;
         }
 
-        public async Task DeleteNutritionLogs(int id)
+        public async Task DeleteNutritionLogs(int logId, int userId)
         {
-            var nutritionLogsToDelete = GetNutritionLogsById(id).Result;
-            _context.NutritionLogs.Remove(nutritionLogsToDelete);
-            await _context.SaveChangesAsync();
+            var logToDelete = await _context.NutritionLogs
+                .FirstOrDefaultAsync(x => x.Id == logId && x.UserId == userId);
+
+            if (logToDelete != null)
+            {
+                _context.NutritionLogs.Remove(logToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<NutritionLogs>> GetAllNutritionLogs()

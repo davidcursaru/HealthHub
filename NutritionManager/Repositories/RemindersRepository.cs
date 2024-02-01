@@ -22,11 +22,16 @@ namespace NutritionManager.Repositories
             return reminder;
         }
 
-        public async Task DeleteReminder(int id)
+        public async Task DeleteReminder(int logId, int userId)
         {
-            var reminderToDelete = GetReminderById(id).Result;
-            _context.Reminders.Remove(reminderToDelete);
-            await _context.SaveChangesAsync();
+            var logToDelete = await _context.Reminders
+                 .FirstOrDefaultAsync(x => x.Id == logId && x.UserId == userId);
+
+            if (logToDelete != null)
+            {
+                _context.Reminders.Remove(logToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Reminders>> GetAllReminders()

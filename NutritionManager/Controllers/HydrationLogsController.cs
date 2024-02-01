@@ -59,10 +59,10 @@ namespace NutritionManager.Controllers
             await _hydrationLogsRepository.UpdateHydrationLogs(hydrationLogs);
         }
 
-        [HttpDelete("id/{id}")]
-        public async Task DeleteHydrationLogsAsync(int id)
+        [HttpDelete]
+        public async Task DeleteHydrationLogsAsync(int logId, int userId)
         {
-            await _hydrationLogsRepository.DeleteHydrationLogs(id);
+            await _hydrationLogsRepository.DeleteHydrationLogs(logId, userId);
         }
     }
 }

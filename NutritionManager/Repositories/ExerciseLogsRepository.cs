@@ -23,12 +23,18 @@ namespace NutritionManager.Repositories
             return exercise;
         }
 
-        public async Task DeleteExerciseAsync(int id)
+        public async Task DeleteExerciseAsync(int logId, int userId)
         {
-            var exerciseToDelete = GetExerciseLogsByIdAsync(id);
-            _context.Remove(exerciseToDelete);
-            await _context.SaveChangesAsync();
+            var exerciseToDelete = await _context.ExerciseLogs
+                .FirstOrDefaultAsync(e => e.Id == logId && e.UserId == userId);
+
+            if (exerciseToDelete != null)
+            {
+                _context.ExerciseLogs.Remove(exerciseToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
+
 
         public async Task<IEnumerable<ExerciseLogs>> GetAllExercisesLogsAsync()
         {
@@ -85,7 +91,7 @@ namespace NutritionManager.Repositories
 
             var exerciseData = new
             {
-                
+
                 Duration = duration,
                 Burned_calories = calories,
                 HeartMinutes = heartMinutes
@@ -140,6 +146,6 @@ namespace NutritionManager.Repositories
             await _context.SaveChangesAsync();
         }
 
-     
+
     }
 }

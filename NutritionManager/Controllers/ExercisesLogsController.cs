@@ -65,9 +65,9 @@ namespace NutritionManager.Controllers
         }
 
         [HttpDelete]
-        public async Task DeleteExerciseLogsAsync(int id)
+        public async Task DeleteExerciseLogsAsync(int logId, int userId)
         {
-            await _exerciseLogsRepository.DeleteExerciseAsync(id);
+            await _exerciseLogsRepository.DeleteExerciseAsync(logId, userId);
         }
     }
 }

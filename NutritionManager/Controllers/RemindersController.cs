@@ -40,10 +40,10 @@ namespace NutritionManager.Controllers
             await _remindersRepository.UpdateReminder(reminder);
         }
 
-        [HttpDelete("id/{id}")]
-        public async Task DeleteReminderAsync(int id)
+        [HttpDelete]
+        public async Task DeleteReminderAsync(int logId, int userId)
         {
-            await _remindersRepository.DeleteReminder(id);
+            await _remindersRepository.DeleteReminder(logId, userId);
         }
 
         [HttpGet("schedulling/{loggedUserId}")]
