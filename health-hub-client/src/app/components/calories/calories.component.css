@@ -131,7 +131,7 @@ button {
 }
 
 .calculator-info-container {
-    display: flex;
+    display: block;
 }
 
 .mat-form-field {
@@ -139,9 +139,6 @@ button {
 }
 
 .button-container {
-
-    margin-top: 20px;
-    margin-left: 10px;
     margin-right: 20px;
 }
 

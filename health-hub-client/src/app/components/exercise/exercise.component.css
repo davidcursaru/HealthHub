@@ -190,13 +190,13 @@ button {
 
 .journal-mat-card-header {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
+    align-items: left;
+    justify-content: left;
+    height: 40px;
 }
 .example-header-image{
-    margin-top: 30px;
-    
+   
+    margin-top: 3px;
     
 }
 
@@ -207,6 +207,11 @@ button {
 
 .cardio-icon-journal mat-icon {
     margin-right: 5px;
+}
+.delete-button{
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 /* Media for different screen sizes */

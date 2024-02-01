@@ -11,6 +11,7 @@ import { NgForm } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
 import { IntensityBarComponent } from '../intensity-bar/intensity-bar.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-exercise',
@@ -170,6 +171,7 @@ export class ExerciseComponent implements OnInit {
         Array.prototype.unshift.apply(this.exercises, data);
 
         this.exercises = data;
+        console.log("exercises list: ", this.exercises);
         this.exerciseCounter = data.length;
       },
       (error) => {
@@ -177,6 +179,29 @@ export class ExerciseComponent implements OnInit {
       }
     );
 
+  }
+  deleteExercise(logId: number)
+  {
+      this.userService.deleteExercise(logId).subscribe(
+        () => {
+          window.location.reload();
+          setTimeout(() => {
+      }, 2000);
+      
+          this.snackBar.open('Exercise log deleted successfully', 'Close', {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['snackbar-success'],
+          });
+        },
+        (error: HttpErrorResponse) => {
+          // Handle the error appropriately
+          console.error("Error deleting user:", error);
+          // You can display an error message or perform any necessary actions
+        }
+      );
+      console.log("log id: ", logId);
   }
 
   getExerciseBurnedCalories(exerciseForm: NgForm) {
@@ -258,6 +283,7 @@ export class ExerciseComponent implements OnInit {
     });
 
   }
+  
 
 }
 

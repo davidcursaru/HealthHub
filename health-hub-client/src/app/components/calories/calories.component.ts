@@ -101,6 +101,7 @@ export class CaloriesComponent implements OnInit {
           { title: 'Calories intake', cols: 1, rows: 2, route: '' },
           { title: 'Water intake', cols: 1, rows: 3, route: '' },
           { title: 'Calories and nutritional values calculator', cols: 1, rows: 5, route: '' },
+          { title: 'Food journal', cols: 1, rows: 5, route: '' },
           { title: 'Progress ', cols: 1, rows: 3, route: '' },
           { columns: 1 }
         ];
@@ -111,6 +112,7 @@ export class CaloriesComponent implements OnInit {
           { title: 'Calories intake', cols: 1, rows: 2, route: '' },
           { title: 'Water intake', cols: 1, rows: 3, route: '' },
           { title: 'Calories and nutritional values calculator', cols: 1, rows: 6, route: '' },
+          { title: 'Food journal', cols: 1, rows: 5, route: '' },
           { title: 'Progress ', cols: 1, rows: 3, route: '' },
           { columns: 2 }
         ];
@@ -120,7 +122,8 @@ export class CaloriesComponent implements OnInit {
           { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
           { title: 'Calories intake', cols: 1, rows: 2, route: '' },
           { title: 'Water intake', cols: 1, rows: 3, route: '' },
-          { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
+          { title: 'Calories and nutritional values calculator', cols: 1, rows: 5, route: '' },
+          { title: 'Food journal', cols: 1, rows: 5, route: '' },
           { title: 'Progress ', cols: 1, rows: 3, route: '' },
           { columns: 3 }
         ];
@@ -131,6 +134,7 @@ export class CaloriesComponent implements OnInit {
           { title: 'Calories intake', cols: 1, rows: 2, route: '' },
           { title: 'Water intake', cols: 1, rows: 3, route: '' },
           { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
+          { title: 'Food journal', cols: 1, rows: 5, route: '' },
           { title: 'Progress ', cols: 1, rows: 3, route: '' },
           { columns: 3 }
         ];
@@ -141,6 +145,7 @@ export class CaloriesComponent implements OnInit {
         { title: 'Calories intake', cols: 1, rows: 2, route: '' },
         { title: 'Water intake', cols: 1, rows: 3, route: '' },
         { title: 'Calories and nutritional values calculator', cols: 1, rows: 6, route: '' },
+        { title: 'Food journal', cols: 1, rows: 5, route: '' },
         { title: 'Progress ', cols: 1, rows: 3, route: '' },
         { columns: 1 }
       ];

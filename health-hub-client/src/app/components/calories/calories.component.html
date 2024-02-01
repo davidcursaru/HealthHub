@@ -8,7 +8,7 @@
         Goal</button>
     </div>
 
-    <mat-grid-list [cols]="(cards | async)?.[5]?.columns || (cards | async)?.[4]?.columns" rowHeight="115px">
+    <mat-grid-list [cols]="(cards | async)?.[6]?.columns || (cards | async)?.[4]?.columns" rowHeight="115px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="calories-card"
                 [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
@@ -44,6 +44,13 @@
                     </mat-card-title>
 
                     <mat-card-title *ngIf="i === 4">
+                        <div class="BMI-card-header">
+                            <mat-icon class="BMI-card-icon">restaurant</mat-icon>
+                            <span class="BMI-card-title">{{card.title}}</span>
+                        </div>
+                    </mat-card-title>
+
+                    <mat-card-title *ngIf="i === 5">
                         <div class="BMI-card-header">
                             <mat-icon class="BMI-card-icon">hourglass_top</mat-icon>
                             <span class="BMI-card-title">{{card.title}}</span>
@@ -191,7 +198,7 @@
                     </ng-container>
                 </mat-card-content>
 
-                <mat-card-content class="progress-calories-tracker" *ngIf="i === 4">
+                <mat-card-content class="progress-calories-tracker" *ngIf="i === 5">
 
                     <div class="progress-wrapper">
                         <!--  Calories intake progress -->

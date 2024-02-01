@@ -145,18 +145,23 @@
                 </mat-card-content>
 
                 <mat-card-content class="activities-card-content" *ngIf="i === 2">
-                    <ng-container>
+                    <ng-container *ngIf="exercises && exercises.length > 0; else emptyJournal">
                         <div class="mat-card-container">
                             <mat-card class="journal-mat-card" *ngFor="let exercise of exercises;">
                                 <mat-card-header class="journal-mat-card-header">
+                                    
                                   <div mat-card-avatar class="example-header-image">
                                     <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon>
                                   </div>
+                                  
                                   <div class="header-content">
                                     <mat-card-title style="font-size: large;">{{ exercise.name }}</mat-card-title>  
                                   </div>
                                 </mat-card-header>
                                 <mat-card-content>
+                                    <button mat-icon-button class="delete-button" (click) = "deleteExercise(exercise.logId)">
+                                        <mat-icon style="color: rgb(34, 43, 107);" >delete</mat-icon>
+                                      </button>
                                   <p class="cardio-icon-journal">
                                     <mat-icon style="color: #0992B8;">favorite_border</mat-icon>
                                     <span style="font-weight: bold;">{{exercise.heart_minutes }} pct</span>
@@ -172,6 +177,11 @@
                               
                         </div>
                     </ng-container>
+                    <ng-template #emptyJournal>
+                        <div style="font-weight: bold;">
+                            <p>The journal is empty, no exercise recorded today.</p>
+                        </div>
+                    </ng-template>
                 </mat-card-content>
 
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>

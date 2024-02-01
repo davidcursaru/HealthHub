@@ -179,6 +179,21 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/exercise-data-interval?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<any>(endpoint);
   }
+  
+  deleteExercise(logId: number): Observable<any>{
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs?logId=' + logId + '&userId=' + this.idLocalStorage;
+
+    return this.http.delete<void>(endpoint).pipe(
+      tap(() => {
+        console.log("User deleted successfully");
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error deleting user:", error);
+        throw error;
+      })
+    );
+  }
+
 
   // Goal logs
   createGoalLog(userId: number, goalType: string, targetValue: number, startDate: string, deadline: string): Observable<any> {
