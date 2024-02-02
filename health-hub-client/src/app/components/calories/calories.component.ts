@@ -1,13 +1,15 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { User } from 'src/app/interfaces/user.interface';
 import { UserService } from 'src/app/services/user.service';
 import { NutrientValues } from 'src/app/interfaces/nutrients.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoalsComponent } from '../goals/goals.component';
-import { MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { interval } from 'rxjs';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 @Component({
 
   selector: 'app-calories',
@@ -16,6 +18,17 @@ import { interval } from 'rxjs';
 
 })
 export class CaloriesComponent implements OnInit {
+  @ViewChild('titleRef', { static: false }) titleRef!: ElementRef;
+
+  isTruncated: boolean = true;
+  // Get the user's local timezone offset in minutes
+  timezoneOffset = new Date().getTimezoneOffset();
+  currentDate = new Date();
+  // Adjust startDate and endDate using the timezone offset
+  startDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 0, 0 - this.timezoneOffset, 0);
+  endDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), this.currentDate.getDate(), 23, 59 - this.timezoneOffset, 59);
+  isoDateString1 = this.startDate.toISOString();
+  isoDateString2 = this.endDate.toISOString();
   user: User | null = null;
   userId: any;
   gender: any;
@@ -48,6 +61,7 @@ export class CaloriesComponent implements OnInit {
   sugar: any;
   foodScore: any;
   foodName: any;
+  foodList: any[] = [];
   MALE_GOAL = {
     calories: 2500,
     protein: 56,
@@ -128,7 +142,7 @@ export class CaloriesComponent implements OnInit {
           { columns: 3 }
         ];
       }
-      else if ( breakpoints[Breakpoints.XLarge]) {
+      else if (breakpoints[Breakpoints.XLarge]) {
         return [
           { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
           { title: 'Calories intake', cols: 1, rows: 2, route: '' },
@@ -153,13 +167,13 @@ export class CaloriesComponent implements OnInit {
     })
   );
 
- 
+
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
 
@@ -200,13 +214,79 @@ export class CaloriesComponent implements OnInit {
     this.WaterConsumptionCurrentDay = localStorage.getItem("ConsumedWaterQuantity");
 
     interval(100).subscribe(() => {
-    this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
-    this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
+      this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+      this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
-    this.percentageBurnedCalories = this.calculatePercentage(Number(this.getBurnedCaloriesSum()), Number(this.goalsCurrentDayBurnedCalories));
-    this.percentageTitleBurnedCalories = this.percentageBurnedCalories.toString() + "%";
+      this.percentageBurnedCalories = this.calculatePercentage(Number(this.getBurnedCaloriesSum()), Number(this.goalsCurrentDayBurnedCalories));
+      this.percentageTitleBurnedCalories = this.percentageBurnedCalories.toString() + "%";
     })
 
+    this.getNutritionDataInterval(this.userId, this.isoDateString1, this.isoDateString2);
+
+  }
+
+  getNutritionDataInterval(userId: number, startDate: string, endDate: string) {
+
+    this.userService.getNutritionDataInterval(userId, startDate, endDate).subscribe(
+      (data: any[]) => {
+        // data.reverse();
+        data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        Array.prototype.unshift.apply(this.foodList, data);
+
+        //this.exercises = data;
+        console.log("exercises list: ", this.foodList);
+
+      },
+      (error) => {
+        console.error('Error fetching exercise data:', error);
+      }
+    );
+
+  }
+
+  deleteFood(logId: number, calories: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: { logId: logId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.userService.deleteFood(logId).subscribe(
+          () => {
+
+            this.CaloriesIntakeCurrentDay = Math.round(Number(this.CaloriesIntakeCurrentDay) - calories);
+            localStorage.setItem("CaloriesIntakeCurrentDay", this.CaloriesIntakeCurrentDay.toString());
+
+            this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+            this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
+            // window.location.reload();
+            const indexToDelete = this.foodList.findIndex(food => food.logId === logId);
+
+            // Check if the exercise with the given logId exists in the array
+            if (indexToDelete !== -1) {
+              // Use splice to remove the exercise at the found index
+              this.foodList.splice(indexToDelete, 1);
+
+            } else {
+
+            }
+
+            this.snackBar.open('Nutrition log deleted successfully', 'Close', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['snackbar-success'],
+            });
+
+
+
+          },
+          (error: HttpErrorResponse) => {
+          }
+        );
+      }
+    });
   }
 
   isNormalWeight(BMIClassification: string): boolean {
@@ -288,26 +368,30 @@ export class CaloriesComponent implements OnInit {
     const userId: any = this.user?.id;
     this.getNutritionalValues(formValue);
     setTimeout(() => {
-      console.log("Food item exists: ", this.foodItemExists);
-      
+
+
       const calories = localStorage.getItem("CaloriesDb");
-      console.log("calories: ", calories)
+
       if (this.foodItemExists) {
-        this.userService.createNutritionLog(userId, foodItems, foodGrams, Number(calories)).subscribe((res: any) => {
-          this.snackBar.open('Nutrition log created successfully', 'Close', {
-            duration: 4000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
+
+        this.CaloriesIntakeCurrentDay = Math.round(Number(this.CaloriesIntakeCurrentDay) + Number(calories));
+        localStorage.setItem("CaloriesIntakeCurrentDay", this.BurnedCaloriesFromExercises.toString());
+        this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
+        this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
+
+        this.userService.createNutritionLog(userId, foodItems, foodGrams, Number(calories)).pipe(
+          switchMap(() => this.userService.getNutritionDataInterval(this.userId, this.isoDateString1, this.isoDateString2))
+        )
+          .subscribe((data: any[]) => {
+            data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+            this.foodList = data;
           });
 
-          this.CaloriesIntakeCurrentDay = Math.round((this.CaloriesIntakeCurrentDay ? parseFloat(this.CaloriesIntakeCurrentDay) : 0) + parseFloat(this.calories));
-          this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
-          this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
-
-          localStorage.setItem('CaloriesIntakeCurrentDay', this.CaloriesIntakeCurrentDay.toString());
-
-
+        this.snackBar.open('Nutrition log created successfully', 'Close', {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['snackbar-success'],
         });
       } else {
         this.snackBar.open('Nutrition log creation failed. Check the spelling of the food item and try again.', 'Close', {

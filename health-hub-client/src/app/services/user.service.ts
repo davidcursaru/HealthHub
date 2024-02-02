@@ -159,6 +159,18 @@ export class UserService {
     return this.http.get<number>(endpoint);
   }
 
+  deleteFood(logId: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs?logId=' + logId + '&userId=' + this.idLocalStorage;
+
+    return this.http.delete<void>(endpoint).pipe(
+      tap(() => {
+      }),
+      catchError((error: HttpErrorResponse) => {
+        throw error;
+      })
+    );
+  }
+
   //Exercise logs
   getAllExerciseLogs() {
     const endpoint = environment.userManagement.baseUrl + "exercisesLogs/userId/" + this.idLocalStorage;
@@ -193,10 +205,8 @@ export class UserService {
 
     return this.http.delete<void>(endpoint).pipe(
       tap(() => {
-        console.log("User deleted successfully");
       }),
       catchError((error: HttpErrorResponse) => {
-        console.error("Error deleting user:", error);
         throw error;
       })
     );

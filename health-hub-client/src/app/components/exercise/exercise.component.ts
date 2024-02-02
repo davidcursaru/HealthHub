@@ -285,7 +285,7 @@ export class ExerciseComponent implements OnInit {
         )
         .subscribe((data: any[]) => {
           data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        Array.prototype.unshift.apply(this.exercises, data);
+          this.exercises = data;
           console.log(this.exercises);
           this.exerciseCounter = data.length;
         });

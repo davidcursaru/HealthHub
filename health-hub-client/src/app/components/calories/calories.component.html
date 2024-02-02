@@ -4,14 +4,14 @@
         <h1 class="mat-h1">Calories tracker</h1>
 
         <button mat-raised-button color="primary" type="button" class="create-goal-btn"
-        (click)="openCreateGoalsDialog()">Create
-        Goal</button>
+            (click)="openCreateGoalsDialog()">Create
+            Goal</button>
     </div>
 
     <mat-grid-list [cols]="(cards | async)?.[6]?.columns || (cards | async)?.[4]?.columns" rowHeight="115px">
         <mat-grid-tile *ngFor="let card of cards | async; let i = index" [colspan]="card.cols" [rowspan]="card.rows">
             <mat-card class="calories-card"
-                [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2 }">
+                [ngClass]="{ 'first-card': i === 0, 'second-card': i === 1,'third-card': i === 2, 'forth-card': i === 4 }">
 
                 <!----------HEADERS OF THE MAT-CARDS ------------>
                 <mat-card-header>
@@ -198,6 +198,54 @@
                     </ng-container>
                 </mat-card-content>
 
+                <mat-card-content *ngIf="i === 4">
+                    <ng-container *ngIf="foodList && foodList.length > 0; else emptyJournal">
+                        <div>
+                            <mat-card class="journal-mat-card" *ngFor="let food of foodList;">
+                                <mat-card-header class="journal-mat-card-header">
+
+                                    <div mat-card-avatar class="example-header-image">
+                                        <mat-icon style="color: rgb(34, 43, 107);">fastfood</mat-icon>
+                                    </div>
+
+                                    <div class="header-content" [matTooltip]="food.name">
+                                        <ng-container *ngIf="isTruncated; else fullText">
+                                            <mat-card-title #titleRef class="hoverable" style="font-size: large;">{{
+                                                food.name }}</mat-card-title>
+                                        </ng-container>
+                                        <ng-template #fullText>
+                                            <mat-card-title>{{ food.name }}</mat-card-title>
+                                        </ng-template>
+                                    </div>
+                                </mat-card-header>
+                                <mat-card-content class="food-card">
+                                    <button mat-icon-button class="delete-button"
+                                        (click)="deleteFood(food.logId,food.calories)">
+                                        <mat-icon style="color: rgb(34, 43, 107);">delete</mat-icon>
+                                    </button>
+                                    <p><span style="font-weight: bold;">Calories:</span> {{
+                                        food.calories }} kcal</p>
+
+
+                                    <div class="bottom-right">
+                                        <p><span style="font-weight: bold;">Grams:</span> {{
+                                            food.grams }} g</p>
+
+                                    </div>
+                                    <p style="font-weight: bold;">{{ food.date | date:'h:mm a' }}</p>
+
+                                </mat-card-content>
+                            </mat-card>
+
+                        </div>
+                    </ng-container>
+                    <ng-template #emptyJournal>
+                        <div style="font-weight: bold;">
+                            <p>The journal is empty, no exercise recorded today.</p>
+                        </div>
+                    </ng-template>
+                </mat-card-content>
+
                 <mat-card-content class="progress-calories-tracker" *ngIf="i === 5">
 
                     <div class="progress-wrapper">
@@ -230,6 +278,8 @@
                         </div>
                     </div>
                 </mat-card-content>
+
+
                 <!----------END OF CONTENT OF THE MAT-CARDS ------------>
             </mat-card>
         </mat-grid-tile>

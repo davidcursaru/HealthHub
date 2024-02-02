@@ -1,14 +1,16 @@
 button {
     transition: transform 0.1s cubic-bezier(0.47, 2.02, 0.31, -0.36),
-                box-shadow 0.2s ease,
-            
-  }
-  
-  /* Add hover effect for buttons */
-  button:hover {
-    transform: scale(1.05); /* Adjust the scale value for a smaller size increase */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase the shadow intensity */
-  }
+        box-shadow 0.2s ease,
+
+}
+
+/* Add hover effect for buttons */
+button:hover {
+    transform: scale(1.05);
+    /* Adjust the scale value for a smaller size increase */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Increase the shadow intensity */
+}
 
 
 
@@ -24,7 +26,7 @@ button {
     justify-content: space-between;
 }
 
-.create-goal-btn{
+.create-goal-btn {
     margin-right: 30px;
 }
 
@@ -226,6 +228,69 @@ button {
     color: rgba(0, 0, 0, 0.43);
     font-size: 14px;
     font-weight: bold;
+}
+
+.forth-card {
+    overflow: scroll;
+}
+
+.journal-mat-card {
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: black;
+    margin: 10px;
+    width: 95%;
+    height: 105px;
+
+
+}
+
+.journal-mat-card-header {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    height: 40px;
+}
+
+.example-header-image {
+
+    margin-top: 3px;
+
+}
+
+.header-content {
+    width: 275px;
+    /* Set your desired width limit */
+    display: flex;
+    flex-shrink: 1;
+    /* Allow content to shrink */
+    overflow: hidden;
+}
+
+.header-content mat-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.food-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.bottom-right {
+    display: block;
+    justify-content: space-between;
+
 }
 
 
