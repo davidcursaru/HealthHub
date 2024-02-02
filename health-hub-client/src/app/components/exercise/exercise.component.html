@@ -126,6 +126,12 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Start time</mat-label>
+                                <input matInput type="datetime-local" formControlName="startTime"
+                                    placeholder="Enter start time">
+                            </mat-form-field>
                         </form>
 
                         <button class="intensity-button" mat-raised-button color="primary"
@@ -149,37 +155,41 @@
                         <div class="mat-card-container">
                             <mat-card class="journal-mat-card" *ngFor="let exercise of exercises;">
                                 <mat-card-header class="journal-mat-card-header">
-                                    
-                                  <div mat-card-avatar class="example-header-image">
-                                    <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon>
-                                  </div>
-                                  
-                                  <div class="header-content" [matTooltip]="exercise.name">
-                                    <ng-container *ngIf="isTruncated; else fullText">
-                                      <mat-card-title #titleRef class="hoverable" style="font-size: large;">{{ exercise.name }}</mat-card-title>
-                                    </ng-container>
-                                    <ng-template #fullText>
-                                      <mat-card-title>{{ exercise.name }}</mat-card-title>
-                                    </ng-template>
-                                  </div>
+
+                                    <div mat-card-avatar class="example-header-image">
+                                        <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon>
+                                    </div>
+
+                                    <div class="header-content" [matTooltip]="exercise.name">
+                                        <ng-container *ngIf="isTruncated; else fullText">
+                                            <mat-card-title #titleRef class="hoverable" style="font-size: large;">{{
+                                                exercise.name }}</mat-card-title>
+                                        </ng-container>
+                                        <ng-template #fullText>
+                                            <mat-card-title>{{ exercise.name }}</mat-card-title>
+                                        </ng-template>
+                                    </div>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <button mat-icon-button class="delete-button" (click) = "deleteExercise(exercise.logId,exercise.duration, exercise.burned_calories, exercise.heart_minutes)">
-                                        <mat-icon style="color: rgb(34, 43, 107);" >delete</mat-icon>
-                                      </button>
-                                  <p class="cardio-icon-journal">
-                                    <mat-icon style="color: #0992B8;">favorite_border</mat-icon>
-                                    <span style="font-weight: bold;">{{exercise.heart_minutes }} pct</span>
-                                  </p>
-                                  <p><span style="font-weight: bold;">Burned Calories:</span> {{ exercise.burned_calories }} kcal</p>
-                                  <div class="bottom-right">
-                                    <p><span style="font-weight: bold;">Duration: </span> {{ exercise.duration }} min</p>
-                                    <p style="font-weight: bold;">{{ exercise.date | date:'h:mm a' }}</p>
-                                  </div>
-                                
+                                    <button mat-icon-button class="delete-button"
+                                        (click)="deleteExercise(exercise.logId,exercise.duration, exercise.burned_calories, exercise.heart_minutes)">
+                                        <mat-icon style="color: rgb(34, 43, 107);">delete</mat-icon>
+                                    </button>
+                                    <p class="cardio-icon-journal">
+                                        <mat-icon style="color: #0992B8;">favorite_border</mat-icon>
+                                        <span style="font-weight: bold;">{{exercise.heart_minutes }} pct</span>
+                                    </p>
+                                    <p><span style="font-weight: bold;">Burned Calories:</span> {{
+                                        exercise.burned_calories }} kcal</p>
+                                    <div class="bottom-right">
+                                        <p><span style="font-weight: bold;">Duration: </span> {{ exercise.duration }}
+                                            min</p>
+                                        <p style="font-weight: bold;">{{ exercise.date | date:'h:mm a' }}</p>
+                                    </div>
+
                                 </mat-card-content>
-                              </mat-card>
-                              
+                            </mat-card>
+
                         </div>
                     </ng-container>
                     <ng-template #emptyJournal>

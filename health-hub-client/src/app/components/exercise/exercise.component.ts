@@ -78,8 +78,8 @@ export class ExerciseComponent implements OnInit {
         return [
           { title: 'Exercise data ', cols: 1, rows: 3, route: '' },
           { title: 'Progress', cols: 1, rows: 3, route: '' },
-          { title: 'Exercises/activities journal', cols: 1, rows: 8, route: '' },
-          { title: 'Burned calories from exercises calculator', cols: 2, rows: 5, route: '' },
+          { title: 'Exercises/activities journal', cols: 1, rows: 9, route: '' },
+          { title: 'Burned calories from exercises calculator', cols: 2, rows: 6, route: '' },
           { columns: 3 }
         ];
       }
@@ -123,7 +123,8 @@ export class ExerciseComponent implements OnInit {
 
     this.exerciseFormGroup = this.formBuilder.group({
       exerciseType: ['', Validators.required],
-      exerciseDuration: ['', Validators.required]
+      exerciseDuration: ['', Validators.required],
+      startTime: ['', Validators.required]
     });
 
     // Subscribe to value changes of the exerciseType control
@@ -206,7 +207,26 @@ export class ExerciseComponent implements OnInit {
 
             this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
             this.percentageTitleExercise = this.percentageExercise.toString() + "%";
-            window.location.reload();
+            // window.location.reload();
+            const indexToDelete = this.exercises.findIndex(exercise => exercise.logId === logId);
+
+            // Check if the exercise with the given logId exists in the array
+            if (indexToDelete !== -1) {
+              // Use splice to remove the exercise at the found index
+              this.exercises.splice(indexToDelete, 1);
+              console.log(`Exercise with logId ${logId} deleted successfully.`);
+            } else {
+              console.log(`Exercise with logId ${logId} not found.`);
+            }
+
+            this.snackBar.open('Exercise log deleted successfully', 'Close', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['snackbar-success'],
+            });
+
+
 
           },
           (error: HttpErrorResponse) => {
@@ -241,7 +261,8 @@ export class ExerciseComponent implements OnInit {
     const formValue = this.exerciseFormGroup.value;
     const exerciseType = formValue.exerciseType;
     const exerciseDuration = formValue.exerciseDuration;
-    const now = new Date();
+    const startTime = formValue.startTime;
+
     this.getExerciseBurnedCalories(exerciseForm);
 
     setTimeout(() => {
@@ -257,13 +278,14 @@ export class ExerciseComponent implements OnInit {
       this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
       this.percentageTitleExercise = this.percentageExercise.toString() + "%";
 
-      this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned), this.cardioPointsToAdd)
+      this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned), this.cardioPointsToAdd, startTime)
         .pipe(
           switchMap(() => this.userService.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2))
         )
         .subscribe((data: any[]) => {
           data.reverse();
           this.exercises = data;
+          console.log(this.exercises);
           this.exerciseCounter = data.length;
         });
 

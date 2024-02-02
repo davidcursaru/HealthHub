@@ -159,14 +159,16 @@ export class UserService {
     return this.http.get<ExerciseLogs[]>(endpoint);
   }
 
-  createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number, heartMinutes: Number): Observable<any> {
+  createExerciseLog(userId: number, exerciseType: string, exerciseDuration: number, burnedCalories: number, heartMinutes: Number, startTime: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs';
     const body = {
       userId: userId,
+      exerciseDate: startTime,
       exerciseType: exerciseType,
       exerciseDuration: exerciseDuration,
       burnedCalories: burnedCalories,
-      heartMinutes: heartMinutes
+      heartMinutes: heartMinutes,
+
     };
 
     return this.http.post<any>(endpoint, body);
@@ -179,8 +181,8 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs/exercise-data-interval?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<any>(endpoint);
   }
-  
-  deleteExercise(logId: number): Observable<any>{
+
+  deleteExercise(logId: number): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'exercisesLogs?logId=' + logId + '&userId=' + this.idLocalStorage;
 
     return this.http.delete<void>(endpoint).pipe(
