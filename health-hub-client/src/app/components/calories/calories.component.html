@@ -90,7 +90,7 @@
                                 <span style="font-weight: bold; font-size: 1em;display:block;">Calories intake: <span
                                         style="font-weight: normal;">{{CaloriesIntakeCurrentDay ?
                                         CaloriesIntakeCurrentDay: 0}} kcal</span></span>
-                                <span style="font-weight: bold; font-size: 1em;display:block;">Calories burned: <span
+                                <span style="font-weight: bold; font-size: 1em;display:block;">Total burned calories: <span
                                         style="font-weight: normal;">{{getBurnedCaloriesSum()}} kcal</span></span>
                                 <span style="font-weight: bold; font-size: 1em;display:block;">Calories surplus: <span
                                         style="font-weight: normal;">{{CaloriesIntakeCurrentDay -
@@ -252,7 +252,7 @@
                         <!--  Calories intake progress -->
                         <div>
                             <p><span class="bold">{{CaloriesIntakeCurrentDay}}</span><span
-                                    class="grey-text">/{{goalsCurrentDayCaloriesIntake}} kcal Calories intake</span></p>
+                                    class="grey-text">/{{goalsCurrentDayCaloriesIntake}} kcal (Calories intake)</span></p>
                         </div>
                         <!-- Circle progress on the right side -->
                         <div>
@@ -267,7 +267,7 @@
                         <!--  Calories burned intake -->
                         <div>
                             <p><span class="bold">{{getBurnedCaloriesSum()}}</span><span
-                                    class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal Burned calories</span></p>
+                                    class="grey-text">/{{goalsCurrentDayBurnedCalories}} kcal (Total burned calories)</span></p>
                         </div>
                         <!-- Circle progress on the right side -->
                         <div>

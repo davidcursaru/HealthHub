@@ -92,6 +92,13 @@ button {
     border-right: 2px solid #0e0d0d33;
     border-width: 5px;
 
+    .exercise-data-div {
+        margin-left: 20px;
+        font-size: 14px;
+        font-weight: bold;
+        color: black;
+        opacity: .6;
+    }
     .exercise-data-div1 {
         font-size: 14px;
         font-weight: bold;
