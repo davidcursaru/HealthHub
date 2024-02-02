@@ -1,8 +1,10 @@
-<h2 mat-dialog-title>Confirmation</h2>
-<mat-dialog-content>
-  Are you sure you want to delete this exercise log?
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onYesClick()" cdkFocusInitial>Delete</button>
-</mat-dialog-actions>
+
+
+  <!-- <h2 mat-dialog-title>Logout Confirmation</h2> -->
+  <mat-dialog-content style="font-weight: bold">
+    Are you sure you want to delete the exercise log?
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">Delete</button>
+  </mat-dialog-actions>

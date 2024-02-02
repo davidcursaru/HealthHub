@@ -12,11 +12,4 @@ export class ConfirmDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  onNoClick(): void {
-    this.dialogRef.close(false); // User clicked cancel
-  }
-
-  onYesClick(): void {
-    this.dialogRef.close(true); // User clicked delete
-  }
 }
