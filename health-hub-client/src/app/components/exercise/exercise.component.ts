@@ -1,6 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { UserService } from 'src/app/services/user.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { GoalsComponent } from '../goals/goals.component';
@@ -12,6 +12,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
 import { IntensityBarComponent } from '../intensity-bar/intensity-bar.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-exercise',
@@ -20,6 +21,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 
 export class ExerciseComponent implements OnInit {
+  @ViewChild('titleRef', { static: false }) titleRef!: ElementRef;
+
+  isTruncated: boolean = true;
+
   // Get the user's local timezone offset in minutes
   timezoneOffset = new Date().getTimezoneOffset();
   currentDate = new Date();
@@ -180,28 +185,35 @@ export class ExerciseComponent implements OnInit {
     );
 
   }
-  deleteExercise(logId: number)
-  {
-      this.userService.deleteExercise(logId).subscribe(
-        () => {
-          window.location.reload();
-          setTimeout(() => {
-      }, 2000);
-      
-          this.snackBar.open('Exercise log deleted successfully', 'Close', {
-            duration: 4000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['snackbar-success'],
-          });
-        },
-        (error: HttpErrorResponse) => {
-          // Handle the error appropriately
-          console.error("Error deleting user:", error);
-          // You can display an error message or perform any necessary actions
-        }
-      );
-      console.log("log id: ", logId);
+  deleteExercise(logId: number, duration: number, calories: number, points: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: { logId: logId },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.userService.deleteExercise(logId).subscribe(
+          () => {
+            const caloriesBurned = localStorage.getItem("caloriesExercise");
+            const currentHeartPoints = localStorage.getItem("HeartMinutesHealthHub");
+            this.BurnedCaloriesFromExercises = Number(this.BurnedCaloriesFromExercises) - calories;
+            this.ExerciseDurationCurrentDay = Number(this.ExerciseDurationCurrentDay) - duration;
+            this.exerciseCounter -= 1;
+            localStorage.setItem("BurnedCaloriesFromExercises", this.BurnedCaloriesFromExercises.toString());
+            localStorage.setItem("ExerciseDurationCurrentDay", this.ExerciseDurationCurrentDay.toString());
+            localStorage.setItem("HeartMinutesHealthHub", (this.cardioPointsToAdd - points).toString());
+
+            this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
+            this.percentageTitleExercise = this.percentageExercise.toString() + "%";
+            window.location.reload();
+
+          },
+          (error: HttpErrorResponse) => {
+          }
+        );
+      }
+    });
   }
 
   getExerciseBurnedCalories(exerciseForm: NgForm) {
@@ -235,16 +247,6 @@ export class ExerciseComponent implements OnInit {
     setTimeout(() => {
       const caloriesBurned = localStorage.getItem("caloriesExercise");
       const currentHeartPoints = localStorage.getItem("HeartMinutesHealthHub");
-      const newExerciseEntry = {
-        name: exerciseType,
-        burned_calories: Number(caloriesBurned),
-        duration: exerciseDuration,
-        heart_minutes: this.cardioPointsToAdd,
-        date: now.toISOString()
-      };
-  
-      // Add the new entry to the beginning of the 'exercises' array
-      this.exercises.unshift(newExerciseEntry);
       this.BurnedCaloriesFromExercises = Number(this.BurnedCaloriesFromExercises) + Number(caloriesBurned);
       this.ExerciseDurationCurrentDay = Number(this.ExerciseDurationCurrentDay) + exerciseDuration;
       this.exerciseCounter += 1;
@@ -255,16 +257,23 @@ export class ExerciseComponent implements OnInit {
       this.percentageExercise = this.calculatePercentage(Number(this.ExerciseDurationCurrentDay), Number(this.goalsCurrentDayExerciseDuration));
       this.percentageTitleExercise = this.percentageExercise.toString() + "%";
 
-      this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned), this.cardioPointsToAdd).subscribe((res: any) => {
-        this.snackBar.open('Exercise log created successfully', 'Close', {
-          duration: 4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['snackbar-success'],
+      this.userService.createExerciseLog(this.userId, exerciseType, exerciseDuration, Number(caloriesBurned), this.cardioPointsToAdd)
+        .pipe(
+          switchMap(() => this.userService.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2))
+        )
+        .subscribe((data: any[]) => {
+          data.reverse();
+          this.exercises = data;
+          this.exerciseCounter = data.length;
         });
-        this.displayBurnedCalories = true;
 
+      this.snackBar.open('Exercise log created successfully', 'Close', {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success'],
       });
+      this.displayBurnedCalories = true;
     }, 1000);
 
   }
@@ -283,7 +292,19 @@ export class ExerciseComponent implements OnInit {
     });
 
   }
-  
+
+  showFullText() {
+    if (this.titleRef && this.titleRef.nativeElement) {
+      if (this.titleRef.nativeElement.scrollWidth > this.titleRef.nativeElement.clientWidth) {
+        this.isTruncated = false;
+      }
+    }
+  }
+
+  hideFullText() {
+    this.isTruncated = true;
+  }
+
 
 }
 

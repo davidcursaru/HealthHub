@@ -46,8 +46,9 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { IntervalBarComponent } from './components/interval-bar/interval-bar.component';
 import { AwakeBarComponent } from './components/awake-bar/awake-bar.component';
 import { NgChartsModule } from 'ng2-charts';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { NgChartsModule } from 'ng2-charts';
     SleepTrackerComponent,
     IntervalBarComponent,
     AwakeBarComponent,
+    ConfirmDialogComponent,
   
   ],
 
@@ -101,6 +103,7 @@ import { NgChartsModule } from 'ng2-charts';
     MatSliderModule,
     MatProgressBarModule,
     NgChartsModule,
+    MatTooltipModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,

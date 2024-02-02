@@ -154,12 +154,17 @@
                                     <mat-icon style="color: rgb(34, 43, 107);">local_activity</mat-icon>
                                   </div>
                                   
-                                  <div class="header-content">
-                                    <mat-card-title style="font-size: large;">{{ exercise.name }}</mat-card-title>  
+                                  <div class="header-content" [matTooltip]="exercise.name">
+                                    <ng-container *ngIf="isTruncated; else fullText">
+                                      <mat-card-title #titleRef class="hoverable" style="font-size: large;">{{ exercise.name }}</mat-card-title>
+                                    </ng-container>
+                                    <ng-template #fullText>
+                                      <mat-card-title>{{ exercise.name }}</mat-card-title>
+                                    </ng-template>
                                   </div>
                                 </mat-card-header>
                                 <mat-card-content>
-                                    <button mat-icon-button class="delete-button" (click) = "deleteExercise(exercise.logId)">
+                                    <button mat-icon-button class="delete-button" (click) = "deleteExercise(exercise.logId,exercise.duration, exercise.burned_calories, exercise.heart_minutes)">
                                         <mat-icon style="color: rgb(34, 43, 107);" >delete</mat-icon>
                                       </button>
                                   <p class="cardio-icon-journal">

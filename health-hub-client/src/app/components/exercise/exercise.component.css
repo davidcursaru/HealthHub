@@ -199,6 +199,18 @@ button {
     margin-top: 3px;
     
 }
+.header-content {
+    width: 275px; /* Set your desired width limit */
+    display: flex;
+    flex-shrink: 1; /* Allow content to shrink */
+    overflow: hidden;
+  }
+
+  .header-content mat-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 .cardio-icon-journal {
     display: flex;
