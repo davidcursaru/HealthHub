@@ -173,10 +173,11 @@ export class ExerciseComponent implements OnInit {
 
     this.userService.getExerciseDataInterval(userId, startDate, endDate).subscribe(
       (data: any[]) => {
-        data.reverse();
+        // data.reverse();
+        data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
         Array.prototype.unshift.apply(this.exercises, data);
 
-        this.exercises = data;
+        //this.exercises = data;
         console.log("exercises list: ", this.exercises);
         this.exerciseCounter = data.length;
       },
@@ -283,8 +284,8 @@ export class ExerciseComponent implements OnInit {
           switchMap(() => this.userService.getExerciseDataInterval(this.userId, this.isoDateString1, this.isoDateString2))
         )
         .subscribe((data: any[]) => {
-          data.reverse();
-          this.exercises = data;
+          data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        Array.prototype.unshift.apply(this.exercises, data);
           console.log(this.exercises);
           this.exerciseCounter = data.length;
         });
