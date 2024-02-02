@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using System.Text.Json;
 
 namespace NutritionManager.Repositories
 {
@@ -60,6 +61,38 @@ namespace NutritionManager.Repositories
                 .Where(r => r.ConsumptionDate >= startDate.Date && r.ConsumptionDate <= endDate.Date && r.UserId == userId).ToListAsync();
 
             return nutritionLogs;
+        }
+
+        public async Task<string> GetNutritionData(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            IEnumerable<NutritionLogs> nutritionLogs = await GetNutritionLogsInterval(userId, startDate, endDate);
+
+            List<object> nutritionDataList = new List<object>();
+
+            foreach (var food in nutritionLogs)
+            {
+                var nutritionData = new
+                {
+                    name = food.FoodConsumed,
+                    grams = food.Grams,
+                    calories = food.Calories,
+                    date = food.ConsumptionDate,
+                    logId = food.Id
+                };
+
+                nutritionDataList.Add(nutritionData);
+            }
+
+            return JsonSerializer.Serialize(nutritionDataList);
         }
 
         public async Task<double> GetNutritionLogsTotalCalories(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)

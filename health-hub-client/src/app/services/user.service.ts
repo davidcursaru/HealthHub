@@ -148,6 +148,12 @@ export class UserService {
 
     return this.http.post<any>(endpoint, body);
   }
+  
+  getNutritionDataInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs/nutrition-data-interval?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
+
   getCaloriesIntakeInterval(userId: number, startDate: string, endDate: string): Observable<number> {
     const endpoint = environment.userManagement.baseUrl + 'nutritionLogs/total-calories-intake?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
     return this.http.get<number>(endpoint);

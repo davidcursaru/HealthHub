@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using NutritionManager.Repositories;
 
 namespace NutritionManager.Controllers
 {
@@ -43,6 +44,12 @@ namespace NutritionManager.Controllers
         public async Task<double> GetNutritionLogsTotalCaloriesAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
         {
             return await _nutritionLogsRepository.GetNutritionLogsTotalCalories(userId, startDate, endDate);
+        }
+
+        [HttpGet("nutrition-data-interval")]
+        public async Task<string> GetNutritionDataAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            return await _nutritionLogsRepository.GetNutritionData(userId, startDate, endDate);
         }
 
         [HttpPost]
