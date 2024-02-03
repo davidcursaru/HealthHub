@@ -144,13 +144,14 @@ export class CaloriesComponent implements OnInit {
       }
       else if (breakpoints[Breakpoints.XLarge]) {
         return [
-          { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
-          { title: 'Calories intake', cols: 1, rows: 2, route: '' },
-          { title: 'Water intake', cols: 1, rows: 3, route: '' },
-          { title: 'Calories and nutritional values calculator', cols: 2, rows: 4, route: '' },
-          { title: 'Food journal', cols: 1, rows: 5, route: '' },
-          { title: 'Progress ', cols: 1, rows: 3, route: '' },
-          { columns: 3 }
+         
+            { title: 'Body Mass Index', cols: 1, rows: 2, route: '' },
+            { title: 'Calories intake', cols: 1, rows: 2, route: '' },
+            { title: 'Water intake', cols: 1, rows: 3, route: '' },
+            { title: 'Calories and nutritional values calculator', cols: 1, rows: 5, route: '' },
+            { title: 'Food journal', cols: 1, rows: 5, route: '' },
+            { title: 'Progress ', cols: 1, rows: 3, route: '' },
+            { columns: 3 }
         ];
       }
 
@@ -375,7 +376,7 @@ export class CaloriesComponent implements OnInit {
       if (this.foodItemExists) {
 
         this.CaloriesIntakeCurrentDay = Math.round(Number(this.CaloriesIntakeCurrentDay) + Number(calories));
-        localStorage.setItem("CaloriesIntakeCurrentDay", this.BurnedCaloriesFromExercises.toString());
+        localStorage.setItem("CaloriesIntakeCurrentDay", this.CaloriesIntakeCurrentDay.toString());
         this.percentageCaloriesIntake = this.calculatePercentage(Number(this.CaloriesIntakeCurrentDay), Number(this.goalsCurrentDayCaloriesIntake));
         this.percentageTitleCaloriesIntake = this.percentageCaloriesIntake.toString() + "%";
 
