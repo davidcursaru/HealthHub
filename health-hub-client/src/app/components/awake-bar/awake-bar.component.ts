@@ -27,7 +27,7 @@ export class AwakeBarComponent {
     if (value <= 3) {
       return { title: 'Good', color: 'green' };
     } else if (value > 3) {
-      return { title: 'Accord Care', color: 'red' };
+      return { title: 'Pay attention', color: 'red' };
     }
 
     return { title: 'No sleep data available', color: 'black' };

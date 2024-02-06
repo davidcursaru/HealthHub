@@ -185,8 +185,6 @@ export class DashboardComponent implements OnInit {
     })
   );
 
-
-
   constructor(
     private router: Router,
     private userService: UserService,
@@ -366,6 +364,7 @@ export class DashboardComponent implements OnInit {
         (error) => {
           console.error('Error fetching step count data:', error);
           this.StepsCountCurrentDay = 0;
+          localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay);
         }
       );
   }
@@ -390,6 +389,8 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching BMR Calories data:', error);
+          this.BMRCaloriesCurrentDay = 0;
+          localStorage.setItem("BMRCaloriesCurrentDay", this.BMRCaloriesCurrentDay.toString());
         }
       );
   }
@@ -408,6 +409,8 @@ export class DashboardComponent implements OnInit {
         },
         (error) => {
           console.error('Error fetching heart minutes data:', error);
+          this.HeartMinutesCurrentDay = 0;
+          localStorage.setItem("HeartMinutesCurrentDay", this.HeartMinutesCurrentDay);
         }
       );
   }

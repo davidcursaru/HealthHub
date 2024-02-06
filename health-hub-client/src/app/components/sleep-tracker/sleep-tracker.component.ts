@@ -491,7 +491,7 @@ export class SleepTrackerComponent {
           this.averageSleepStartTime = undefined;
         }
 
-        if (sleepDataRegularity.length >= 4) {
+        if (sleepDataRegularity.length >= 5) {
           // Calculate and display the regularity score
           this.regularityScore = this.sleepRegularityService.calculateSRI(sleepDataRegularity);
         }
@@ -715,7 +715,7 @@ export class SleepTrackerComponent {
 
   getMessage(): { score: string, title: string, message: string } {
     if (this.score <= 60 && this.score != 0) {
-      return { score: this.score.toString(), title: 'Accord Care', message: 'Consider adjusting your sleep routine' };
+      return { score: this.score.toString(), title: 'Pay attention', message: 'Consider adjusting your sleep routine' };
     } else if (this.score > 60 && this.score <= 79) {
       return { score: this.score.toString(), title: 'Satisfying', message: 'Congratulations! You have a satisfying sleep score' };
     } else if (this.score >= 80 && this.score <= 89) {
@@ -729,7 +729,7 @@ export class SleepTrackerComponent {
 
   getRegularityMessage(): { score: string, title: string, message: string } {
     if (this.regularityScore <= 60 && this.regularityScore != 0) {
-      return { score: this.regularityScore.toString(), title: 'Accord Care', message: '' };
+      return { score: this.regularityScore.toString(), title: 'Pay attention', message: '' };
     } else if (this.regularityScore > 60 && this.score <= 79) {
       return { score: this.regularityScore.toString(), title: 'Satisfying', message: '' };
     } else if (this.regularityScore >= 80 && this.score <= 89) {
@@ -739,14 +739,14 @@ export class SleepTrackerComponent {
       return { score: this.regularityScore.toString(), title: 'Optimal', message: '' };
     }
     if (this.regularityScore == 0) {
-      return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 4 sleep sessions with your smartwatch.' };
+      return { score: '0', title: 'Not enough sleep data available', message: 'Track at least 5 sleep sessions with your smartwatch.' };
     }
     return { score: '0', title: 'No sleep data available', message: 'Log in with Google account to access Google Fit data' };
   }
 
   updateAsleepProgressMessage(value: number): { title: string, color: string } {
     if (value < 70 && value > 0) {
-      return { title: 'Accord Care', color: 'red' };
+      return { title: 'Pay attention', color: 'red' };
     } else if (value >= 70 && value <= 89) {
       return { title: 'Good', color: 'green' };
     } else if (value > 89) {
