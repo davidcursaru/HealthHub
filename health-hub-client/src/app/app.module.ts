@@ -49,6 +49,7 @@ import { NgChartsModule } from 'ng2-charts';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CostumSnackbarComponent } from './components/costum-snackbar/costum-snackbar.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     IntervalBarComponent,
     AwakeBarComponent,
     ConfirmDialogComponent,
+    CostumSnackbarComponent,
   
   ],
 

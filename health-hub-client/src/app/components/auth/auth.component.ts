@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,12 +11,15 @@ import { User } from 'src/app/interfaces/user.interface';
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css']
 })
-export class AuthComponent {
+export class AuthComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private router: Router,
     private _snackBar: MatSnackBar) { }
+  ngOnInit(): void {
+    this.authService.logout();
+  }
 
   userName: any;
   userId: any;

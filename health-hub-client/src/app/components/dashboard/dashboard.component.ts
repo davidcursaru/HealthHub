@@ -10,6 +10,8 @@ import { GoogleAPIService } from 'src/app/services/google-api.service';
 import { interval } from 'rxjs';
 import { ChartData, ChartOptions } from 'chart.js';
 import { SleepRegularityService } from 'src/app/services/sleep-regularity.service';
+import { CostumSnackbarComponent } from '../costum-snackbar/costum-snackbar.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface TimeData {
   intervalKey: string;
@@ -191,7 +193,8 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     private googleAPIService: GoogleAPIService,
-    private sleepRegularityService: SleepRegularityService
+    private sleepRegularityService: SleepRegularityService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -365,6 +368,7 @@ export class DashboardComponent implements OnInit {
           console.error('Error fetching step count data:', error);
           this.StepsCountCurrentDay = 0;
           localStorage.setItem("StepsCountCurrentDay", this.StepsCountCurrentDay);
+          this.openCustomSnackbar();
         }
       );
   }
@@ -663,4 +667,13 @@ export class DashboardComponent implements OnInit {
     this.isoDateStringChart2 = this.endDateChart.toISOString();
   }
 
+  openCustomSnackbar(): void {
+    const message = 'HealthHub works the best when connected to Google Fit health and fitness mobile app. Sign in with your Google account to connect to your Google Fit account and be able to use all functionalities available.';
+    const snackBarRef = this.snackBar.openFromComponent(CostumSnackbarComponent, {
+      data: { message },
+      duration: 0, // Set duration to 0 to keep Snackbar open until dismissed manually
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom'
+    });
+  }
 }
