@@ -37,7 +37,7 @@ export class SchedulingComponent {
     const startActivity = formValue.startActivity;
     const endActivity = formValue.endActivity;
 
-    this.userService.createScheduleLog(reminderType, startActivity, endActivity).subscribe((res: any) => {
+    this.userService.createScheduleLog(this.userId,reminderType, startActivity, endActivity).subscribe((res: any) => {
       this.snackBar.open('Schedule item was created successfully', 'Close', {
         duration: 4000,
         horizontalPosition: 'center',

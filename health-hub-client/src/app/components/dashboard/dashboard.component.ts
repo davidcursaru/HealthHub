@@ -668,12 +668,21 @@ export class DashboardComponent implements OnInit {
   }
 
   openCustomSnackbar(): void {
-    const message = 'HealthHub works the best when connected to Google Fit health and fitness mobile app. Sign in with your Google account to connect to your Google Fit account and be able to use all functionalities available.';
-    const snackBarRef = this.snackBar.openFromComponent(CostumSnackbarComponent, {
-      data: { message },
-      duration: 0, // Set duration to 0 to keep Snackbar open until dismissed manually
-      horizontalPosition: 'right',
-      verticalPosition: 'bottom'
-    });
+    // Check if the snackbar has already been shown within the last 30 minutes
+    const lastSnackbarTime = localStorage.getItem('lastSnackbarTime');
+    if (!lastSnackbarTime || (Date.now() - parseInt(lastSnackbarTime, 10) > 30 * 60 * 1000)) {
+      // Show the snackbar if it hasn't been shown in the last 30 minutes
+      const message = 'HealthHub works the best when connected to Google Fit health and fitness mobile app. Sign in with your Google account to connect with Google Fit and be able to use all functionalities available.';
+      const snackBarRef = this.snackBar.openFromComponent(CostumSnackbarComponent, {
+        data: { message },
+        duration: 0, // Set duration to 0 to keep Snackbar open until dismissed manually
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom'
+      });
+  
+      // Save the timestamp of when the snackbar was shown
+      localStorage.setItem('lastSnackbarTime', Date.now().toString());
+    }
   }
+  
 }

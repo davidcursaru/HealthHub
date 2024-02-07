@@ -14,7 +14,8 @@ import { ExerciseLogs } from '../interfaces/exerciseLogs.interface';
 export class UserService {
   user: User = {};
   userNameUpdated: EventEmitter<string> = new EventEmitter();
-  idLocalStorage = Number(localStorage.getItem("userId"));
+ 
+  
 
   constructor(private http: HttpClient) { }
 
@@ -88,10 +89,10 @@ export class UserService {
     return this.http.get<Reminders[]>(endpoint);
   }
 
-  createScheduleLog(reminderType: string, startActivity: string, endActivity: string): Observable<any> {
+  createScheduleLog(userId: number, reminderType: string, startActivity: string, endActivity: string): Observable<any> {
     const endpoint = environment.userManagement.baseUrl + 'reminders';
     const body = {
-      userId: this.idLocalStorage,
+      userId: userId,
       reminderType: reminderType,
       startActivity: startActivity,
       endActivity: endActivity
@@ -126,14 +127,14 @@ export class UserService {
     const endpoint = environment.userManagement.baseUrl + 'hydrationLogs/count?userId=' + loggedUserId + '&startDate=' + startDate + '&endDate=' + endDate;
     return this.http.get(endpoint);
   }
-  getAllHydrationLogs() {
-    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/" + this.idLocalStorage;
+  getAllHydrationLogs(userId: number) {
+    const endpoint = environment.userManagement.baseUrl + "hydrationLogs/userId/" + userId
     return this.http.get<HydrationLogs[]>(endpoint);
   }
 
   //Nutrition Logs
-  getAllNutritionLogs() {
-    const endpoint = environment.userManagement.baseUrl + "nutritionLogs/userId/" + this.idLocalStorage;
+  getAllNutritionLogs(userId: number) {
+    const endpoint = environment.userManagement.baseUrl + "nutritionLogs/userId/" + userId;
     return this.http.get<NutritionLogs[]>(endpoint);
   }
 
@@ -159,8 +160,8 @@ export class UserService {
     return this.http.get<number>(endpoint);
   }
 
-  deleteFood(logId: number): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs?logId=' + logId + '&userId=' + this.idLocalStorage;
+  deleteFood(userId: number, logId: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'nutritionLogs?logId=' + logId + '&userId=' + userId;
 
     return this.http.delete<void>(endpoint).pipe(
       tap(() => {
@@ -172,8 +173,8 @@ export class UserService {
   }
 
   //Exercise logs
-  getAllExerciseLogs() {
-    const endpoint = environment.userManagement.baseUrl + "exercisesLogs/userId/" + this.idLocalStorage;
+  getAllExerciseLogs(userId: number) {
+    const endpoint = environment.userManagement.baseUrl + "exercisesLogs/userId/" + userId;
     return this.http.get<ExerciseLogs[]>(endpoint);
   }
 
@@ -200,8 +201,8 @@ export class UserService {
     return this.http.get<any>(endpoint);
   }
 
-  deleteExercise(logId: number): Observable<any> {
-    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs?logId=' + logId + '&userId=' + this.idLocalStorage;
+  deleteExercise(userId: number, logId: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'exercisesLogs?logId=' + logId + '&userId=' + userId;
 
     return this.http.delete<void>(endpoint).pipe(
       tap(() => {

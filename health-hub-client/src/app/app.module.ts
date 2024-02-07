@@ -47,9 +47,9 @@ import { IntervalBarComponent } from './components/interval-bar/interval-bar.com
 import { AwakeBarComponent } from './components/awake-bar/awake-bar.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
-
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CostumSnackbarComponent } from './components/costum-snackbar/costum-snackbar.component';
+import { GoalsListComponent } from './components/goals-list/goals-list.component';
 
 
 @NgModule({
@@ -77,6 +77,7 @@ import { CostumSnackbarComponent } from './components/costum-snackbar/costum-sna
     AwakeBarComponent,
     ConfirmDialogComponent,
     CostumSnackbarComponent,
+    GoalsListComponent,
   
   ],
 

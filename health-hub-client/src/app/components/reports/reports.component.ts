@@ -45,7 +45,7 @@ export class ReportsComponent implements OnInit {
 
   // Lifecycle hook - ngOnInit
   ngOnInit() {
-    
+    this.userId = localStorage.getItem("userId");
     this.getHydrationLogs(); // Fetch initial data
     
   }
@@ -68,7 +68,7 @@ export class ReportsComponent implements OnInit {
 
   // Method to fetch hydration logs from the service
   getHydrationLogs() {
-    this.userService.getAllHydrationLogs().subscribe(
+    this.userService.getAllHydrationLogs(this.userId).subscribe(
       (res: HydrationLogs[]) => {
         this.dataLogs = res;
         this.updateChartData();
@@ -80,7 +80,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getNutritionLogs() {
-    this.userService.getAllNutritionLogs().subscribe(
+    this.userService.getAllNutritionLogs(this.userId).subscribe(
       (res: NutritionLogs[]) => {
         this.dataLogs = res;
         this.updateChartData();
@@ -92,7 +92,7 @@ export class ReportsComponent implements OnInit {
   }
 
   getExerciseLogs() {
-    this.userService.getAllExerciseLogs().subscribe(
+    this.userService.getAllExerciseLogs(this.userId).subscribe(
       (res: ExerciseLogs[]) => {
         this.dataLogs = res;
         this.updateChartData();

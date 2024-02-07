@@ -195,7 +195,7 @@ export class ExerciseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.userService.deleteExercise(logId).subscribe(
+        this.userService.deleteExercise(this.userId, logId).subscribe(
           () => {
             const caloriesBurned = localStorage.getItem("caloriesExercise");
             const currentHeartPoints = localStorage.getItem("HeartMinutesHealthHub");

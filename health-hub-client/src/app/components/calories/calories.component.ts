@@ -253,7 +253,7 @@ export class CaloriesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.userService.deleteFood(logId).subscribe(
+        this.userService.deleteFood(this.userId,logId).subscribe(
           () => {
 
             this.CaloriesIntakeCurrentDay = Math.round(Number(this.CaloriesIntakeCurrentDay) - calories);
