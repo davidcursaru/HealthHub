@@ -2,10 +2,15 @@
 
     <div class="calories-header">
         <h1 class="mat-h1">Calories tracker</h1>
-
-        <button mat-raised-button color="primary" type="button" class="create-goal-btn"
+        <div>
+            <button mat-raised-button color="primary" type="button" class="create-goal-btn"
             (click)="openCreateGoalsDialog()">Create
             Goal</button>
+        <button mat-raised-button color="primary" type="button" class="create-goal-btn"
+            (click)="openGoalsListDialog()">Goals
+            list</button>
+        </div>
+       
     </div>
 
     <mat-grid-list [cols]="(cards | async)?.[6]?.columns || (cards | async)?.[4]?.columns" rowHeight="115px">

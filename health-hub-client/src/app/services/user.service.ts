@@ -232,6 +232,23 @@ export class UserService {
     return this.http.get(endpoint);
   }
 
+  getGoalsDataInterval(userId: number, startDate: string, endDate: string): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'goals/goals-data-interval?userId=' + userId + '&startDate=' + startDate + "&endDate=" + endDate;
+    return this.http.get<any>(endpoint);
+  }
+
+  deleteGoal(userId: number, logId: number): Observable<any> {
+    const endpoint = environment.userManagement.baseUrl + 'goals?logId=' + logId + '&userId=' + userId;
+
+    return this.http.delete<void>(endpoint).pipe(
+      tap(() => {
+      }),
+      catchError((error: HttpErrorResponse) => {
+        throw error;
+      })
+    );
+  }
+
 
   logout(): void {
     localStorage.clear();

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { interval } from 'rxjs';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GoalsListComponent } from '../goals-list/goals-list.component';
 @Component({
 
   selector: 'app-calories',
@@ -529,6 +530,17 @@ export class CaloriesComponent implements OnInit {
   openCreateGoalsDialog() {
     const dialogRef = this.dialog.open(GoalsComponent, {
       width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Handle any actions after the dialog is closed
+    });
+  }
+
+  openGoalsListDialog() {
+    const dialogRef = this.dialog.open(GoalsListComponent, {
+      width: '400px',
+      height: '500px'
     });
 
     dialogRef.afterClosed().subscribe(() => {

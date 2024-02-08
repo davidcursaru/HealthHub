@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NutritionManager.Data;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using System.Text.Json;
 
 namespace NutritionManager.Repositories
 {
@@ -21,11 +23,16 @@ namespace NutritionManager.Repositories
             return goal;
         }
 
-        public async Task DeleteGoalAsync(int id)
+        public async Task DeleteGoals(int logId, int userId)
         {
-            var goalToDelete = GetGoalByIdAsync(id).Result;
-            _context.Remove(goalToDelete);
-            await _context.SaveChangesAsync();
+            var goalToDelete = await _context.Goals
+                .FirstOrDefaultAsync(x => x.Id == logId && x.UserId == userId);
+
+            if (goalToDelete != null)
+            {
+                _context.Goals.Remove(goalToDelete);
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Goals>> GetAllGoalsAsync()
@@ -64,6 +71,23 @@ namespace NutritionManager.Repositories
             return totalValue;
         }
 
+        public async Task<IEnumerable<Goals>> GetGoalLogsInterval(int userId, DateTime startDate, DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            var goalLogs = await _context.Goals
+                .Where(r => r.StartGoalDate >= startDate.Date && r.StartGoalDate <= endDate.Date && r.UserId == userId).ToListAsync();
+
+            return goalLogs;
+        }
+
         public async Task<int> GetGoalsValueForInterval(int userId, string goalType, DateTime startDate, DateTime endDate)
         {
             if (startDate.Date == endDate.Date)
@@ -83,6 +107,38 @@ namespace NutritionManager.Repositories
                 .Select(g => g.TargetValue).SumAsync();
 
             return goals;
+        }
+
+        public async Task<string> GetGoalsData(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            if (startDate.Date == endDate.Date)
+            {
+                endDate = endDate.AddDays(1);
+            }
+            else
+            {
+                endDate = endDate.AddDays(1);
+            }
+
+            IEnumerable<Goals> goalsList = await GetGoalLogsInterval(userId, startDate, endDate);
+
+            List<object> goalsDataList = new List<object>();
+
+            foreach (var goal in goalsList)
+            {
+                var goalsData = new
+                {
+                    type = goal.GoalType,
+                    target = goal.TargetValue,
+                    startDate = goal.StartGoalDate,
+                    deadline = goal.Deadline,
+                    logId = goal.Id
+                };
+
+                goalsDataList.Add(goalsData);
+            }
+
+            return JsonSerializer.Serialize(goalsDataList);
         }
 
         public async Task UpdateGoalAsync(Goals goals)

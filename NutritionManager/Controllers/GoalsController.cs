@@ -4,6 +4,7 @@ using NutritionManager.Data;
 using NutritionManager.DTO;
 using NutritionManager.Entities;
 using NutritionManager.Interfaces;
+using NutritionManager.Repositories;
 
 namespace NutritionManager.Controllers
 {
@@ -42,6 +43,12 @@ namespace NutritionManager.Controllers
             return await _goalsRepository.GetGoalsValueForInterval(userId, goalType, startDate, endDate);
         }
 
+        [HttpGet("goals-data-interval")]
+        public async Task<string> GetGoalsDataAsync(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate)
+        {
+            return await _goalsRepository.GetGoalsData(userId, startDate, endDate);
+        }
+
         [HttpPost]
         public async Task<Goals> CreateGoalAsync(Goals goal)
         {
@@ -52,6 +59,12 @@ namespace NutritionManager.Controllers
         public async Task UpdateGoalAsync(Goals goals)
         {
             await _goalsRepository.UpdateGoalAsync(goals);
+        }
+
+        [HttpDelete]
+        public async Task DeleteGoalsAsync(int logId, int userId)
+        {
+            await _goalsRepository.DeleteGoals(logId, userId);
         }
     }
 }

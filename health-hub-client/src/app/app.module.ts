@@ -50,6 +50,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CostumSnackbarComponent } from './components/costum-snackbar/costum-snackbar.component';
 import { GoalsListComponent } from './components/goals-list/goals-list.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
@@ -107,6 +108,7 @@ import { GoalsListComponent } from './components/goals-list/goals-list.component
     MatProgressBarModule,
     NgChartsModule,
     MatTooltipModule,
+    MatDatepickerModule,
     NgCircleProgressModule.forRoot({
       "radius": 60,
       "space": -10,

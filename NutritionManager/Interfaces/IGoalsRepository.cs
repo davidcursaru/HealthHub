@@ -1,4 +1,5 @@
-﻿using NutritionManager.Entities;
+﻿using Microsoft.AspNetCore.Mvc;
+using NutritionManager.Entities;
 
 namespace NutritionManager.Interfaces
 {
@@ -10,7 +11,8 @@ namespace NutritionManager.Interfaces
         Task<Goals> GetGoalByIdAsync(int id);
         Task<int> GetGoalsTotalValueForCurrentDay(string goalType, int userId);
         Task<int> GetGoalsValueForInterval(int userId, string goalType, DateTime startDate, DateTime endDate);
-        Task DeleteGoalAsync(int id);
+        Task<string> GetGoalsData(int userId, [FromQuery(Name = "startDate")] DateTime startDate, [FromQuery(Name = "endDate")] DateTime endDate);
         Task UpdateGoalAsync(Goals goals);
+        Task DeleteGoals(int logId, int userId);
     }
 }
