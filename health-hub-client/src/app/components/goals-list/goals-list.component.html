@@ -1,4 +1,52 @@
 <h2 mat-dialog-title>Goals list</h2>
+<div class="date">
+    <mat-form-field>
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" type="button" class="create-goal-btn"
+        (click)="getGoalsDataInterval()">Show
+        list</button>
+</div>
 
-  
+<ng-container class="goals-card" *ngIf="goalsList && goalsList.length > 0; else emptyList">
+    <div>
+        <mat-card class="journal-mat-card" *ngFor="let goal of goalsList;">
+            <mat-card-header class="journal-mat-card-header">
 
+                <div mat-card-avatar class="example-header-image">
+                    <mat-icon style="color: rgb(34, 43, 107);">flag</mat-icon>
+                </div>
+
+                <div class="header-content">
+                    <mat-card-title>{{ goal.type }}</mat-card-title>
+                </div>
+            </mat-card-header>
+
+            <mat-card-content class="food-card">
+                <button mat-icon-button class="delete-button" (click)="deleteGoal(goal.logId)">
+                    <mat-icon style="color: rgb(34, 43, 107);">delete</mat-icon>
+                </button>
+                <p><span style="font-weight: bold;">Start:</span> {{
+                    goal.startDate | date: 'd MMMM y'}}</p>
+                <p><span style="font-weight: bold;">Deadline:</span> {{
+                        goal.deadline | date: 'd MMMM y'}}</p>
+
+                <p><span style="font-weight: bold;">Target:</span> {{
+                    goal.target}}</p>
+
+            </mat-card-content>
+        </mat-card>
+
+    </div>
+</ng-container>
+<ng-template #emptyList>
+    <div style="font-weight: bold; text-align: center;">
+        <p>No goals found in this time range</p>
+    </div>
+</ng-template>

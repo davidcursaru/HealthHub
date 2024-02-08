@@ -539,7 +539,7 @@ export class CaloriesComponent implements OnInit {
 
   openGoalsListDialog() {
     const dialogRef = this.dialog.open(GoalsListComponent, {
-      width: '400px',
+      width: '600px',
       height: '500px'
     });
 

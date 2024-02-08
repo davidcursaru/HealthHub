@@ -1,0 +1,67 @@
+.date{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+
+}
+
+
+
+.create-goal-btn{
+    margin-left: 10px;
+}
+
+.journal-mat-card {
+    border-radius: 20px;
+    border-width: 1px;
+    border-color: black;
+    margin: 10px;
+    width: 95%;
+    height: 105px;
+
+
+}
+
+.journal-mat-card-header {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    height: 40px;
+}
+
+.example-header-image {
+
+    margin-top: 3px;
+
+}
+
+.header-content {
+    width: 275px;
+    /* Set your desired width limit */
+    display: flex;
+    flex-shrink: 1;
+    /* Allow content to shrink */
+    overflow: hidden;
+}
+
+.header-content mat-card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.food-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+}

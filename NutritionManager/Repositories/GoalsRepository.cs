@@ -73,17 +73,11 @@ namespace NutritionManager.Repositories
 
         public async Task<IEnumerable<Goals>> GetGoalLogsInterval(int userId, DateTime startDate, DateTime endDate)
         {
-            if (startDate.Date == endDate.Date)
-            {
-                endDate = endDate.AddDays(1);
-            }
-            else
-            {
-                endDate = endDate.AddDays(1);
-            }
+         
 
             var goalLogs = await _context.Goals
-                .Where(r => r.StartGoalDate >= startDate.Date && r.StartGoalDate <= endDate.Date && r.UserId == userId).ToListAsync();
+    .Where(r => r.StartGoalDate.Date >= startDate.Date && r.StartGoalDate.Date < endDate.Date && r.UserId == userId)
+    .ToListAsync();
 
             return goalLogs;
         }

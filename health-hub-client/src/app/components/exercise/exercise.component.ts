@@ -13,6 +13,7 @@ import { interval } from 'rxjs';
 import { IntensityBarComponent } from '../intensity-bar/intensity-bar.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { GoalsListComponent } from '../goals-list/goals-list.component';
 
 @Component({
   selector: 'app-exercise',
@@ -326,6 +327,16 @@ export class ExerciseComponent implements OnInit {
 
   hideFullText() {
     this.isTruncated = true;
+  }
+  openGoalsListDialog() {
+    const dialogRef = this.dialog.open(GoalsListComponent, {
+      width: '600px',
+      height: '500px'
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      // Handle any actions after the dialog is closed
+    });
   }
 
 
