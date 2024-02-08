@@ -171,7 +171,7 @@ export class SleepTrackerComponent {
           { title: 'Deep sleep', cols: 1, rows: 20, route: '' },
           { title: 'Awake', cols: 1, rows: 20, route: '' },
           { title: 'Regularity (last 7 days)', cols: 1, rows: 36, route: '' },
-          { title: 'Sleep duration overview (last 7 days)', cols: 2, rows: 35, route: '' },
+          { title: 'Sleep duration overview (last 7 days)', cols: 2, rows: 28, route: '' },
           { columns: 3 }
         ];
       }
